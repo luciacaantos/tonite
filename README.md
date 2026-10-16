@@ -125,7 +125,7 @@ Consejo: el día anterior, ábrela en el móvil, **regístrate** y añádela a l
 
 ## 6. Para los curiosos: cómo está hecha
 
-- **React + Vite** (`src/`), mapa con **Leaflet** y tiles oscuros de CARTO (datos © OpenStreetMap).
+- **React + Vite** (`src/`), mapa con **Leaflet** y calles de **OpenStreetMap** (sin clave de API), oscurecidas con un filtro. Si no cargan, prueba Esri y, si tampoco, avisa en pantalla.
 - `src/data.js` une el CSV, las coordenadas y los datos de demo.
 - `src/afluencia.js` contiene la simulación de afluencia y los colores de cada nivel.
 - `src/clock.js`: hora real o del modo demo, y horarios de apertura.

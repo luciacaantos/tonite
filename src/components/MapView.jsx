@@ -30,11 +30,12 @@ function Encuadre() {
   return null;
 }
 
-// Fondos de calles. Si uno no carga (red bloqueada, servidor caído...), se prueba el siguiente.
+// Fondos de calles (sin clave de API). Si uno no carga (red bloqueada, servidor caído...), se prueba el siguiente.
+// OpenStreetMap se pasa a modo oscuro con un filtro CSS (.tiles-oscuras).
 const OSM = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 const FONDOS = [
-  { url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', subdomains: 'abcd', attribution: `${OSM} &copy; CARTO` },
-  { url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', subdomains: 'abc', attribution: OSM, className: 'tiles-oscuras' },
+  { url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', attribution: OSM, className: 'tiles-oscuras' },
+  { url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', attribution: `${OSM} &copy; Esri`, maxNativeZoom: 16 },
 ];
 
 function CapaCalles({ onSinMapa }) {
@@ -61,10 +62,10 @@ function CapaCalles({ onSinMapa }) {
     <TileLayer
       key={i}
       url={f.url}
-      subdomains={f.subdomains}
       attribution={f.attribution}
       className={f.className}
       maxZoom={19}
+      maxNativeZoom={f.maxNativeZoom ?? 19}
       eventHandlers={{
         tileload: () => { cargadas.current++; onSinMapa(false); },
         tileerror: () => { if (++errores.current >= 4 && !cargadas.current) siguiente(); },
