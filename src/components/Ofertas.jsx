@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useApp } from '../ctx.js';
-import { OFERTAS, POR_ID, CATEGORIAS, HORAS_ENTRE_CANJES } from '../data.js';
+import { OFERTAS, POR_ID, CATEGORIAS, HORAS_ENTRE_CANJES, CUOTA_MENSUAL, euros } from '../data.js';
 import { diaDeNoche, DIAS_LARGO } from '../clock.js';
 import { minutosParaOferta } from '../store.js';
 import { Chip, NivelBadge } from './ui.jsx';
@@ -69,6 +69,11 @@ export default function Ofertas() {
       <div className="lista-ofertas">
         {lista.map(({ o }) => <TarjetaOferta key={o.id} oferta={o} usar={setUsando} />)}
         {lista.length === 0 && <p className="sub vacio">No hay ofertas de este tipo.</p>}
+      </div>
+      <div className="para-locales">
+        <strong>¿Tienes un bar, pub o discoteca?</strong>
+        <p>Únete a TONITE por <b>{euros(CUOTA_MENSUAL)} al mes</b>: tus ofertas en esta pestaña, tus fiestas en la Agenda, el icono 🎟️ en el mapa y clientes que canjean en tu barra.</p>
+        <small>La afluencia no se compra: siempre sale de los check-ins de la gente.</small>
       </div>
       {usando && <Canje tipo="oferta" item={usando} cerrar={() => setUsando(null)} />}
     </div>

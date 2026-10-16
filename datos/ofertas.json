@@ -1,5 +1,7 @@
 {
-  "_info": "MONETIZACIÓN (datos de demo, edítalos a mano). 'adheridos' = locales que pagan la mensualidad: solo ellos salen en Ofertas y en la Agenda. Los nombres tienen que coincidir EXACTAMENTE con el CSV. Días: lun, mar, mié, jue, vie, sáb, dom. categoria: chupito, copa, cerveza o entrada.",
+  "_info": "MONETIZACIÓN (datos de demo, edítalos a mano). 'cuotaMensual' = lo que paga cada local adherido al mes (en euros). 'adheridos' = locales que pagan la mensualidad: solo ellos salen en Ofertas y en la Agenda. Los nombres tienen que coincidir EXACTAMENTE con el CSV. Días: lun, mar, mié, jue, vie, sáb, dom. categoria: chupito, copa, cerveza o entrada.",
+
+  "cuotaMensual": 22.99,
 
   "horasEntreCanjes": 1,
 

@@ -516,3 +516,10 @@ input { font: inherit; }
 .portada-vacia::after { display: none; }
 .portada-emoji { font-size: 44px; line-height: 1; filter: drop-shadow(0 4px 12px #0008); }
 .portada-zona { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: #ffffffcc; }
+
+/* ---------- Para locales (cuota) ---------- */
+.para-locales { margin-top: 22px; padding: 16px; border-radius: var(--radio); border: 1px dashed #ff2e9a66; background: #ff2e9a0f; display: flex; flex-direction: column; gap: 6px; }
+.para-locales strong { font-size: 16px; }
+.para-locales p { margin: 0; font-size: 14px; color: #cfcfe0; }
+.para-locales b { color: var(--acento); }
+.para-locales small { color: var(--suave); font-size: 12px; }

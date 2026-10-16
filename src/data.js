@@ -72,6 +72,7 @@ export const FIESTAS = demo.fiestas
 
 // ---------- Monetización: ofertas, recompensas y niveles (datos/ofertas.json) ----------
 export const HORAS_ENTRE_CANJES = monetizacion.horasEntreCanjes ?? 1;
+export const CUOTA_MENSUAL = monetizacion.cuotaMensual ?? 22.99;
 export const OFERTAS = monetizacion.ofertas
   .map((o) => ({ ...o, localId: POR_NOMBRE[o.local]?.id }))
   .filter((o) => o.localId && POR_ID[o.localId].adherido);

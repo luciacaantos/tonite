@@ -78,6 +78,7 @@ Al crear la cuenta se ofrece (opcional) un cuestionario de 7 preguntas: cuánta 
 3. En `datos/demo.json`, dentro de `"locales"`, copia el bloque de otro local y cámbiale el nombre, los precios y el horario. Si no lo haces, la app le pone un horario por defecto (jue-sáb de 22:00 a 03:00).
 
 ### Ofertas, recompensas y niveles (`datos/ofertas.json`)
+- **Modelo de negocio:** los locales adheridos pagan **22,99 €/mes** (`cuotaMensual`). La pestaña Ofertas lo anuncia al final («¿Tienes un bar, pub o discoteca?»).
 - **`adheridos`:** lista de locales que pagan la mensualidad. **Solo ellos** aparecen en *Ofertas* y en la *Agenda*, y llevan el icono 🎟️ en el mapa.
 - **`ofertas`:** una por bloque. Ejemplo:
   ```json
