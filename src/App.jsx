@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Ctx } from './ctx.js';
-import { useStore, sesionAbierta, guardarPlan } from './store.js';
+import { useStore, sesionAbierta, guardarPlan, getEstado } from './store.js';
 import { ahora, hhmm, diaDeNoche, DIAS_LARGO } from './clock.js';
 import { afluencia } from './afluencia.js';
 import { LOCALES } from './data.js';
@@ -34,14 +34,14 @@ export default function App() {
   }, []);
 
   // Enlace compartido por WhatsApp: #/p/<datos del plan>
+  const logueado = sesionAbierta(s);
   useEffect(() => {
-    if (ruta.tab !== 'p' || !sesionAbierta(s)) return;
+    if (ruta.tab !== 'p' || !logueado) return;
     const plan = leerPlanDeEnlace(ruta.param);
-    if (plan) {
-      guardarPlan(plan);
-      location.replace(`#/plan/${plan.id}`);
-    } else location.replace('#/plan');
-  }, [ruta, s]);
+    if (plan && !getEstado().planes[plan.id]) guardarPlan(plan);
+    history.replaceState(null, '', plan ? `#/plan/${plan.id}` : '#/plan');
+    setRuta(leerRuta());
+  }, [ruta, logueado]);
 
   const now = ahora(s.demo);
   const estados = useMemo(
@@ -50,7 +50,7 @@ export default function App() {
     [Math.floor(now.getTime() / 60000), s.checkins],
   );
 
-  if (!sesionAbierta(s)) return <Login />;
+  if (!logueado) return <Login />;
 
   const ir = (tab) => { setLocalAbierto(null); location.hash = `#/${tab}`; };
   const ctx = { s, now, estados, abrirLocal: setLocalAbierto, ir };
