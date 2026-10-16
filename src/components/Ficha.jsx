@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useApp } from '../ctx.js';
-import { LOCALES, POR_ID, FIESTAS, distancia, formatoDistancia, euros, urlComoLlegar } from '../data.js';
+import { LOCALES, POR_ID, FIESTAS, OFERTAS, distancia, formatoDistancia, euros, urlComoLlegar } from '../data.js';
 import { diaDeNoche, DIAS_LARGO } from '../clock.js';
 import { textoHace, VIGENCIA_MIN } from '../afluencia.js';
 import { minutosParaNuevoCheckin } from '../store.js';
 import { Sheet, NivelBadge, Icono, Punto } from './ui.jsx';
 import CheckIn from './CheckIn.jsx';
+import Canje from './Canje.jsx';
+import { TarjetaOferta } from './Ofertas.jsx';
 
 // Plan B: de los 6 locales abiertos más cercanos, los 3 con más ambiente.
 export function planB(local, estados) {
@@ -20,12 +22,14 @@ export function planB(local, estados) {
 export default function Ficha({ id, cerrar }) {
   const { estados, now, abrirLocal, s } = useApp();
   const [checkin, setCheckin] = useState(false);
+  const [usando, setUsando] = useState(null);
   const l = POR_ID[id];
   if (!l) return null;
   const e = estados[id];
   const dia = diaDeNoche(now);
-  const promos = l.promos.filter((p) => p.dias.includes(dia));
-  const fiestas = FIESTAS.filter((f) => f.localId === id && f.dia === dia);
+  // Ofertas y fiestas solo de locales adheridos (pagan la mensualidad).
+  const ofertas = OFERTAS.filter((o) => o.localId === id);
+  const fiestas = FIESTAS.filter((f) => f.adherido && f.localId === id && f.dia === dia);
   const espera = minutosParaNuevoCheckin(s, id);
   const alternativas = planB(l, estados);
 
@@ -35,6 +39,7 @@ export default function Ficha({ id, cerrar }) {
         <div>
           <h2>{l.nombre}</h2>
           <p className="sub">{l.tipo} · {l.zona}</p>
+          {l.adherido && <span className="adherido">🎟️ Local adherido · ofertas TONITE</span>}
         </div>
         <button className="btn-icono" onClick={cerrar} aria-label="Cerrar"><Icono n="cerrar" /></button>
       </div>
@@ -61,13 +66,21 @@ export default function Ficha({ id, cerrar }) {
         </a>
       </div>
 
-      {(fiestas.length > 0 || promos.length > 0) && (
+      {fiestas.length > 0 && (
         <section className="bloque">
           <h3>Esta noche</h3>
           {fiestas.map((f) => (
             <div key={f.id} className="promo fiesta"><strong>🎉 {f.nombre}</strong> · {f.hora}<br /><span>{f.descripcion}</span></div>
           ))}
-          {promos.map((p, i) => <div key={i} className="promo">🔥 {p.texto}</div>)}
+        </section>
+      )}
+
+      {ofertas.length > 0 && (
+        <section className="bloque">
+          <h3>Ofertas</h3>
+          <div className="lista-ofertas">
+            {ofertas.map((o) => <TarjetaOferta key={o.id} oferta={o} conLocal={false} usar={setUsando} />)}
+          </div>
         </section>
       )}
 
@@ -107,6 +120,7 @@ export default function Ficha({ id, cerrar }) {
       )}
 
       {checkin && <CheckIn local={l} cerrar={() => setCheckin(false)} />}
+      {usando && <Canje tipo="oferta" item={usando} cerrar={() => setUsando(null)} />}
     </Sheet>
   );
 }

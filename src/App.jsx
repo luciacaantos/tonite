@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Ctx } from './ctx.js';
-import { useStore, sesionAbierta, guardarPlan, getEstado } from './store.js';
+import { useStore, sesionAbierta } from './store.js';
 import { ahora, hhmm, diaDeNoche, DIAS_LARGO } from './clock.js';
 import { afluencia } from './afluencia.js';
 import { LOCALES } from './data.js';
@@ -8,7 +8,8 @@ import Login from './components/Login.jsx';
 import MapView from './components/MapView.jsx';
 import Ficha from './components/Ficha.jsx';
 import Agenda from './components/Agenda.jsx';
-import Plan, { leerPlanDeEnlace } from './components/Plan.jsx';
+import Ofertas from './components/Ofertas.jsx';
+import Puntos from './components/Puntos.jsx';
 import Perfil from './components/Perfil.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import { Logo } from './components/ui.jsx';
@@ -16,7 +17,7 @@ import { Logo } from './components/ui.jsx';
 function leerRuta() {
   const h = location.hash.replace(/^#\/?/, '');
   const [tab, ...resto] = h.split('/');
-  return { tab: ['mapa', 'agenda', 'plan', 'perfil', 'p'].includes(tab) ? tab : 'mapa', param: resto.join('/') };
+  return { tab: ['mapa', 'ofertas', 'puntos', 'agenda', 'perfil'].includes(tab) ? tab : 'mapa', param: resto.join('/') };
 }
 
 export default function App() {
@@ -33,15 +34,7 @@ export default function App() {
     return () => { clearInterval(t); window.removeEventListener('hashchange', onHash); };
   }, []);
 
-  // Enlace compartido por WhatsApp: #/p/<datos del plan>
   const logueado = sesionAbierta(s);
-  useEffect(() => {
-    if (ruta.tab !== 'p' || !logueado) return;
-    const plan = leerPlanDeEnlace(ruta.param);
-    if (plan && !getEstado().planes[plan.id]) guardarPlan(plan);
-    history.replaceState(null, '', plan ? `#/plan/${plan.id}` : '#/plan');
-    setRuta(leerRuta());
-  }, [ruta, logueado]);
 
   const now = ahora(s.demo);
   const estados = useMemo(
@@ -69,10 +62,11 @@ export default function App() {
         <main className={`contenido tab-${ruta.tab}`}>
           {ruta.tab === 'mapa' && <MapView seleccionado={localAbierto} />}
           {ruta.tab === 'agenda' && <Agenda />}
-          {(ruta.tab === 'plan' || ruta.tab === 'p') && <Plan planId={ruta.tab === 'plan' ? ruta.param : ''} />}
+          {ruta.tab === 'ofertas' && <Ofertas />}
+          {ruta.tab === 'puntos' && <Puntos />}
           {ruta.tab === 'perfil' && <Perfil />}
         </main>
-        <BottomNav actual={ruta.tab === 'p' ? 'plan' : ruta.tab} ir={ir} />
+        <BottomNav actual={ruta.tab} ir={ir} />
         {localAbierto && <Ficha id={localAbierto} cerrar={() => setLocalAbierto(null)} />}
       </div>
     </Ctx.Provider>

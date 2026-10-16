@@ -11,11 +11,11 @@ const LIMITES = L.latLngBounds(LOCALES.map((l) => [l.lat, l.lon]));
 // Margen para que los marcadores no queden debajo de los filtros ni del carrusel.
 const MARGEN = { paddingTopLeft: [24, 70], paddingBottomRight: [24, 250] };
 const iconoCache = {};
-function icono(nivel, elegido) {
-  const k = `${nivel}-${elegido}`;
+function icono(nivel, elegido, adherido) {
+  const k = `${nivel}-${elegido}-${adherido}`;
   return (iconoCache[k] ??= L.divIcon({
     className: '',
-    html: `<div class="pin n${nivel} ${elegido ? 'pin-elegido' : ''}" style="--c:${NIVELES[nivel].color}"><i></i></div>`,
+    html: `<div class="pin n${nivel} ${elegido ? 'pin-elegido' : ''}" style="--c:${NIVELES[nivel].color}"><i></i>${adherido ? '<b class="pin-oferta">🎟️</b>' : ''}</div>`,
     iconSize: [34, 34],
     iconAnchor: [17, 17],
   }));
@@ -100,7 +100,7 @@ export default function MapView({ seleccionado }) {
           <Marker
             key={l.id}
             position={[l.lat, l.lon]}
-            icon={icono(estados[l.id].nivel, seleccionado === l.id)}
+            icon={icono(estados[l.id].nivel, seleccionado === l.id, l.adherido)}
             eventHandlers={{ click: () => abrirLocal(l.id) }}
             zIndexOffset={estados[l.id].nivel * 100}
             title={l.nombre}
@@ -117,6 +117,7 @@ export default function MapView({ seleccionado }) {
           <Icono n="filtro" size={16} /> Filtros{n ? ` · ${n}` : ''}
         </Chip>
         <Chip activo={filtros.abierto} onClick={() => setFiltros({ ...filtros, abierto: !filtros.abierto })}>Abierto ahora</Chip>
+        <Chip activo={filtros.ofertas} onClick={() => setFiltros({ ...filtros, ofertas: !filtros.ofertas })}>🎟️ Con ofertas</Chip>
         {['Pedro Antonio', 'Ganivet', 'Elvira'].map((z) => (
           <Chip key={z} activo={filtros.zonas.includes(z)}
             onClick={() => setFiltros({ ...filtros, zonas: filtros.zonas.includes(z) ? filtros.zonas.filter((x) => x !== z) : [...filtros.zonas, z] })}>

@@ -1,7 +1,8 @@
-// Junta los tres archivos editables de /datos en una sola lista de locales.
+// Junta los archivos editables de /datos (locales, coordenadas, demo y ofertas).
 import csvTexto from '../datos/locales_granada_seed.csv?raw';
 import coordenadas from '../datos/coordenadas.json';
 import demo from '../datos/demo.json';
+import monetizacion from '../datos/ofertas.json';
 import { parseCSV, etiquetas, slug } from './csv.js';
 
 // Centro de cada zona: se usa si un local no tiene coordenadas.
@@ -34,7 +35,7 @@ export const LOCALES = parseCSV(csvTexto).map((fila, i) => {
     copa: d.copa ?? null,
     chupito: d.chupito ?? null,
     entrada: d.entrada ?? null,
-    promos: d.promos || [],
+    adherido: monetizacion.adheridos.includes(fila.nombre),
     popularidad: d.popularidad ?? 0.5,
     demo: true,
   };
@@ -43,8 +44,30 @@ export const LOCALES = parseCSV(csvTexto).map((fila, i) => {
 export const POR_ID = Object.fromEntries(LOCALES.map((l) => [l.id, l]));
 export const POR_NOMBRE = Object.fromEntries(LOCALES.map((l) => [l.nombre, l]));
 export const FIESTAS = demo.fiestas
-  .map((f, i) => ({ ...f, id: `f${i}`, localId: POR_NOMBRE[f.local]?.id }))
+  .map((f, i) => ({ ...f, id: `f${i}`, localId: POR_NOMBRE[f.local]?.id, adherido: !!POR_NOMBRE[f.local]?.adherido }))
   .filter((f) => f.localId);
+
+// ---------- Monetización: ofertas, recompensas y niveles (datos/ofertas.json) ----------
+export const HORAS_ENTRE_CANJES = monetizacion.horasEntreCanjes ?? 1;
+export const OFERTAS = monetizacion.ofertas
+  .map((o) => ({ ...o, localId: POR_NOMBRE[o.local]?.id }))
+  .filter((o) => o.localId && POR_ID[o.localId].adherido);
+export const RECOMPENSAS = monetizacion.recompensas.map((r) => ({ ...r, localId: POR_NOMBRE[r.local]?.id || null }));
+export const NIVELES_USUARIO = [...monetizacion.niveles].sort((a, b) => a.desde - b.desde);
+
+// Nivel según los puntos GANADOS en total (gastar puntos no baja de nivel).
+export function nivelUsuario(ganados) {
+  const actual = [...NIVELES_USUARIO].reverse().find((n) => ganados >= n.desde) || NIVELES_USUARIO[0];
+  const siguiente = NIVELES_USUARIO.find((n) => n.desde > ganados) || null;
+  return { actual, siguiente };
+}
+
+export const CATEGORIAS = {
+  chupito: { nombre: 'Chupitos', emoji: '🥃' },
+  copa: { nombre: 'Copas', emoji: '🍸' },
+  cerveza: { nombre: 'Cervezas', emoji: '🍺' },
+  entrada: { nombre: 'Entradas', emoji: '🎟️' },
+};
 
 const unicos = (arr) => [...new Set(arr)].sort((a, b) => a.localeCompare(b, 'es'));
 export const ZONAS = ['Pedro Antonio', 'Ganivet', 'Elvira', 'Discotecas centro'];

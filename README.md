@@ -42,7 +42,8 @@ Todo está en la carpeta **`datos/`**. Después de cambiar algo, guarda el archi
 | Archivo | Qué contiene | Cómo editarlo |
 |---|---|---|
 | `datos/locales_granada_seed.csv` | Locales: nombre, zona, tipo, dirección, **música** y **ambiente** | Con Excel, Numbers o Google Sheets. Las etiquetas de música y ambiente van separadas por `\|` (ej.: `reggaetón\|comercial`). Guárdalo como **CSV UTF-8**. |
-| `datos/demo.json` | **Precios, horarios, promociones y fiestas** (datos de demo) | Con cualquier editor de texto (Bloc de notas, TextEdit o <https://jsoneditoronline.org>). |
+| `datos/demo.json` | **Precios orientativos, horarios y fiestas** (datos de demo) | Con cualquier editor de texto (Bloc de notas, TextEdit o <https://jsoneditoronline.org>). |
+| `datos/ofertas.json` | **Monetización:** locales adheridos (los que pagan), sus **ofertas**, las **recompensas** por puntos y los **niveles** | Igual que el anterior. |
 | `datos/coordenadas.json` | Posición de cada local en el mapa | Igual que el anterior. |
 
 ### Añadir un local nuevo
@@ -53,10 +54,20 @@ Todo está en la carpeta **`datos/`**. Después de cambiar algo, guarda el archi
    ```
 3. En `datos/demo.json`, dentro de `"locales"`, copia el bloque de otro local y cámbiale el nombre, los precios y el horario. Si no lo haces, la app le pone un horario por defecto (jue-sáb de 22:00 a 03:00).
 
-### Cambiar una promoción o una fiesta
+### Ofertas, recompensas y niveles (`datos/ofertas.json`)
+- **`adheridos`:** lista de locales que pagan la mensualidad. **Solo ellos** aparecen en *Ofertas* y en la *Agenda*, y llevan el icono 🎟️ en el mapa.
+- **`ofertas`:** una por bloque. Ejemplo:
+  ```json
+  { "id": "o16", "local": "Pata Palo", "titulo": "Chupito a 1 €", "antes": "1,50 €", "categoria": "chupito", "dias": ["jue", "vie"], "condiciones": "Uno por persona." }
+  ```
+  `id` tiene que ser distinto en cada oferta. `categoria`: `chupito`, `copa`, `cerveza` o `entrada`.
+- **`horasEntreCanjes`:** cuánto tiempo queda bloqueada una oferta después de que el camarero pulse «¡Canjeada!» (ahora, 1 hora).
+- **`recompensas`:** lo que se compra con puntos. `puntos` = lo que cuesta; `local` vacío = vale en cualquier local adherido; `nivelMinimo` = nivel necesario para canjearla (0 = todos).
+- **`niveles`:** a partir de cuántos puntos **ganados** se sube de nivel (`desde`), su nombre y su ventaja. Gastar puntos no baja de nivel.
+
+### Cambiar una fiesta
 En `datos/demo.json`:
-- **Promoción:** `{ "dias": ["jue"], "texto": "2x1 hasta la 01:00" }` dentro de `"promos"` del local.
-- **Fiesta (agenda):** añade un bloque en `"fiestas"`:
+- **Fiesta (agenda):** añade un bloque en `"fiestas"` (solo saldrá si el local está adherido):
   ```json
   { "dia": "jue", "local": "Pata Palo", "hora": "23:00", "nombre": "Indie Night", "tipo": "temática", "descripcion": "..." }
   ```
@@ -80,16 +91,16 @@ Hace 1 petición por segundo (el límite de Nominatim) y tarda menos de un minut
 Viene **activado**. Se controla en **Perfil → Modo demo**.
 - Fija la hora en la **noche del jueves a la 01:00** (se puede cambiar entre 22:00 y 03:00), para que el mapa se vea lleno de vida aunque presentéis por la mañana.
 - En el check-in aparece **«🎬 Simular que estoy aquí»**, que se salta el GPS.
-- En el plan de grupo aparece **«🎬 Simular votos de amigos»**.
+- En *Perfil → Modo demo* hay botones **«+100 puntos»** y **«+500 puntos»** para enseñar los canjes y los niveles sin hacer muchos check-ins.
 - Arriba se ve la etiqueta amarilla `DEMO · Jueves 01:00` para que quede claro.
 
 ### Guion de 2 minutos
-1. **Mapa:** «son las 01:00 de un jueves; los colores son la gente que hay ahora». Toca una tarjeta de *Lo más animado ahora*.
-2. **Ficha:** afluencia y último check-in, promos de esta noche, música, precios y *Cómo llegar*.
-3. Baja hasta **Plan B cerca**: «si está lleno, aquí al lado hay ambiente».
-4. **Estoy aquí → Simular que estoy aquí →** toca *Lleno* → **+25 puntos**.
-5. **Perfil:** puntos y «pronto podrás canjearlos por chupitos».
-6. **Plan → Crear plan →** elige 3 sitios → *Crear plan y votar* → vota → *Simular votos de amigos* → *Cerrar votación* → 🏆 ganador → *Avisar al grupo por WhatsApp*.
+1. **Mapa:** «son las 01:00 de un jueves; los colores son la gente que hay ahora; los 🎟️ son locales con ofertas». Toca un local (por ejemplo, Chupitería 69).
+2. **Ficha:** afluencia y último check-in, fiesta de esta noche, ofertas, música, precios y *Cómo llegar*. Baja hasta **Plan B cerca**.
+3. **Estoy aquí → Simular que estoy aquí →** toca *Lleno* → **+25 puntos**.
+4. **Ofertas:** *Usar oferta* en «Chupito a 1 €» → pantalla para el camarero → **¡Canjeada!** → la oferta queda bloqueada 1 hora.
+5. **Puntos:** saldo, nivel y recompensas. (Antes, en *Perfil → +500 puntos*.) *Canjear* «Copa gratis» → **¡Canjeada!** → se descuentan los puntos.
+6. **Niveles:** «cuantos más check-ins, más nivel y mejores recompensas».
 
 Consejo: el día anterior, ábrela en el móvil, **regístrate** y añádela a la pantalla de inicio (Safari: *Compartir → Añadir a pantalla de inicio*; Chrome: *⋮ → Instalar aplicación*). Así mañana se abre directamente en el mapa.
 
@@ -114,10 +125,10 @@ Consejo: el día anterior, ábrela en el móvil, **regístrate** y añádela a l
 | **Mapa** | Mapa real de OpenStreetMap (Leaflet) | — |
 | **Afluencia** | La regla: solo sale de check-ins, caduca a los 25 min y los locales nunca la declaran. Tus check-ins reales cuentan. | Los check-ins «de otros usuarios» son una **simulación** según el día, la hora y el tipo de local. |
 | **Check-in** | Pide el GPS real y comprueba de verdad que estás a menos de 50 m. Límite de 1 check-in por local cada 25 min. | El botón «Simular que estoy aquí» se salta el GPS (solo en modo demo). |
-| **Puntos** | Se suman de verdad por cada check-in (10, +15 si es un sitio nuevo). | El canje por chupitos y copas **no existe todavía**. |
-| **Precios, horarios, promociones y fiestas** | — | **Todo inventado**, aunque realista. |
+| **Puntos y niveles** | Se suman de verdad por cada check-in (10, +15 si es un sitio nuevo); el nivel sube con los puntos ganados; las recompensas descuentan puntos. | Los botones «+100 / +500 puntos» son solo para la demo. |
+| **Ofertas y canje** | Flujo completo: *Usar oferta* → pantalla para el camarero → «¡Canjeada!» → bloqueada 1 hora. | No hay servidor: el bloqueo se guarda **en ese móvil** (borrando los datos se podría reutilizar). Los locales adheridos y sus ofertas son **de ejemplo** (aún no hay acuerdos firmados). |
+| **Precios, horarios y fiestas** | — | **Todo inventado**, aunque realista. |
 | **Login** | Formulario con +18, privacidad y ubicación. | No hay servidor: la cuenta se guarda **solo en ese móvil**. |
-| **Plan de grupo** | Se crea el plan, se comparte por WhatsApp con un enlace que abre el plan en TONITE, se vota y sale el ganador. | Los votos **no se juntan entre móviles** (cada móvil ve sus votos). Los votos de «amigos» son simulados. |
 | **Plan B cerca** | Cálculo real de distancias entre locales. | Depende de la afluencia simulada. |
 | **PWA** | Instalable en el móvil y funciona sin conexión una vez abierta. | — |
 
@@ -126,9 +137,9 @@ Consejo: el día anterior, ábrela en el móvil, **regístrate** y añádela a l
 ## 6. Para los curiosos: cómo está hecha
 
 - **React + Vite** (`src/`), mapa con **Leaflet** y calles de **OpenStreetMap** (sin clave de API), oscurecidas con un filtro. Si no cargan, prueba Esri y, si tampoco, avisa en pantalla.
-- `src/data.js` une el CSV, las coordenadas y los datos de demo.
+- `src/data.js` une el CSV, las coordenadas, los datos de demo y las ofertas (con los niveles).
 - `src/afluencia.js` contiene la simulación de afluencia y los colores de cada nivel.
 - `src/clock.js`: hora real o del modo demo, y horarios de apertura.
-- `src/store.js` guarda la cuenta, los check-ins, los puntos y los planes en el móvil (`localStorage`).
-- `src/components/`: una pieza por pantalla (Mapa, Ficha, Filtros, CheckIn, Agenda, Plan, Perfil, Login).
+- `src/store.js` guarda la cuenta, los check-ins, los puntos y los canjes en el móvil (`localStorage`).
+- `src/components/`: una pieza por pantalla (Mapa, Ficha, Filtros, CheckIn, Ofertas, Canje, Puntos, Agenda, Perfil, Login).
 - Paleta **A «Neón rosa»**: fondo `#0B0B14`, acento `#FF2E9A` y secundario `#7A5CFF` (en `src/styles.css`, arriba del todo).

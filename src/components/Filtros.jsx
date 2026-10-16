@@ -2,10 +2,10 @@ import { ZONAS, TIPOS, MUSICAS, AMBIENTES } from '../data.js';
 import { NIVELES } from '../afluencia.js';
 import { Chip, Sheet } from './ui.jsx';
 
-export const FILTROS_VACIOS = { zonas: [], tipos: [], musica: [], ambiente: [], niveles: [], abierto: false };
+export const FILTROS_VACIOS = { zonas: [], tipos: [], musica: [], ambiente: [], niveles: [], abierto: false, ofertas: false };
 
 export const contarFiltros = (f) =>
-  f.zonas.length + f.tipos.length + f.musica.length + f.ambiente.length + f.niveles.length + (f.abierto ? 1 : 0);
+  f.zonas.length + f.tipos.length + f.musica.length + f.ambiente.length + f.niveles.length + (f.abierto ? 1 : 0) + (f.ofertas ? 1 : 0);
 
 export function aplicarFiltros(locales, f, estados) {
   return locales.filter((l) => {
@@ -16,6 +16,7 @@ export function aplicarFiltros(locales, f, estados) {
     if (f.ambiente.length && !l.ambiente.some((a) => f.ambiente.includes(a))) return false;
     if (f.niveles.length && (e.cerrado || !f.niveles.includes(e.nivel))) return false;
     if (f.abierto && e.cerrado) return false;
+    if (f.ofertas && !l.adherido) return false;
     return true;
   });
 }
@@ -47,7 +48,10 @@ export default function Filtros({ filtros, setFiltros, cerrar, total }) {
         <button className="link" onClick={() => setFiltros(FILTROS_VACIOS)}>Borrar todo</button>
       </div>
       <section className="filtro-grupo">
-        <Chip activo={filtros.abierto} onClick={() => setFiltros({ ...filtros, abierto: !filtros.abierto })}>Abierto ahora</Chip>
+        <div className="chips">
+          <Chip activo={filtros.abierto} onClick={() => setFiltros({ ...filtros, abierto: !filtros.abierto })}>Abierto ahora</Chip>
+          <Chip activo={filtros.ofertas} onClick={() => setFiltros({ ...filtros, ofertas: !filtros.ofertas })}>🎟️ Con ofertas</Chip>
+        </div>
       </section>
       {grupo('Afluencia', 'niveles', NIVELES.slice(1), (o) => o.color)}
       {grupo('Zona', 'zonas', ZONAS)}

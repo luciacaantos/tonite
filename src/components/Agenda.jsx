@@ -19,13 +19,13 @@ export default function Agenda() {
     return { i, dia, etiqueta, fecha };
   });
   const lista = (elegido === 'todas' ? noches : [noches[elegido]])
-    .map((n) => ({ ...n, fiestas: FIESTAS.filter((f) => f.dia === n.dia && (!tipo || f.tipo === tipo)).sort((a, b) => ordenHora(a.hora) - ordenHora(b.hora)) }))
+    .map((n) => ({ ...n, fiestas: FIESTAS.filter((f) => f.adherido && f.dia === n.dia && (!tipo || f.tipo === tipo)).sort((a, b) => ordenHora(a.hora) - ordenHora(b.hora)) }))
     .filter((n) => n.fiestas.length || elegido !== 'todas');
 
   return (
     <div className="pagina">
       <h1>Agenda de fiestas</h1>
-      <p className="sub">Eventos especiales de los próximos 7 días.</p>
+      <p className="sub">Eventos de los locales adheridos a TONITE en los próximos 7 días.</p>
       <div className="chips scroll-x">
         {noches.map((n) => <Chip key={n.i} activo={elegido === n.i} onClick={() => setElegido(n.i)}>{n.etiqueta}</Chip>)}
         <Chip activo={elegido === 'todas'} onClick={() => setElegido('todas')}>Toda la semana</Chip>

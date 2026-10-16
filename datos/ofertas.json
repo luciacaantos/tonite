@@ -1,0 +1,58 @@
+{
+  "_info": "MONETIZACIÓN (datos de demo, edítalos a mano). 'adheridos' = locales que pagan la mensualidad: solo ellos salen en Ofertas y en la Agenda. Los nombres tienen que coincidir EXACTAMENTE con el CSV. Días: lun, mar, mié, jue, vie, sáb, dom. categoria: chupito, copa, cerveza o entrada.",
+
+  "horasEntreCanjes": 1,
+
+  "adheridos": [
+    "Chupitería 69",
+    "L'scandalo Pub",
+    "Pub Lokura Latina",
+    "PlaymobilClub",
+    "Pub Rubik",
+    "Las Marismas",
+    "La Habana",
+    "Pub Ganivet 13",
+    "Pata Palo",
+    "Pub Kocran (antes El Son)",
+    "Granada 10",
+    "Twoo Club (antes Campus)",
+    "Sala Aliatar",
+    "Mae West"
+  ],
+
+  "ofertas": [
+    { "id": "o1", "local": "Chupitería 69", "titulo": "Chupito a 1 €", "antes": "1,50 €", "categoria": "chupito", "dias": ["lun", "mar", "mié", "jue", "vie", "sáb"], "condiciones": "Un chupito por persona." },
+    { "id": "o2", "local": "Chupitería 69", "titulo": "Ronda de 5 chupitos por 4 €", "antes": "7,50 €", "categoria": "chupito", "dias": ["jue", "vie", "sáb"], "condiciones": "Para compartir con tu grupo." },
+    { "id": "o3", "local": "L'scandalo Pub", "titulo": "2x1 en copas", "antes": "", "categoria": "copa", "dias": ["jue"], "condiciones": "Válida hasta la 01:30." },
+    { "id": "o4", "local": "Pub Lokura Latina", "titulo": "Mojito a 4 €", "antes": "6 €", "categoria": "copa", "dias": ["jue", "vie", "sáb"], "condiciones": "" },
+    { "id": "o5", "local": "PlaymobilClub", "titulo": "Primera copa a 3 €", "antes": "5 €", "categoria": "copa", "dias": ["mié", "jue"], "condiciones": "Solo la primera copa de la noche." },
+    { "id": "o6", "local": "Pub Rubik", "titulo": "Chupito de regalo con tu copa", "antes": "", "categoria": "chupito", "dias": ["jue", "vie", "sáb"], "condiciones": "" },
+    { "id": "o7", "local": "Las Marismas", "titulo": "Litro de cerveza + tapa por 4 €", "antes": "5,50 €", "categoria": "cerveza", "dias": ["mar", "mié", "jue", "vie", "sáb"], "condiciones": "Hasta las 00:00." },
+    { "id": "o8", "local": "La Habana", "titulo": "Pecera para 4 por 12 €", "antes": "14 €", "categoria": "copa", "dias": ["mar", "mié", "jue", "vie", "sáb"], "condiciones": "" },
+    { "id": "o9", "local": "Pub Ganivet 13", "titulo": "Copa a 5 €", "antes": "6,50 €", "categoria": "copa", "dias": ["mié", "jue"], "condiciones": "" },
+    { "id": "o10", "local": "Pata Palo", "titulo": "Jarra de cerveza a 6 €", "antes": "8 €", "categoria": "cerveza", "dias": ["mar", "mié", "jue"], "condiciones": "" },
+    { "id": "o11", "local": "Pub Kocran (antes El Son)", "titulo": "Entrada gratis", "antes": "8 €", "categoria": "entrada", "dias": ["jue", "vie", "sáb"], "condiciones": "Antes de la 01:30." },
+    { "id": "o12", "local": "Granada 10", "titulo": "Entrada + copa por 8 €", "antes": "12 €", "categoria": "entrada", "dias": ["jue"], "condiciones": "Antes de la 01:30." },
+    { "id": "o13", "local": "Twoo Club (antes Campus)", "titulo": "Entrada con copa a 6 €", "antes": "8 €", "categoria": "entrada", "dias": ["mié", "jue"], "condiciones": "" },
+    { "id": "o14", "local": "Sala Aliatar", "titulo": "2 copas por 10 €", "antes": "14 €", "categoria": "copa", "dias": ["jue"], "condiciones": "Enseñando el carné UGR." },
+    { "id": "o15", "local": "Mae West", "titulo": "Entrada con copa a 8 €", "antes": "10 €", "categoria": "entrada", "dias": ["vie", "sáb"], "condiciones": "Antes de las 02:30." }
+  ],
+
+  "recompensas": [
+    { "id": "r1", "titulo": "Chupito gratis", "puntos": 50, "categoria": "chupito", "local": "", "nivelMinimo": 0 },
+    { "id": "r2", "titulo": "Tercio de cerveza gratis", "puntos": 80, "categoria": "cerveza", "local": "", "nivelMinimo": 0 },
+    { "id": "r3", "titulo": "Copa gratis", "puntos": 150, "categoria": "copa", "local": "", "nivelMinimo": 1 },
+    { "id": "r4", "titulo": "Entrada gratis", "puntos": 200, "categoria": "entrada", "local": "Twoo Club (antes Campus)", "nivelMinimo": 1 },
+    { "id": "r5", "titulo": "Entrada + copa", "puntos": 300, "categoria": "entrada", "local": "Sala Aliatar", "nivelMinimo": 2 },
+    { "id": "r6", "titulo": "Pecera para 4", "puntos": 400, "categoria": "copa", "local": "La Habana", "nivelMinimo": 2 },
+    { "id": "r7", "titulo": "Botella para tu grupo", "puntos": 1000, "categoria": "copa", "local": "Pub Kocran (antes El Son)", "nivelMinimo": 3 }
+  ],
+
+  "niveles": [
+    { "nivel": 0, "nombre": "Inicio", "desde": 0, "ventaja": "Canjea chupitos y cervezas con tus puntos." },
+    { "nivel": 1, "nombre": "Bronce", "desde": 100, "ventaja": "Desbloquea copas y entradas gratis." },
+    { "nivel": 2, "nombre": "Plata", "desde": 500, "ventaja": "Desbloquea entradas con copa y peceras." },
+    { "nivel": 3, "nombre": "Oro", "desde": 1500, "ventaja": "Desbloquea la botella para tu grupo." },
+    { "nivel": 4, "nombre": "Neón", "desde": 3000, "ventaja": "Lo máximo: eres leyenda de la noche granadina." }
+  ]
+}

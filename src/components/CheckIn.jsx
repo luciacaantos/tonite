@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useApp } from '../ctx.js';
 import { distancia, formatoDistancia } from '../data.js';
 import { NIVELES, VIGENCIA_MIN } from '../afluencia.js';
-import { hacerCheckin } from '../store.js';
+import { hacerCheckin, nivelDe, getEstado } from '../store.js';
 import { Sheet, Chip, Icono } from './ui.jsx';
 
 const RADIO_M = 50;
@@ -15,6 +15,7 @@ export default function CheckIn({ local, cerrar }) {
   const [ambiente, setAmbiente] = useState([]);
   const [simulado, setSimulado] = useState(false);
   const [puntos, setPuntos] = useState(0);
+  const [subida, setSubida] = useState(null);
 
   // La ubicación se pide SOLO aquí, una vez, al pulsar el botón. No se guarda.
   function comprobarUbicacion() {
@@ -37,8 +38,11 @@ export default function CheckIn({ local, cerrar }) {
   function simular() { setSimulado(true); setPaso('form'); }
 
   function enviar(nivel) {
+    const antes = nivelDe(getEstado()).actual;
     const p = hacerCheckin({ local, nivel, ambiente, simulado });
+    const despues = nivelDe(getEstado()).actual;
     setPuntos(p ?? 0);
+    if (despues.nivel > antes.nivel) setSubida(despues);
     setPaso('hecho');
   }
 
@@ -96,6 +100,9 @@ export default function CheckIn({ local, cerrar }) {
           <h2>¡Gracias por el check-in!</h2>
           <p className="sub">Tu aviso ayuda a los demás a decidir. Cuenta para la afluencia durante {VIGENCIA_MIN} minutos.</p>
           {puntos > 10 && <p className="tu-checkin">⭐ Bonus por descubrir un sitio nuevo</p>}
+          {subida && (
+            <div className="subida-nivel">🏆 ¡Subes a <strong>Nivel {subida.nivel} · {subida.nombre}</strong>!<br /><small>{subida.ventaja}</small></div>
+          )}
           <button className="btn btn-primario" onClick={cerrar}>Genial</button>
         </div>
       )}

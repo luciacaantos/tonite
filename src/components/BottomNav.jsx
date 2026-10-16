@@ -2,8 +2,9 @@ import { Icono } from './ui.jsx';
 
 const TABS = [
   { id: 'mapa', nombre: 'Mapa' },
+  { id: 'ofertas', nombre: 'Ofertas' },
+  { id: 'puntos', nombre: 'Puntos' },
   { id: 'agenda', nombre: 'Agenda' },
-  { id: 'plan', nombre: 'Plan' },
   { id: 'perfil', nombre: 'Perfil' },
 ];
 
