@@ -28,7 +28,6 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,svg,png}'],
         runtimeCaching: [
           { urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/, handler: 'CacheFirst', options: { cacheName: 'fuentes', expiration: { maxEntries: 20 } } },
-          { urlPattern: /^https:\/\/[a-d]\.basemaps\.cartocdn\.com\/.*/, handler: 'CacheFirst', options: { cacheName: 'mapa', expiration: { maxEntries: 400, maxAgeSeconds: 60 * 60 * 24 * 30 } } },
         ],
       },
     }),

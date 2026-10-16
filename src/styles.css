@@ -96,6 +96,13 @@ input { font: inherit; }
 .leaflet-control-attribution { background: #0b0b14aa !important; color: #777 !important; font-size: 9px !important; }
 .leaflet-control-attribution a { color: #999 !important; }
 .leaflet-top.leaflet-right { top: 58px; }
+/* Fondo de OpenStreetMap convertido a modo oscuro */
+.tiles-oscuras { filter: invert(1) hue-rotate(180deg) brightness(.8) contrast(.9) saturate(.5); }
+.aviso-mapa {
+  position: absolute; top: 64px; left: 12px; right: 12px; z-index: 450;
+  background: #ff3b3b26; border: 1px solid #ff3b3b66; color: #ffb3b3;
+  padding: 10px 12px; border-radius: 12px; font-size: 13px; backdrop-filter: blur(8px);
+}
 .mapa-filtros {
   position: absolute; top: 10px; left: 0; right: 0; z-index: 400;
   display: flex; gap: 8px; overflow-x: auto; padding: 0 12px; scrollbar-width: none;

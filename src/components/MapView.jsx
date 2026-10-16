@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Marker, AttributionControl, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { useApp } from '../ctx.js';
@@ -30,12 +30,56 @@ function Encuadre() {
   return null;
 }
 
+// Fondos de calles. Si uno no carga (red bloqueada, servidor caído...), se prueba el siguiente.
+const OSM = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+const FONDOS = [
+  { url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', subdomains: 'abcd', attribution: `${OSM} &copy; CARTO` },
+  { url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', subdomains: 'abc', attribution: OSM, className: 'tiles-oscuras' },
+];
+
+function CapaCalles({ onSinMapa }) {
+  const [i, setI] = useState(0);
+  const cargadas = useRef(0);
+  const errores = useRef(0);
+
+  useEffect(() => {
+    cargadas.current = 0;
+    errores.current = 0;
+    // Si en 6 s no ha llegado ninguna imagen, pasamos al siguiente fondo.
+    const t = setTimeout(() => { if (!cargadas.current) siguiente(); }, 6000);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i]);
+
+  function siguiente() {
+    if (i < FONDOS.length - 1) setI(i + 1);
+    else onSinMapa(true);
+  }
+
+  const f = FONDOS[i];
+  return (
+    <TileLayer
+      key={i}
+      url={f.url}
+      subdomains={f.subdomains}
+      attribution={f.attribution}
+      className={f.className}
+      maxZoom={19}
+      eventHandlers={{
+        tileload: () => { cargadas.current++; onSinMapa(false); },
+        tileerror: () => { if (++errores.current >= 4 && !cargadas.current) siguiente(); },
+      }}
+    />
+  );
+}
+
 let filtrosGuardados = FILTROS_VACIOS;
 
 export default function MapView({ seleccionado }) {
   const { estados, abrirLocal, now } = useApp();
   const [filtros, setFiltrosState] = useState(filtrosGuardados);
   const [verFiltros, setVerFiltros] = useState(false);
+  const [sinMapa, setSinMapa] = useState(false);
   const setFiltros = (f) => { filtrosGuardados = f; setFiltrosState(f); };
 
   const visibles = aplicarFiltros(LOCALES, filtros, estados, now);
@@ -50,11 +94,7 @@ export default function MapView({ seleccionado }) {
       <MapContainer bounds={LIMITES} boundsOptions={MARGEN} zoomControl={false} className="mapa" attributionControl={false}>
         <AttributionControl position="topright" prefix={false} />
         <Encuadre />
-        <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; CARTO'
-          maxZoom={19}
-        />
+        <CapaCalles onSinMapa={setSinMapa} />
         {visibles.map((l) => (
           <Marker
             key={l.id}
@@ -66,6 +106,10 @@ export default function MapView({ seleccionado }) {
           />
         ))}
       </MapContainer>
+
+      {sinMapa && (
+        <div className="aviso-mapa">No se pueden cargar las calles del mapa. Revisa la conexión a internet (o prueba otra wifi / datos móviles).</div>
+      )}
 
       <div className="mapa-filtros">
         <Chip activo={n > 0} onClick={() => setVerFiltros(true)}>
