@@ -66,6 +66,10 @@ Al tocar un local, la ficha muestra arriba sus fotos (se pasan con el dedo). Si 
 - Fotos horizontales y ligeras (menos de 500 KB). **Solo fotos vuestras o cedidas por el local** (las de Google o Instagram tienen dueño).
 - También se puede poner un enlace `https://…` a una foto en la columna `foto` del CSV.
 
+### Fotos de la gente (en directo)
+En la ficha de cada local, **«Fotos de la gente»**: cualquiera que esté en el local (comprobado por GPS, o «Simular que estoy aquí» en la demo) pulsa **📷 Subir foto de ahora**, hace la foto con la cámara y la publica. Gana **15 puntos** (máximo 1 foto por local cada 25 min). La galería muestra cada foto con **«hace 10 min»**, quién la subió y la marca **EN DIRECTO** si tiene menos de 1 hora. Después de un check-in también se ofrece subir foto sin volver a pedir el GPS.
+Sin servidor, las fotos se guardan **en el móvil de quien las sube** (reducidas a ~100 KB): todavía no las ven los demás móviles.
+
 ### Cuestionario de gustos y «% para ti»
 Al crear la cuenta se ofrece (opcional) un cuestionario de 7 preguntas: cuánta gente le gusta, música, qué busca en una noche, con qué público está a gusto, estilo de sitio, qué bebe y presupuesto. Con eso cada local tiene un **% para ti** (en el carrusel del mapa y en la ficha, con los motivos). Las preguntas y los pesos están en `src/gustos.js`. Se puede repetir desde *Perfil → Mis gustos*.
 
@@ -150,7 +154,8 @@ Consejo: el día anterior, ábrela en el móvil, **regístrate** y añádela a l
 | **Mapa** | Mapa real de OpenStreetMap (Leaflet) | — |
 | **Afluencia** | La regla: solo sale de check-ins, caduca a los 25 min y los locales nunca la declaran. Tus check-ins reales cuentan. | Los check-ins «de otros usuarios» son una **simulación** según el día, la hora y el tipo de local. |
 | **Check-in** | Pide el GPS real y comprueba de verdad que estás a menos de 50 m. Límite de 1 check-in por local cada 25 min. | El botón «Simular que estoy aquí» se salta el GPS (solo en modo demo). |
-| **Puntos y niveles** | Se suman de verdad por cada check-in (10, +15 si es un sitio nuevo); el nivel sube con los puntos ganados; las recompensas descuentan puntos. | Los botones «+100 / +500 puntos» son solo para la demo. |
+| **Fotos de la gente** | Cámara, comprobación de que estás en el local, galería con «hace X min», +15 puntos. | Sin servidor: cada foto solo se ve en el móvil que la subió. |
+| **Puntos y niveles** | Se suman de verdad por cada check-in (10, +15 si es un sitio nuevo) y por cada foto (15); el nivel sube con los puntos ganados; las recompensas descuentan puntos. | Los botones «+100 / +500 puntos» son solo para la demo. |
 | **Ofertas y canje** | Flujo completo: *Usar oferta* → pantalla para el camarero → «¡Canjeada!» → bloqueada 1 hora. | No hay servidor: el bloqueo se guarda **en ese móvil** (borrando los datos se podría reutilizar). Los locales adheridos y sus ofertas son **de ejemplo** (aún no hay acuerdos firmados). |
 | **Gustos y «% para ti»** | El cálculo es real: compara tus respuestas con los datos de cada local. | Los datos de ambiente de los locales (estilo, precio, público, edad…) son **estimaciones** pendientes de verificar. |
 | **Precios, horarios y fiestas** | — | **Todo inventado**, aunque realista. |

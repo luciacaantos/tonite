@@ -1,41 +1,19 @@
 import { useState } from 'react';
-import { useApp } from '../ctx.js';
-import { distancia, formatoDistancia } from '../data.js';
 import { NIVELES, VIGENCIA_MIN } from '../afluencia.js';
-import { hacerCheckin, nivelDe, getEstado } from '../store.js';
-import { Sheet, Chip, Icono } from './ui.jsx';
+import { hacerCheckin, nivelDe, getEstado, PUNTOS_FOTO } from '../store.js';
+import { Sheet, Chip } from './ui.jsx';
+import Presencia from './Presencia.jsx';
 
-const RADIO_M = 50;
 const AMBIENTES_RAPIDOS = ['buen rollo', 'buena música', 'para bailar', 'tranqui', 'mucho Erasmus', 'cola en la puerta'];
 
-export default function CheckIn({ local, cerrar }) {
-  const { s } = useApp();
-  const [paso, setPaso] = useState('inicio'); // inicio | buscando | lejos | error | form | hecho
-  const [info, setInfo] = useState('');
+export default function CheckIn({ local, cerrar, subirFoto }) {
+  const [paso, setPaso] = useState('inicio'); // inicio | form | hecho
   const [ambiente, setAmbiente] = useState([]);
   const [simulado, setSimulado] = useState(false);
   const [puntos, setPuntos] = useState(0);
   const [subida, setSubida] = useState(null);
 
-  // La ubicación se pide SOLO aquí, una vez, al pulsar el botón. No se guarda.
-  function comprobarUbicacion() {
-    if (!navigator.geolocation) { setPaso('error'); setInfo('Tu navegador no permite usar la ubicación.'); return; }
-    setPaso('buscando');
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const d = distancia({ lat: pos.coords.latitude, lon: pos.coords.longitude }, local);
-        if (d <= RADIO_M) setPaso('form');
-        else { setPaso('lejos'); setInfo(`Estás a ${formatoDistancia(d)} de ${local.nombre}. Tienes que estar a menos de ${RADIO_M} m.`); }
-      },
-      (err) => {
-        setPaso('error');
-        setInfo(err.code === 1 ? 'No has dado permiso para usar la ubicación. Puedes activarlo en los ajustes del navegador.' : 'No hemos podido obtener tu ubicación. Inténtalo de nuevo.');
-      },
-      { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 },
-    );
-  }
-
-  function simular() { setSimulado(true); setPaso('form'); }
+  function presente(sim) { setSimulado(sim); setPaso('form'); }
 
   function enviar(nivel) {
     const antes = nivelDe(getEstado()).actual;
@@ -46,33 +24,9 @@ export default function CheckIn({ local, cerrar }) {
     setPaso('hecho');
   }
 
-  const botonSimular = s.demo.activo && (
-    <button className="btn btn-demo" onClick={simular}>🎬 Simular que estoy aquí</button>
-  );
-
   return (
     <Sheet cerrar={cerrar} className="checkin">
-      {paso === 'inicio' && (
-        <>
-          <h2>Check-in en {local.nombre}</h2>
-          <p className="sub">Comprobamos que estás a menos de {RADIO_M} m. Solo usamos tu ubicación en este momento, no te seguimos.</p>
-          <div className="pila">
-            <button className="btn btn-primario" onClick={comprobarUbicacion}><Icono n="pin" size={20} /> Comprobar mi ubicación</button>
-            {botonSimular}
-          </div>
-        </>
-      )}
-      {paso === 'buscando' && <div className="cargando"><span className="spinner" /> Buscando tu ubicación…</div>}
-      {(paso === 'lejos' || paso === 'error') && (
-        <>
-          <h2>{paso === 'lejos' ? 'Estás un poco lejos' : 'Ups'}</h2>
-          <p className="sub">{info}</p>
-          <div className="pila">
-            <button className="btn btn-secundario" onClick={comprobarUbicacion}>Reintentar</button>
-            {botonSimular}
-          </div>
-        </>
-      )}
+      {paso === 'inicio' && <Presencia local={local} titulo={`Check-in en ${local.nombre}`} alConfirmar={presente} />}
       {paso === 'form' && (
         <>
           <h2>¿Cómo está {local.nombre}?</h2>
@@ -102,6 +56,9 @@ export default function CheckIn({ local, cerrar }) {
           {puntos > 10 && <p className="tu-checkin">⭐ Bonus por descubrir un sitio nuevo</p>}
           {subida && (
             <div className="subida-nivel">🏆 ¡Subes a <strong>Nivel {subida.nivel} · {subida.nombre}</strong>!<br /><small>{subida.ventaja}</small></div>
+          )}
+          {subirFoto && (
+            <button className="btn btn-secundario" onClick={subirFoto}>📷 Sube una foto de cómo está (+{PUNTOS_FOTO})</button>
           )}
           <button className="btn btn-primario" onClick={cerrar}>Genial</button>
         </div>

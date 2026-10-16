@@ -7,6 +7,7 @@ import { textoHace, VIGENCIA_MIN, NIVELES } from '../afluencia.js';
 import { minutosParaNuevoCheckin } from '../store.js';
 import { Sheet, NivelBadge, Icono, Punto } from './ui.jsx';
 import CheckIn from './CheckIn.jsx';
+import GaleriaGente, { SubirFoto } from './FotosGente.jsx';
 import Canje from './Canje.jsx';
 import { TarjetaOferta } from './Ofertas.jsx';
 
@@ -89,6 +90,7 @@ export default function Ficha({ id, cerrar }) {
   const { estados, now, abrirLocal, s } = useApp();
   const [checkin, setCheckin] = useState(false);
   const [usando, setUsando] = useState(null);
+  const [subiendo, setSubiendo] = useState(null); // { yaVerificado }
   const l = POR_ID[id];
   if (!l) return null;
   const e = estados[id];
@@ -134,6 +136,8 @@ export default function Ficha({ id, cerrar }) {
           <Icono n="ruta" size={20} /> Cómo llegar
         </a>
       </div>
+
+      <GaleriaGente local={l} cerrado={e.cerrado} abrirSubida={() => setSubiendo({ yaVerificado: false })} />
 
       {fiestas.length > 0 && (
         <section className="bloque">
@@ -199,7 +203,10 @@ export default function Ficha({ id, cerrar }) {
         </section>
       )}
 
-      {checkin && <CheckIn local={l} cerrar={() => setCheckin(false)} />}
+      {checkin && (
+        <CheckIn local={l} cerrar={() => setCheckin(false)} subirFoto={() => { setCheckin(false); setSubiendo({ yaVerificado: true }); }} />
+      )}
+      {subiendo && <SubirFoto local={l} yaVerificado={subiendo.yaVerificado} cerrar={() => setSubiendo(null)} />}
       {usando && <Canje tipo="oferta" item={usando} cerrar={() => setUsando(null)} />}
     </Sheet>
   );

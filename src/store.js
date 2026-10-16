@@ -2,10 +2,12 @@
 import { useSyncExternalStore } from 'react';
 import { VIGENCIA_MIN } from './afluencia.js';
 import { HORAS_ENTRE_CANJES, nivelUsuario } from './data.js';
+import { borrarTodasLasFotos } from './fotosGente.js';
 
 const CLAVE = 'tonite-v1';
 export const PUNTOS_CHECKIN = 10;
 export const PUNTOS_SITIO_NUEVO = 15;
+export const PUNTOS_FOTO = 15;
 
 const inicial = {
   usuario: null,
@@ -13,6 +15,7 @@ const inicial = {
   checkins: [],
   movimientos: [], // historial de puntos (+ ganados, - gastados)
   canjes: [], // ofertas y recompensas canjeadas: { tipo, id, ts }
+  fotosSubidas: [], // { localId, ts } de las fotos que ha subido (las imágenes van aparte, en IndexedDB)
   gustos: null, // respuestas del cuestionario (null = no contestado)
   cuestionarioVisto: true, // false justo después de crear la cuenta
 };
@@ -113,6 +116,29 @@ export function hacerCheckin({ local, nivel, ambiente, simulado }) {
   return movs.reduce((t, m) => t + m.puntos, 0);
 }
 
+// ---------- Fotos de la gente ----------
+// Una foto por local cada VIGENCIA_MIN minutos (como el check-in), para que no se llene de repetidas.
+export function minutosParaNuevaFoto(s, localId) {
+  const ultima = (s.fotosSubidas || []).filter((f) => f.localId === localId).sort((a, b) => b.ts - a.ts)[0];
+  if (!ultima) return 0;
+  const faltan = VIGENCIA_MIN - (Date.now() - ultima.ts) / 60000;
+  return faltan > 0 ? Math.ceil(faltan) : 0;
+}
+
+// ¿Ha hecho check-in aquí hace poco? Entonces ya sabemos que está en el local.
+export const checkinReciente = (s, localId) =>
+  s.checkins.some((c) => c.localId === localId && Date.now() - c.ts < VIGENCIA_MIN * 60000);
+
+export function registrarFoto(local) {
+  const ts = Date.now();
+  guardar({
+    ...estado,
+    fotosSubidas: [...(estado.fotosSubidas || []), { localId: local.id, ts }],
+    movimientos: [{ ts, puntos: PUNTOS_FOTO, motivo: `Foto en ${local.nombre}` }, ...estado.movimientos],
+  });
+  return PUNTOS_FOTO;
+}
+
 // ---------- Ofertas (locales adheridos) ----------
 // Tras canjear una oferta, no se puede volver a usar hasta pasada HORAS_ENTRE_CANJES (hora real).
 export function minutosParaOferta(s, ofertaId) {
@@ -153,6 +179,7 @@ export function sumarPuntosDemo(n) {
 
 export function borrarTodo() {
   try { localStorage.removeItem(CLAVE); } catch { /* nada */ }
+  borrarTodasLasFotos();
   estado = { ...inicial, demo: { ...inicial.demo, desde: Date.now() } };
   oyentes.forEach((f) => f());
 }
