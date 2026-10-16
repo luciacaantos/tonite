@@ -1,0 +1,186 @@
+{
+  "_info": "DATOS DE DEMO (inventados pero realistas). Cámbialos a mano sin miedo. Días: lun, mar, mié, jue, vie, sáb, dom (es el día de la NOCHE: 'jue' = jueves por la noche, aunque ya sean las 02:00 del viernes). Precios en euros. 'popularidad' (0 a 1) solo sirve para simular la afluencia de la demo.",
+  "locales": {
+    "Pub Babel": {
+      "horario": { "dias": ["mar", "mié", "jue", "vie", "sáb"], "abre": "21:30", "cierra": "03:00" },
+      "copa": 6, "chupito": 1.5, "entrada": null,
+      "promos": [{ "dias": ["mar", "mié"], "texto": "Partida de billar gratis con cada copa" }],
+      "popularidad": 0.45
+    },
+    "Pub Wall Street": {
+      "horario": { "dias": ["jue", "vie", "sáb"], "abre": "22:00", "cierra": "03:00" },
+      "copa": 7, "chupito": 2, "entrada": null,
+      "promos": [{ "dias": ["jue", "vie", "sáb"], "texto": "Copa + chupito por 7,50 € hasta la 01:00" }],
+      "popularidad": 0.4
+    },
+    "L'scandalo Pub": {
+      "horario": { "dias": ["mié", "jue", "vie", "sáb"], "abre": "22:30", "cierra": "03:30" },
+      "copa": 5, "chupito": 1, "entrada": null,
+      "promos": [{ "dias": ["jue"], "texto": "2x1 en copas hasta la 01:00" }, { "dias": ["vie", "sáb"], "texto": "Chupito gratis con cada copa antes de las 00:30" }],
+      "popularidad": 0.7
+    },
+    "Chupitería 69": {
+      "horario": { "dias": ["lun", "mar", "mié", "jue", "vie", "sáb"], "abre": "21:00", "cierra": "02:30" },
+      "copa": 5, "chupito": 1, "entrada": null,
+      "promos": [{ "dias": ["lun", "mar", "mié", "jue", "vie", "sáb"], "texto": "Ronda de 5 chupitos por 4 €" }, { "dias": ["jue"], "texto": "Erasmus: chupito de bienvenida gratis enseñando el carné" }],
+      "popularidad": 0.85
+    },
+    "Pub Imperial": {
+      "horario": { "dias": ["jue", "vie", "sáb"], "abre": "23:00", "cierra": "03:30" },
+      "copa": 5.5, "chupito": 1.5, "entrada": null,
+      "promos": [{ "dias": ["jue"], "texto": "Copa a 4 € hasta la 01:00" }],
+      "popularidad": 0.65
+    },
+    "Pub Lokura Latina": {
+      "horario": { "dias": ["jue", "vie", "sáb"], "abre": "23:00", "cierra": "04:00" },
+      "copa": 6, "chupito": 1.5, "entrada": null,
+      "promos": [{ "dias": ["vie"], "texto": "Clase de bachata gratis a las 23:30" }, { "dias": ["jue", "sáb"], "texto": "Jarra de mojito para 4 por 15 €" }],
+      "popularidad": 0.65
+    },
+    "Pub Legend": {
+      "horario": { "dias": ["mié", "jue", "vie", "sáb"], "abre": "22:30", "cierra": "03:00" },
+      "copa": 5.5, "chupito": 1.5, "entrada": null,
+      "promos": [{ "dias": ["mié", "jue"], "texto": "2x1 en cervezas hasta la 00:30" }],
+      "popularidad": 0.55
+    },
+    "Sonora Desert Saloon": {
+      "horario": { "dias": ["mar", "mié", "jue", "vie", "sáb"], "abre": "21:00", "cierra": "02:30" },
+      "copa": 6.5, "chupito": 2, "entrada": null,
+      "promos": [{ "dias": ["mar", "mié", "jue"], "texto": "Tercio de cerveza artesana a 3 €" }],
+      "popularidad": 0.5
+    },
+    "Pub Rubik": {
+      "horario": { "dias": ["jue", "vie", "sáb"], "abre": "23:00", "cierra": "03:30" },
+      "copa": 6, "chupito": 1.5, "entrada": null,
+      "promos": [{ "dias": ["vie"], "texto": "Remember: copa a 5 € toda la noche" }],
+      "popularidad": 0.6
+    },
+    "PlaymobilClub": {
+      "horario": { "dias": ["mié", "jue", "vie", "sáb"], "abre": "23:00", "cierra": "03:30" },
+      "copa": 5, "chupito": 1, "entrada": null,
+      "promos": [{ "dias": ["jue"], "texto": "Ven en pijama y la primera copa a 3 €" }],
+      "popularidad": 0.65
+    },
+    "Las Marismas": {
+      "horario": { "dias": ["mar", "mié", "jue", "vie", "sáb"], "abre": "20:30", "cierra": "02:00" },
+      "copa": 5, "chupito": 1, "entrada": null,
+      "promos": [{ "dias": ["mar", "mié", "jue", "vie", "sáb"], "texto": "Litro de cerveza + tapa por 4 € hasta las 23:30" }],
+      "popularidad": 0.6
+    },
+    "Pub Namek": {
+      "horario": { "dias": ["mié", "jue", "vie", "sáb"], "abre": "22:30", "cierra": "03:00" },
+      "copa": 5.5, "chupito": 1.5, "entrada": null,
+      "promos": [{ "dias": ["mié"], "texto": "Noche temática anime: chupito «Kame Hame Ha» a 1 €" }],
+      "popularidad": 0.55
+    },
+    "El Larguero": {
+      "horario": { "dias": ["mar", "mié", "jue", "vie", "sáb"], "abre": "21:00", "cierra": "02:00" },
+      "copa": 5, "chupito": 1, "entrada": null,
+      "promos": [{ "dias": ["jue", "vie", "sáb"], "texto": "Copa a 4 € antes de las 00:00" }],
+      "popularidad": 0.55
+    },
+    "La Habana": {
+      "horario": { "dias": ["mar", "mié", "jue", "vie", "sáb"], "abre": "21:00", "cierra": "02:30" },
+      "copa": 5, "chupito": 1, "entrada": null,
+      "promos": [{ "dias": ["mar", "mié", "jue", "vie", "sáb"], "texto": "Pecera para 4 por 14 €" }],
+      "popularidad": 0.6
+    },
+    "Pub Ganivet 13": {
+      "horario": { "dias": ["mié", "jue", "vie", "sáb"], "abre": "22:30", "cierra": "03:30" },
+      "copa": 6.5, "chupito": 2, "entrada": null,
+      "promos": [{ "dias": ["mié"], "texto": "Miércoles temático: disfraz = primera copa a 4 €" }],
+      "popularidad": 0.6
+    },
+    "Kinsasa": {
+      "horario": { "dias": ["jue", "vie", "sáb"], "abre": "23:00", "cierra": "03:30" },
+      "copa": 7, "chupito": 2, "entrada": null,
+      "promos": [{ "dias": ["vie", "sáb"], "texto": "Botella + 4 refrescos por 55 €" }],
+      "popularidad": 0.55
+    },
+    "Pub La Estrella": {
+      "horario": { "dias": ["mié", "jue", "vie", "sáb"], "abre": "22:00", "cierra": "03:00" },
+      "copa": 7, "chupito": 2, "entrada": null,
+      "promos": [],
+      "popularidad": 0.45
+    },
+    "Pub La Flaca": {
+      "horario": { "dias": ["mié", "jue", "vie", "sáb"], "abre": "22:00", "cierra": "03:00" },
+      "copa": 6, "chupito": 1.5, "entrada": null,
+      "promos": [{ "dias": ["mié", "jue"], "texto": "Tercio a 2,50 € hasta la 01:00" }],
+      "popularidad": 0.6
+    },
+    "Pub Kocran (antes El Son)": {
+      "horario": { "dias": ["jue", "vie", "sáb"], "abre": "23:00", "cierra": "06:00" },
+      "copa": 7, "chupito": 2,
+      "entrada": { "precio": 8, "texto": "con copa (gratis antes de la 01:30)" },
+      "promos": [{ "dias": ["jue", "vie", "sáb"], "texto": "La entrada sube a 10 € a partir de las 02:00" }],
+      "popularidad": 0.75
+    },
+    "Pata Palo": {
+      "horario": { "dias": ["mar", "mié", "jue", "vie", "sáb"], "abre": "22:00", "cierra": "03:00" },
+      "copa": 6, "chupito": 1.5, "entrada": null,
+      "promos": [{ "dias": ["mar", "mié"], "texto": "Jarra de cerveza a 6 €" }],
+      "popularidad": 0.9
+    },
+    "Miniclub": {
+      "horario": { "dias": ["jue", "vie", "sáb"], "abre": "23:00", "cierra": "04:00" },
+      "copa": 7, "chupito": 2, "entrada": null,
+      "promos": [{ "dias": ["sáb"], "texto": "DJ invitado desde las 01:00" }],
+      "popularidad": 0.85
+    },
+    "Granada 10": {
+      "horario": { "dias": ["jue", "vie", "sáb"], "abre": "00:00", "cierra": "06:00" },
+      "copa": 8, "chupito": 2,
+      "entrada": { "precio": 12, "texto": "con copa" },
+      "promos": [{ "dias": ["jue"], "texto": "Entrada a 8 € con copa antes de la 01:30" }, { "dias": ["vie", "sáb"], "texto": "La entrada sube a 15 € a partir de las 02:30" }],
+      "popularidad": 0.75
+    },
+    "Boom Boom Room": {
+      "horario": { "dias": ["jue", "vie", "sáb"], "abre": "00:00", "cierra": "06:30" },
+      "copa": 8, "chupito": 2,
+      "entrada": { "precio": 12, "texto": "con copa · lista en la puerta" },
+      "promos": [{ "dias": ["jue"], "texto": "Chicas y chicos en lista: entrada a 8 € hasta las 02:00" }],
+      "popularidad": 0.6
+    },
+    "Twoo Club (antes Campus)": {
+      "horario": { "dias": ["mié", "jue", "vie", "sáb"], "abre": "00:00", "cierra": "06:00" },
+      "copa": 7, "chupito": 1.5,
+      "entrada": { "precio": 8, "texto": "con copa" },
+      "promos": [{ "dias": ["jue"], "texto": "Gratis con flyer antes de la 01:00" }, { "dias": ["mié", "jue", "vie", "sáb"], "texto": "La entrada sube a 10 € a partir de las 02:00" }],
+      "popularidad": 0.85
+    },
+    "Sala Aliatar": {
+      "horario": { "dias": ["jue", "vie", "sáb"], "abre": "00:00", "cierra": "06:00" },
+      "copa": 7, "chupito": 1.5,
+      "entrada": { "precio": 10, "texto": "con copa" },
+      "promos": [{ "dias": ["jue"], "texto": "Universitarios: 2 copas por 10 € enseñando el carné UGR" }],
+      "popularidad": 0.75
+    },
+    "Mae West": {
+      "horario": { "dias": ["vie", "sáb"], "abre": "00:30", "cierra": "07:00" },
+      "copa": 8, "chupito": 2,
+      "entrada": { "precio": 10, "texto": "con copa" },
+      "promos": [{ "dias": ["vie", "sáb"], "texto": "La entrada sube a 12 € a partir de las 02:30" }],
+      "popularidad": 0.6
+    }
+  },
+  "fiestas": [
+    { "dia": "mié", "local": "Pub Ganivet 13", "hora": "23:00", "nombre": "Miércoles Temático: Eurovisión", "tipo": "temática", "descripcion": "Noche de himnos eurovisivos y disfraces. Ambiente diverso y LGTBI-friendly." },
+    { "dia": "mié", "local": "Pub Namek", "hora": "23:00", "nombre": "Noche Anime", "tipo": "temática", "descripcion": "Openings de anime y chupitos temáticos." },
+    { "dia": "mié", "local": "Twoo Club (antes Campus)", "hora": "00:00", "nombre": "Erasmus Welcome Party", "tipo": "Erasmus", "descripcion": "Fiesta de bienvenida para estudiantes internacionales. Entrada 6 € con copa." },
+    { "dia": "jue", "local": "Twoo Club (antes Campus)", "hora": "00:00", "nombre": "Jueves Universitario", "tipo": "universitaria", "descripcion": "La fiesta universitaria de la semana. Gratis con flyer antes de la 01:00." },
+    { "dia": "jue", "local": "Chupitería 69", "hora": "22:00", "nombre": "Erasmus Night", "tipo": "Erasmus", "descripcion": "Previa internacional con chupito de bienvenida gratis enseñando el carné Erasmus." },
+    { "dia": "jue", "local": "Sala Aliatar", "hora": "00:30", "nombre": "Fiesta de Facultades", "tipo": "universitaria", "descripcion": "Cada sala, una facultad. 2 copas por 10 € con el carné UGR." },
+    { "dia": "jue", "local": "PlaymobilClub", "hora": "23:30", "nombre": "Fiesta del Pijama", "tipo": "temática", "descripcion": "Ven en pijama y la primera copa te sale a 3 €." },
+    { "dia": "jue", "local": "L'scandalo Pub", "hora": "23:00", "nombre": "Neon Party", "tipo": "temática", "descripcion": "Pintura fluorescente en la puerta y 2x1 hasta la 01:00." },
+    { "dia": "jue", "local": "Pata Palo", "hora": "23:00", "nombre": "Indie & Rock Night", "tipo": "temática", "descripcion": "Sesión de indie nacional y rock alternativo." },
+    { "dia": "vie", "local": "Pub Rubik", "hora": "23:30", "nombre": "Remember 80-90", "tipo": "temática", "descripcion": "Los éxitos de siempre. Copa a 5 € toda la noche." },
+    { "dia": "vie", "local": "Pub Lokura Latina", "hora": "23:30", "nombre": "Bachata Night", "tipo": "temática", "descripcion": "Clase gratis de bachata a las 23:30 y luego fiesta latina." },
+    { "dia": "vie", "local": "Granada 10", "hora": "00:30", "nombre": "DJ invitado: Viernes Club", "tipo": "discoteca", "descripcion": "Sesión comercial y house en el antiguo teatro." },
+    { "dia": "vie", "local": "Sonora Desert Saloon", "hora": "22:00", "nombre": "Rock & Beer", "tipo": "temática", "descripcion": "Concierto acústico y cerveza artesana." },
+    { "dia": "sáb", "local": "Miniclub", "hora": "01:00", "nombre": "Electro Session", "tipo": "temática", "descripcion": "DJ invitado de electrónica hasta el cierre." },
+    { "dia": "sáb", "local": "Mae West", "hora": "01:00", "nombre": "Sábado Mae West", "tipo": "discoteca", "descripcion": "La noche grande del fin de semana. Entrada 10 € con copa hasta las 02:30." },
+    { "dia": "sáb", "local": "Boom Boom Room", "hora": "01:00", "nombre": "Saturday Exclusive", "tipo": "discoteca", "descripcion": "Dress code: arreglado. Lista en la puerta." },
+    { "dia": "sáb", "local": "Pub Kocran (antes El Son)", "hora": "01:30", "nombre": "Reggaetón Old School", "tipo": "temática", "descripcion": "Clásicos del reggaetón en la sala de abajo." }
+  ]
+}
