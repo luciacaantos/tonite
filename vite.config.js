@@ -25,7 +25,8 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png}'],
+        // Las fotos de los locales no se precargan (pesan); se descargan al abrir la ficha.
+        globPatterns: ['**/*.{js,css,html,svg}', 'icon-*.png', 'apple-touch-icon.png'],
         runtimeCaching: [
           { urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/, handler: 'CacheFirst', options: { cacheName: 'fuentes', expiration: { maxEntries: 20 } } },
         ],

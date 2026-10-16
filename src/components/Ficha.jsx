@@ -28,6 +28,36 @@ export function Precio({ n }) {
   return <span className="precio-eur">{[1, 2, 3].map((i) => <b key={i} className={i <= n ? 'on' : ''}>€</b>)}</span>;
 }
 
+const EMOJI_TIPO = (tipo) => (tipo.includes('discoteca') ? '🪩' : tipo.includes('chupito') ? '🥃' : tipo === 'bar' ? '🍻' : '🍸');
+
+// Fotos del local (se pasan con el dedo). Si no tiene, una portada de diseño.
+function Portada({ local }) {
+  const [actual, setActual] = useState(0);
+  if (!local.fotos.length) {
+    let h = 0;
+    for (const c of local.id) h = (h * 31 + c.charCodeAt(0)) % 90;
+    h += 250; // tonos de la marca: del violeta al rosa
+    return (
+      <div className="portada portada-vacia" style={{ '--h': h }}>
+        <span className="portada-emoji">{EMOJI_TIPO(local.tipo)}</span>
+        <span className="portada-zona">{local.zona}</span>
+      </div>
+    );
+  }
+  return (
+    <div className="portada">
+      <div className="portada-fila" onScroll={(e) => setActual(Math.round(e.currentTarget.scrollLeft / e.currentTarget.clientWidth))}>
+        {local.fotos.map((url, i) => (
+          <img key={url} src={url} alt={`${local.nombre} (${i + 1})`} loading={i ? 'lazy' : 'eager'} />
+        ))}
+      </div>
+      {local.fotos.length > 1 && (
+        <div className="portada-puntos">{local.fotos.map((u, i) => <i key={u} className={i === actual ? 'on' : ''} />)}</div>
+      )}
+    </div>
+  );
+}
+
 function TarjetaParaTi({ local, estado, gustos }) {
   const a = afinidad(local, gustos);
   if (!a) return null;
@@ -63,6 +93,7 @@ export default function Ficha({ id, cerrar }) {
 
   return (
     <Sheet cerrar={cerrar} alto className="ficha">
+      <Portada key={l.id} local={l} />
       <div className="ficha-cab">
         <div>
           <h2>{l.nombre}</h2>

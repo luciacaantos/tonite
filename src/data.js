@@ -15,6 +15,19 @@ const CENTRO_ZONA = {
 
 export const ESTILOS = ['casual', 'arreglado', 'pijo'];
 
+// Fotos: archivos en datos/fotos/ llamados como el id del local (ej. pata-palo.jpg, pata-palo-2.jpg).
+// También vale poner enlaces (https://...) en la columna «foto» del CSV, separados por |.
+const ARCHIVOS_FOTOS = import.meta.glob('../datos/fotos/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', { eager: true, query: '?url', import: 'default' });
+function fotosDe(id, columna) {
+  const archivos = Object.entries(ARCHIVOS_FOTOS)
+    .map(([ruta, url]) => ({ nombre: ruta.split('/').pop().replace(/\.[^.]+$/, '').toLowerCase(), url }))
+    .filter((f) => f.nombre === id || new RegExp(`^${id}-\\d+$`).test(f.nombre))
+    .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es', { numeric: true }))
+    .map((f) => f.url);
+  const enlaces = etiquetas(columna).filter((u) => /^https?:\/\//.test(u));
+  return [...archivos, ...enlaces];
+}
+
 export const LOCALES = parseCSV(csvTexto).map((fila, i) => {
   const c = coordenadas[fila.nombre];
   const centro = CENTRO_ZONA[fila.zona] || CENTRO_ZONA['Discotecas centro'];
@@ -37,6 +50,7 @@ export const LOCALES = parseCSV(csvTexto).map((fila, i) => {
     plan: etiquetas(fila.plan),
     volumen: fila.volumen || '',
     notas: fila.notas,
+    fotos: fotosDe(slug(fila.nombre), fila.foto),
     lat: c ? c.lat : centro.lat + ((i % 3) - 1) * 0.0003,
     lon: c ? c.lon : centro.lon + ((i % 2) ? 0.0003 : -0.0003),
     revisarPosicion: !c || c.revisar || sinDireccion,

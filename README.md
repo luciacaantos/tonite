@@ -59,6 +59,13 @@ Son **estimaciones nuestras** (columna `verificar`): revisadlas y corregidlas.
 
 Con estas columnas, la ficha muestra la escala **Casual · Arreglado · Pijo**, el precio en €, la edad media y el público, y el mapa permite filtrar por estilo, precio y público.
 
+### Fotos de los locales (`datos/fotos/`)
+Al tocar un local, la ficha muestra arriba sus fotos (se pasan con el dedo). Si no tiene, sale una portada de diseño.
+- Sube las fotos a `datos/fotos/` con el **nombre del local en minúsculas, sin tildes y con guiones**: `pata-palo.jpg` (portada), `pata-palo-2.jpg`, `pata-palo-3.jpg`… La lista exacta de nombres está en `datos/fotos/LEEME.md`.
+- Desde GitHub: entra en `datos/fotos` → **Add file → Upload files** → arrastra → **Commit changes**.
+- Fotos horizontales y ligeras (menos de 500 KB). **Solo fotos vuestras o cedidas por el local** (las de Google o Instagram tienen dueño).
+- También se puede poner un enlace `https://…` a una foto en la columna `foto` del CSV.
+
 ### Cuestionario de gustos y «% para ti»
 Al crear la cuenta se ofrece (opcional) un cuestionario de 7 preguntas: cuánta gente le gusta, música, qué busca en una noche, con qué público está a gusto, estilo de sitio, qué bebe y presupuesto. Con eso cada local tiene un **% para ti** (en el carrusel del mapa y en la ficha, con los motivos). Las preguntas y los pesos están en `src/gustos.js`. Se puede repetir desde *Perfil → Mis gustos*.
 

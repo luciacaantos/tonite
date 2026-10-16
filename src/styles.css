@@ -493,3 +493,23 @@ input { font: inherit; }
 .gustos-lista div { display: flex; flex-direction: column; gap: 2px; }
 .gustos-lista small { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--suave); }
 .gustos-lista span { font-size: 14px; }
+
+/* ---------- Fotos del local ---------- */
+.portada { position: relative; margin: 0 -6px 14px; border-radius: 18px; overflow: hidden; height: 190px; background: var(--tarjeta-2); }
+.portada-fila { display: flex; height: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.portada-fila::-webkit-scrollbar { display: none; }
+.portada-fila img { flex: none; width: 100%; height: 100%; object-fit: cover; scroll-snap-align: start; }
+.portada::after { content: ''; position: absolute; inset: auto 0 0; height: 50px; background: linear-gradient(transparent, #15152699); pointer-events: none; }
+.portada-puntos { position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; z-index: 1; }
+.portada-puntos i { width: 7px; height: 7px; border-radius: 50%; background: #ffffff66; }
+.portada-puntos i.on { background: #fff; }
+.portada-vacia {
+  --h: 320; height: 120px; display: flex; align-items: flex-end; justify-content: space-between; padding: 14px 16px;
+  background:
+    radial-gradient(circle at 85% 20%, hsl(var(--h) 90% 60% / .55), transparent 55%),
+    radial-gradient(circle at 10% 100%, hsl(calc(var(--h) + 60) 90% 55% / .45), transparent 60%),
+    var(--tarjeta-2);
+}
+.portada-vacia::after { display: none; }
+.portada-emoji { font-size: 44px; line-height: 1; filter: drop-shadow(0 4px 12px #0008); }
+.portada-zona { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: #ffffffcc; }
