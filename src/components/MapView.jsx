@@ -6,6 +6,8 @@ import { LOCALES } from '../data.js';
 import { NIVELES } from '../afluencia.js';
 import { Chip, Icono, Leyenda, NivelBadge } from './ui.jsx';
 import Filtros, { FILTROS_VACIOS, aplicarFiltros, contarFiltros } from './Filtros.jsx';
+import { afinidad, puntuacionParaTi } from '../gustos.js';
+import { Precio } from './Ficha.jsx';
 
 const LIMITES = L.latLngBounds(LOCALES.map((l) => [l.lat, l.lon]));
 // Margen para que los marcadores no queden debajo de los filtros ni del carrusel.
@@ -75,19 +77,25 @@ function CapaCalles({ onSinMapa }) {
 }
 
 let filtrosGuardados = FILTROS_VACIOS;
+let modoGuardado = null;
 
 export default function MapView({ seleccionado }) {
-  const { estados, abrirLocal, now } = useApp();
+  const { estados, abrirLocal, now, s } = useApp();
+  const conGustos = !!s.gustos && Object.keys(s.gustos).length > 0;
+  const [modo, setModoState] = useState(modoGuardado || (conGustos ? 'parati' : 'animado'));
+  const setModo = (m) => { modoGuardado = m; setModoState(m); };
+  const modoReal = conGustos ? modo : 'animado';
   const [filtros, setFiltrosState] = useState(filtrosGuardados);
   const [verFiltros, setVerFiltros] = useState(false);
   const [sinMapa, setSinMapa] = useState(false);
   const setFiltros = (f) => { filtrosGuardados = f; setFiltrosState(f); };
 
   const visibles = aplicarFiltros(LOCALES, filtros, estados, now);
-  const top = [...visibles]
-    .filter((l) => !estados[l.id].cerrado)
-    .sort((a, b) => estados[b.id].nivel - estados[a.id].nivel || estados[b.id].checkins - estados[a.id].checkins)
-    .slice(0, 8);
+  const abiertos = visibles.filter((l) => !estados[l.id].cerrado);
+  const top = (modoReal === 'parati'
+    ? abiertos.sort((a, b) => puntuacionParaTi(b, estados[b.id], s.gustos) - puntuacionParaTi(a, estados[a.id], s.gustos))
+    : abiertos.sort((a, b) => estados[b.id].nivel - estados[a.id].nivel || estados[b.id].checkins - estados[a.id].checkins)
+  ).slice(0, 8);
   const n = contarFiltros(filtros);
 
   return (
@@ -133,15 +141,30 @@ export default function MapView({ seleccionado }) {
         </div>
         {top.length > 0 ? (
           <div className="carrusel">
-            <div className="carrusel-titulo"><Icono n="fuego" size={16} /> Lo más animado ahora</div>
+            <div className="carrusel-titulo">
+              {conGustos ? (
+                <>
+                  <button className={modoReal === 'parati' ? 'on' : ''} onClick={() => setModo('parati')}>💘 Para ti ahora</button>
+                  <button className={modoReal === 'animado' ? 'on' : ''} onClick={() => setModo('animado')}><Icono n="fuego" size={15} /> Lo más animado</button>
+                </>
+              ) : (
+                <span className="on"><Icono n="fuego" size={15} /> Lo más animado ahora</span>
+              )}
+            </div>
             <div className="carrusel-fila">
-              {top.map((l) => (
-                <button key={l.id} className="mini-card" onClick={() => abrirLocal(l.id)}>
-                  <strong>{l.nombre}</strong>
-                  <span className="mini-sub">{l.tipo} · {l.zona}</span>
-                  <NivelBadge estado={estados[l.id]} />
-                </button>
-              ))}
+              {top.map((l) => {
+                const a = afinidad(l, s.gustos);
+                return (
+                  <button key={l.id} className="mini-card" onClick={() => abrirLocal(l.id)}>
+                    <strong>{l.nombre}</strong>
+                    <span className="mini-sub">{l.tipo} · <Precio n={l.precio} /> · {l.estilo}</span>
+                    <span className="mini-pie">
+                      <NivelBadge estado={estados[l.id]} />
+                      {a && <span className="mini-pct">{a.pct}%</span>}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         ) : (

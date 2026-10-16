@@ -13,6 +13,7 @@ import Puntos from './components/Puntos.jsx';
 import Perfil from './components/Perfil.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import { Logo } from './components/ui.jsx';
+import Cuestionario from './components/Cuestionario.jsx';
 
 function leerRuta() {
   const h = location.hash.replace(/^#\/?/, '');
@@ -44,6 +45,7 @@ export default function App() {
   );
 
   if (!logueado) return <Login />;
+  if (!s.cuestionarioVisto) return <Cuestionario nombre={s.usuario.nombre} />;
 
   const ir = (tab) => { setLocalAbierto(null); location.hash = `#/${tab}`; };
   const ctx = { s, now, estados, abrirLocal: setLocalAbierto, ir };

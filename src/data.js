@@ -13,6 +13,8 @@ const CENTRO_ZONA = {
   'Discotecas centro': { lat: 37.1715, lon: -3.601 },
 };
 
+export const ESTILOS = ['casual', 'arreglado', 'pijo'];
+
 export const LOCALES = parseCSV(csvTexto).map((fila, i) => {
   const c = coordenadas[fila.nombre];
   const centro = CENTRO_ZONA[fila.zona] || CENTRO_ZONA['Discotecas centro'];
@@ -27,6 +29,13 @@ export const LOCALES = parseCSV(csvTexto).map((fila, i) => {
     sinDireccion,
     musica: etiquetas(fila.musica),
     ambiente: etiquetas(fila.ambiente),
+    // Ambiente detallado (columnas del CSV, aproximadas: revisar).
+    estilo: ESTILOS.includes(fila.estilo) ? fila.estilo : 'casual',
+    precio: Math.min(3, Math.max(1, (fila.precio || '€').length)),
+    publico: etiquetas(fila.publico),
+    edad: fila.edad || '',
+    plan: etiquetas(fila.plan),
+    volumen: fila.volumen || '',
     notas: fila.notas,
     lat: c ? c.lat : centro.lat + ((i % 3) - 1) * 0.0003,
     lon: c ? c.lon : centro.lon + ((i % 2) ? 0.0003 : -0.0003),
@@ -74,6 +83,9 @@ export const ZONAS = ['Pedro Antonio', 'Ganivet', 'Elvira', 'Discotecas centro']
 export const TIPOS = unicos(LOCALES.map((l) => l.tipo));
 export const MUSICAS = unicos(LOCALES.flatMap((l) => l.musica));
 export const AMBIENTES = unicos(LOCALES.flatMap((l) => l.ambiente));
+export const PUBLICOS = unicos(LOCALES.flatMap((l) => l.publico));
+export const PRECIOS = [1, 2, 3];
+export const euroSimbolos = (n) => '€'.repeat(n);
 
 // Distancia en metros entre dos puntos.
 export function distancia(a, b) {

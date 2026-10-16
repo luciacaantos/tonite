@@ -13,6 +13,8 @@ const inicial = {
   checkins: [],
   movimientos: [], // historial de puntos (+ ganados, - gastados)
   canjes: [], // ofertas y recompensas canjeadas: { tipo, id, ts }
+  gustos: null, // respuestas del cuestionario (null = no contestado)
+  cuestionarioVisto: true, // false justo después de crear la cuenta
 };
 
 function cargar() {
@@ -57,7 +59,12 @@ async function huella(texto) {
 }
 
 export async function registrar({ nombre, email, password }) {
-  guardar({ ...estado, usuario: { nombre: nombre.trim(), email: email.trim().toLowerCase(), clave: await huella(password), desde: Date.now() } });
+  guardar({
+    ...estado,
+    usuario: { nombre: nombre.trim(), email: email.trim().toLowerCase(), clave: await huella(password), desde: Date.now() },
+    gustos: null,
+    cuestionarioVisto: false,
+  });
 }
 
 export async function entrar({ email, password }) {
@@ -69,6 +76,14 @@ export async function entrar({ email, password }) {
 }
 
 export const sesionAbierta = (s) => !!s.usuario && s.sesion !== false;
+
+export function actualizarUsuario({ nombre, email }) {
+  guardar({ ...estado, usuario: { ...estado.usuario, nombre: nombre.trim(), email: email.trim().toLowerCase() } });
+}
+
+// ---------- Gustos (cuestionario) ----------
+export const guardarGustos = (gustos) => guardar({ ...estado, gustos, cuestionarioVisto: true });
+export const saltarCuestionario = () => guardar({ ...estado, cuestionarioVisto: true });
 export const cerrarSesion = () => guardar({ ...estado, sesion: false });
 export const abrirSesionTrasRegistro = () => guardar({ ...estado, sesion: true });
 

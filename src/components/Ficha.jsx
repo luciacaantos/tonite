@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useApp } from '../ctx.js';
-import { LOCALES, POR_ID, FIESTAS, OFERTAS, distancia, formatoDistancia, euros, urlComoLlegar } from '../data.js';
+import { LOCALES, POR_ID, FIESTAS, OFERTAS, ESTILOS, distancia, formatoDistancia, euros, urlComoLlegar } from '../data.js';
+import { afinidad, encajeAhora, TEXTO_GENTE, TEXTO_GENTE_PREFIERE } from '../gustos.js';
 import { diaDeNoche, DIAS_LARGO } from '../clock.js';
-import { textoHace, VIGENCIA_MIN } from '../afluencia.js';
+import { textoHace, VIGENCIA_MIN, NIVELES } from '../afluencia.js';
 import { minutosParaNuevoCheckin } from '../store.js';
 import { Sheet, NivelBadge, Icono, Punto } from './ui.jsx';
 import CheckIn from './CheckIn.jsx';
@@ -17,6 +18,33 @@ export function planB(local, estados) {
     .slice(0, 6)
     .sort((a, b) => estados[b.l.id].nivel - estados[a.l.id].nivel || a.d - b.d)
     .slice(0, 3);
+}
+
+const VOLUMEN = { 'se puede hablar': '🗣️ Se puede hablar', alto: '🔊 Alta', 'muy alto': '🔊🔊 Muy alta' };
+const mayus = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+const ICONO_ESTILO = { casual: '👟', arreglado: '✨', pijo: '💎' };
+
+export function Precio({ n }) {
+  return <span className="precio-eur">{[1, 2, 3].map((i) => <b key={i} className={i <= n ? 'on' : ''}>€</b>)}</span>;
+}
+
+function TarjetaParaTi({ local, estado, gustos }) {
+  const a = afinidad(local, gustos);
+  if (!a) return null;
+  const ahora = encajeAhora(estado, gustos);
+  return (
+    <div className="para-ti">
+      <div className="para-ti-cab">
+        <span className="para-ti-pct" style={{ '--p': a.pct }}>{a.pct}%</span>
+        <div>
+          <strong>{a.pct >= 75 ? 'Encaja mucho contigo' : a.pct >= 50 ? 'Encaja bastante contigo' : 'No es muy tu estilo'}</strong>
+          {ahora === 1 && <small>Ahora está {TEXTO_GENTE[gustos.gente]}, como te gusta</small>}
+          {ahora === 0 && <small>Ahora: {NIVELES[estado.nivel].nombre.toLowerCase()}. A ti te gustan {TEXTO_GENTE_PREFIERE[gustos.gente]}.</small>}
+        </div>
+      </div>
+      {a.razones.length > 0 && <div className="chips">{a.razones.slice(0, 4).map((r) => <span key={r} className="tag tag-ok">{r}</span>)}</div>}
+    </div>
+  );
 }
 
 export default function Ficha({ id, cerrar }) {
@@ -38,7 +66,7 @@ export default function Ficha({ id, cerrar }) {
       <div className="ficha-cab">
         <div>
           <h2>{l.nombre}</h2>
-          <p className="sub">{l.tipo} · {l.zona}</p>
+          <p className="sub">{mayus(l.tipo)} · {l.zona} · <Precio n={l.precio} /> · {ICONO_ESTILO[l.estilo]} {mayus(l.estilo)}</p>
           {l.adherido && <span className="adherido">🎟️ Local adherido · ofertas TONITE</span>}
         </div>
         <button className="btn-icono" onClick={cerrar} aria-label="Cerrar"><Icono n="cerrar" /></button>
@@ -55,6 +83,8 @@ export default function Ficha({ id, cerrar }) {
         </p>
         {e.reales > 0 && <p className="tu-checkin"><Icono n="check" size={14} /> Tu check-in está contando</p>}
       </div>
+
+      <TarjetaParaTi local={l} estado={e} gustos={s.gustos} />
 
       <div className="acciones">
         <button className="btn btn-primario" onClick={() => setCheckin(true)} disabled={espera > 0 || e.cerrado}>
@@ -84,10 +114,21 @@ export default function Ficha({ id, cerrar }) {
         </section>
       )}
 
-      <section className="bloque">
-        <h3><Icono n="musica" size={16} /> Música</h3>
-        <div className="chips">{l.musica.map((m) => <span key={m} className="tag">{m}</span>)}</div>
+      <section className="bloque ambiente">
         <h3>Ambiente</h3>
+        <div className="estilo-escala" aria-label={`Estilo: ${l.estilo}`}>
+          {ESTILOS.map((x) => <span key={x} className={x === l.estilo ? 'on' : ''}>{ICONO_ESTILO[x]} {x}</span>)}
+        </div>
+        <dl className="ambiente-datos">
+          <div><dt>Precio</dt><dd><Precio n={l.precio} /></dd></div>
+          {l.edad && <div><dt>Edad media</dt><dd>{l.edad.replace('-', '–')} años</dd></div>}
+          {l.volumen && <div><dt>Volumen</dt><dd>{VOLUMEN[l.volumen] || l.volumen}</dd></div>}
+        </dl>
+        {l.publico.length > 0 && (<><h4>Público</h4><div className="chips">{l.publico.map((x) => <span key={x} className="tag tag-alt">{x}</span>)}</div></>)}
+        {l.plan.length > 0 && (<><h4>Ideal para</h4><div className="chips">{l.plan.map((x) => <span key={x} className="tag tag-alt">{x}</span>)}</div></>)}
+        <h4><Icono n="musica" size={14} /> Música</h4>
+        <div className="chips">{l.musica.map((m) => <span key={m} className="tag">{m}</span>)}</div>
+        <h4>Cómo es</h4>
         <div className="chips">{l.ambiente.map((a) => <span key={a} className="tag tag-alt">{a}</span>)}</div>
       </section>
 

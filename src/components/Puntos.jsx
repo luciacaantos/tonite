@@ -95,6 +95,20 @@ export default function Puntos() {
         ))}
       </div>
 
+      {s.movimientos.length > 0 && (
+        <>
+          <h3 className="mt">Historial</h3>
+          <div className="lista">
+            {s.movimientos.slice(0, 15).map((m, i) => (
+              <div key={i} className="fila fila-plana">
+                <span className="fila-txt"><strong>{m.motivo}</strong><small>{new Date(m.ts).toLocaleString('es-ES', { weekday: 'short', hour: '2-digit', minute: '2-digit' })}</small></span>
+                <span className={`fila-dcha ${m.puntos > 0 ? 'puntos-mas' : 'puntos-menos'}`}>{m.puntos > 0 ? '+' : ''}{m.puntos}</span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
       {usando && <Canje tipo="recompensa" item={usando} cerrar={() => setUsando(null)} />}
     </div>
   );

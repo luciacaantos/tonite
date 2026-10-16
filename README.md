@@ -41,10 +41,26 @@ Todo está en la carpeta **`datos/`**. Después de cambiar algo, guarda el archi
 
 | Archivo | Qué contiene | Cómo editarlo |
 |---|---|---|
-| `datos/locales_granada_seed.csv` | Locales: nombre, zona, tipo, dirección, **música** y **ambiente** | Con Excel, Numbers o Google Sheets. Las etiquetas de música y ambiente van separadas por `\|` (ej.: `reggaetón\|comercial`). Guárdalo como **CSV UTF-8**. |
+| `datos/locales_granada_seed.csv` | Locales: nombre, zona, tipo, dirección, **música**, **ambiente** y el **ambiente detallado** (estilo, precio, público, edad, plan y volumen) | Con Excel, Numbers o Google Sheets. Las etiquetas van separadas por `\|` (ej.: `reggaetón\|comercial`). Guárdalo como **CSV UTF-8**. |
 | `datos/demo.json` | **Precios orientativos, horarios y fiestas** (datos de demo) | Con cualquier editor de texto (Bloc de notas, TextEdit o <https://jsoneditoronline.org>). |
 | `datos/ofertas.json` | **Monetización:** locales adheridos (los que pagan), sus **ofertas**, las **recompensas** por puntos y los **niveles** | Igual que el anterior. |
 | `datos/coordenadas.json` | Posición de cada local en el mapa | Igual que el anterior. |
+
+### Ambiente detallado de cada local (columnas del CSV)
+Son **estimaciones nuestras** (columna `verificar`): revisadlas y corregidlas.
+| Columna | Valores posibles | Ejemplo |
+|---|---|---|
+| `estilo` | `casual`, `arreglado` o `pijo` | Boom Boom Room = `pijo` |
+| `precio` | `€`, `€€` o `€€€` | Granada 10 = `€€€` |
+| `publico` | `universitario`, `Erasmus`, `alternativo`, `LGTBI-friendly`, `+25`, `mixto` (varios con `\|`) | `universitario\|Erasmus` |
+| `edad` | Rango aproximado | `18-23` |
+| `plan` | `previa`, `tomar algo`, `bailar`, `hasta tarde` (varios con `\|`) | `bailar\|hasta tarde` |
+| `volumen` | `se puede hablar`, `alto`, `muy alto` | `alto` |
+
+Con estas columnas, la ficha muestra la escala **Casual · Arreglado · Pijo**, el precio en €, la edad media y el público, y el mapa permite filtrar por estilo, precio y público.
+
+### Cuestionario de gustos y «% para ti»
+Al crear la cuenta se ofrece (opcional) un cuestionario de 7 preguntas: cuánta gente le gusta, música, qué busca en una noche, con qué público está a gusto, estilo de sitio, qué bebe y presupuesto. Con eso cada local tiene un **% para ti** (en el carrusel del mapa y en la ficha, con los motivos). Las preguntas y los pesos están en `src/gustos.js`. Se puede repetir desde *Perfil → Mis gustos*.
 
 ### Añadir un local nuevo
 1. Añade una fila al CSV (el **nombre** debe ser único).
@@ -95,8 +111,9 @@ Viene **activado**. Se controla en **Perfil → Modo demo**.
 - Arriba se ve la etiqueta amarilla `DEMO · Jueves 01:00` para que quede claro.
 
 ### Guion de 2 minutos
-1. **Mapa:** «son las 01:00 de un jueves; los colores son la gente que hay ahora; los 🎟️ son locales con ofertas». Toca un local (por ejemplo, Chupitería 69).
-2. **Ficha:** afluencia y último check-in, fiesta de esta noche, ofertas, música, precios y *Cómo llegar*. Baja hasta **Plan B cerca**.
+0. (Antes de empezar) **Crea la cuenta** y responde el cuestionario de gustos (30 s).
+1. **Mapa:** «son las 01:00 de un jueves; los colores son la gente que hay ahora; los 🎟️ son locales con ofertas». Abajo, **💘 Para ti ahora**: los sitios que encajan contigo. Toca el primero.
+2. **Ficha:** afluencia, **% para ti y por qué**, ofertas, **ambiente** (casual / arreglado / pijo, precio, edad, público), precios y *Cómo llegar*. Baja hasta **Plan B cerca**.
 3. **Estoy aquí → Simular que estoy aquí →** toca *Lleno* → **+25 puntos**.
 4. **Ofertas:** *Usar oferta* en «Chupito a 1 €» → pantalla para el camarero → **¡Canjeada!** → la oferta queda bloqueada 1 hora.
 5. **Puntos:** saldo, nivel y recompensas. (Antes, en *Perfil → +500 puntos*.) *Canjear* «Copa gratis» → **¡Canjeada!** → se descuentan los puntos.
@@ -127,6 +144,7 @@ Consejo: el día anterior, ábrela en el móvil, **regístrate** y añádela a l
 | **Check-in** | Pide el GPS real y comprueba de verdad que estás a menos de 50 m. Límite de 1 check-in por local cada 25 min. | El botón «Simular que estoy aquí» se salta el GPS (solo en modo demo). |
 | **Puntos y niveles** | Se suman de verdad por cada check-in (10, +15 si es un sitio nuevo); el nivel sube con los puntos ganados; las recompensas descuentan puntos. | Los botones «+100 / +500 puntos» son solo para la demo. |
 | **Ofertas y canje** | Flujo completo: *Usar oferta* → pantalla para el camarero → «¡Canjeada!» → bloqueada 1 hora. | No hay servidor: el bloqueo se guarda **en ese móvil** (borrando los datos se podría reutilizar). Los locales adheridos y sus ofertas son **de ejemplo** (aún no hay acuerdos firmados). |
+| **Gustos y «% para ti»** | El cálculo es real: compara tus respuestas con los datos de cada local. | Los datos de ambiente de los locales (estilo, precio, público, edad…) son **estimaciones** pendientes de verificar. |
 | **Precios, horarios y fiestas** | — | **Todo inventado**, aunque realista. |
 | **Login** | Formulario con +18, privacidad y ubicación. | No hay servidor: la cuenta se guarda **solo en ese móvil**. |
 | **Plan B cerca** | Cálculo real de distancias entre locales. | Depende de la afluencia simulada. |
@@ -141,5 +159,6 @@ Consejo: el día anterior, ábrela en el móvil, **regístrate** y añádela a l
 - `src/afluencia.js` contiene la simulación de afluencia y los colores de cada nivel.
 - `src/clock.js`: hora real o del modo demo, y horarios de apertura.
 - `src/store.js` guarda la cuenta, los check-ins, los puntos y los canjes en el móvil (`localStorage`).
-- `src/components/`: una pieza por pantalla (Mapa, Ficha, Filtros, CheckIn, Ofertas, Canje, Puntos, Agenda, Perfil, Login).
+- `src/gustos.js`: preguntas del cuestionario y cálculo del «% para ti».
+- `src/components/`: una pieza por pantalla (Mapa, Ficha, Filtros, CheckIn, Ofertas, Canje, Puntos, Agenda, Perfil, Login, Cuestionario).
 - Paleta **A «Neón rosa»**: fondo `#0B0B14`, acento `#FF2E9A` y secundario `#7A5CFF` (en `src/styles.css`, arriba del todo).

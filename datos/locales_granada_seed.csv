@@ -1,27 +1,27 @@
-nombre,zona,tipo,direccion,musica,ambiente,notas,verificar
-Pub Babel,Pedro Antonio,pub,"C. Pedro Antonio de Alarcón 54, Granada",pop español,"tranquilo para hablar|juegos (futbolín, billar)","Futbolín y billar; música no muy alta, se puede hablar; música española",sí (música y ambiente aproximados)
-Pub Wall Street,Pedro Antonio,pub,"C. Pedro Antonio de Alarcón 52, Granada",pop|comercial,tranquilo para hablar|billar|público algo mayor,Billar; público algo mayor,sí (música y ambiente aproximados)
-L'scandalo Pub,Pedro Antonio,pub,"C. Sócrates 4, Granada",reggaetón|comercial,universitario|fiesta,"Zona Sócrates, ambiente universitario",sí (música y ambiente aproximados)
-Chupitería 69,Pedro Antonio,bar de chupitos,"C. Sócrates 12, Granada",comercial|latino,Erasmus|barato|previa,Muy popular entre Erasmus; barato; puntos por chupito canjeables por merchandising,sí (música y ambiente aproximados)
-Pub Imperial,Pedro Antonio,pub,"C. Sócrates 16, Granada",reggaetón|comercial,universitario|fiesta,,sí (música y ambiente aproximados)
-Pub Lokura Latina,Pedro Antonio,pub,"C. Sócrates 25, Granada",latino|reggaetón,para bailar|fiesta,Música latina,sí (música y ambiente aproximados)
-Pub Legend,Pedro Antonio,pub,"C. Obispo Hurtado 15, Granada",comercial|pop,universitario,,sí (música y ambiente aproximados)
-Sonora Desert Saloon,Pedro Antonio,pub,"C. Pintor Velázquez 12, Granada",rock,temático|cervezas,,sí (música y ambiente aproximados)
-Pub Rubik,Pedro Antonio,pub,"C. Pedro Antonio de Alarcón 82, Granada",remember 80-90|pop,universitario|temático,,sí (música y ambiente aproximados)
-PlaymobilClub,Pedro Antonio,pub,"C. Pedro Antonio de Alarcón 65, Granada",comercial|reggaetón,universitario|temático,,sí (música y ambiente aproximados)
-Las Marismas,Pedro Antonio,bar,"C. Pedro Antonio de Alarcón 87, Granada",pop español,previa|barato,Bar de previa,sí (música y ambiente aproximados)
-Pub Namek,Pedro Antonio,pub,"C. Martínez de la Rosa 18, Granada",rock|comercial,temático|universitario,,sí (música y ambiente aproximados)
-El Larguero,Pedro Antonio,bar,[COMPLETAR dirección],comercial,previa|barato,Mencionado en entrevista (Paco); barato,sí (música y ambiente aproximados)
-La Habana,Pedro Antonio,bar,[COMPLETAR dirección],latino|comercial,previa|barato|peceras,Mencionado en entrevista (Paco); peceras,sí (música y ambiente aproximados)
-Pub Ganivet 13,Ganivet,pub,"C. Ángel Ganivet 13, Granada",pop|comercial,LGTBI-friendly|temático,Noches temáticas los miércoles; ambiente diverso / LGTBI-friendly,sí (música y ambiente aproximados)
-Kinsasa,Ganivet,pub,"C. Ángel Ganivet 15, Granada",comercial|pop,copas,,sí (música y ambiente aproximados)
-Pub La Estrella,Ganivet,pub,"C. Cuchilleros 6, Granada",pop español,copas|tranquilo para hablar,Zona Ganivet / San Matías,sí (música y ambiente aproximados)
-Pub La Flaca,Elvira,pub,"C. Elvira 95, Granada",indie|rock,alternativo,,sí (música y ambiente aproximados)
-Pub Kocran (antes El Son),Elvira,pub-discoteca,"C. Joaquín Costa 13, Granada",comercial|reggaetón,para bailar|cierra tarde,Bar arriba y discoteca abajo; se llena tarde (2-3 h),sí (música y ambiente aproximados)
-Pata Palo,Elvira,pub,"C. de los Naranjos 2, Granada",rock|indie,alternativo|suele estar lleno,Suele estar lleno,sí (música y ambiente aproximados)
-Miniclub,Elvira,pub,"C. de los Naranjos 4, Granada",electrónica|indie,alternativo,Suele estar lleno,sí (música y ambiente aproximados)
-Granada 10,Elvira,discoteca,"C. Cárcel Baja 10, Granada",comercial|reggaetón,discoteca|arreglado,Antiguo teatro; DJs,sí (música y ambiente aproximados)
-Boom Boom Room,Elvira,discoteca,[COMPLETAR dirección] (junto a la Catedral),comercial|house,exclusivo|arreglado,Más exclusiva,sí (música y ambiente aproximados)
-Twoo Club (antes Campus),Discotecas centro,discoteca,"Plaza de Gracia s/n, Granada",comercial|reggaetón,universitario|discoteca,Ambiente universitario; dos salas; abre a las 00:00,sí (música y ambiente aproximados)
-Sala Aliatar,Discotecas centro,discoteca,"C. Recogidas 2, Granada",comercial|reggaetón|remember,universitario|varias salas,Antiguo cine,sí (música y ambiente aproximados)
-Mae West,Discotecas centro,discoteca,"C. Arabial s/n (C.C. Neptuno), Granada",comercial|reggaetón,discoteca grande|arreglado,Entrada aprox. 10 € con consumición (dato antiguo),sí (música y ambiente aproximados)
+nombre,zona,tipo,direccion,musica,ambiente,estilo,precio,publico,edad,plan,volumen,notas,verificar
+Pub Babel,Pedro Antonio,pub,"C. Pedro Antonio de Alarcón 54, Granada",pop español,"tranquilo para hablar|juegos (futbolín, billar)",casual,€,universitario|mixto,20-28,tomar algo,se puede hablar,"Futbolín y billar; música no muy alta, se puede hablar; música española","sí (música, ambiente, estilo, precio y público aproximados)"
+Pub Wall Street,Pedro Antonio,pub,"C. Pedro Antonio de Alarcón 52, Granada",pop|comercial,tranquilo para hablar|billar|público algo mayor,arreglado,€€,+25,25-35,tomar algo,se puede hablar,Billar; público algo mayor,"sí (música, ambiente, estilo, precio y público aproximados)"
+L'scandalo Pub,Pedro Antonio,pub,"C. Sócrates 4, Granada",reggaetón|comercial,universitario|fiesta,casual,€,universitario,18-22,previa|bailar,alto,"Zona Sócrates, ambiente universitario","sí (música, ambiente, estilo, precio y público aproximados)"
+Chupitería 69,Pedro Antonio,bar de chupitos,"C. Sócrates 12, Granada",comercial|latino,Erasmus|barato|previa,casual,€,Erasmus|universitario,18-23,previa,alto,Muy popular entre Erasmus; barato; puntos por chupito canjeables por merchandising,"sí (música, ambiente, estilo, precio y público aproximados)"
+Pub Imperial,Pedro Antonio,pub,"C. Sócrates 16, Granada",reggaetón|comercial,universitario|fiesta,casual,€,universitario,18-22,bailar,alto,,"sí (música, ambiente, estilo, precio y público aproximados)"
+Pub Lokura Latina,Pedro Antonio,pub,"C. Sócrates 25, Granada",latino|reggaetón,para bailar|fiesta,casual,€€,mixto,20-30,bailar,alto,Música latina,"sí (música, ambiente, estilo, precio y público aproximados)"
+Pub Legend,Pedro Antonio,pub,"C. Obispo Hurtado 15, Granada",comercial|pop,universitario,casual,€,universitario,18-23,tomar algo|bailar,alto,,"sí (música, ambiente, estilo, precio y público aproximados)"
+Sonora Desert Saloon,Pedro Antonio,pub,"C. Pintor Velázquez 12, Granada",rock,temático|cervezas,casual,€€,mixto|alternativo,22-32,tomar algo,se puede hablar,,"sí (música, ambiente, estilo, precio y público aproximados)"
+Pub Rubik,Pedro Antonio,pub,"C. Pedro Antonio de Alarcón 82, Granada",remember 80-90|pop,universitario|temático,casual,€,universitario,19-25,bailar,alto,,"sí (música, ambiente, estilo, precio y público aproximados)"
+PlaymobilClub,Pedro Antonio,pub,"C. Pedro Antonio de Alarcón 65, Granada",comercial|reggaetón,universitario|temático,casual,€,universitario,18-22,bailar,alto,,"sí (música, ambiente, estilo, precio y público aproximados)"
+Las Marismas,Pedro Antonio,bar,"C. Pedro Antonio de Alarcón 87, Granada",pop español,previa|barato,casual,€,universitario,18-24,previa,se puede hablar,Bar de previa,"sí (música, ambiente, estilo, precio y público aproximados)"
+Pub Namek,Pedro Antonio,pub,"C. Martínez de la Rosa 18, Granada",rock|comercial,temático|universitario,casual,€,universitario,18-24,tomar algo,alto,,"sí (música, ambiente, estilo, precio y público aproximados)"
+El Larguero,Pedro Antonio,bar,[COMPLETAR dirección],comercial,previa|barato,casual,€,universitario,18-23,previa,se puede hablar,Mencionado en entrevista (Paco); barato,"sí (música, ambiente, estilo, precio y público aproximados)"
+La Habana,Pedro Antonio,bar,[COMPLETAR dirección],latino|comercial,previa|barato|peceras,casual,€,universitario|Erasmus,18-23,previa,alto,Mencionado en entrevista (Paco); peceras,"sí (música, ambiente, estilo, precio y público aproximados)"
+Pub Ganivet 13,Ganivet,pub,"C. Ángel Ganivet 13, Granada",pop|comercial,LGTBI-friendly|temático,arreglado,€€,mixto|LGTBI-friendly,20-30,tomar algo|bailar,alto,Noches temáticas los miércoles; ambiente diverso / LGTBI-friendly,"sí (música, ambiente, estilo, precio y público aproximados)"
+Kinsasa,Ganivet,pub,"C. Ángel Ganivet 15, Granada",comercial|pop,copas,arreglado,€€,mixto,22-30,tomar algo,alto,,"sí (música, ambiente, estilo, precio y público aproximados)"
+Pub La Estrella,Ganivet,pub,"C. Cuchilleros 6, Granada",pop español,copas|tranquilo para hablar,arreglado,€€,+25,25-35,tomar algo,se puede hablar,Zona Ganivet / San Matías,"sí (música, ambiente, estilo, precio y público aproximados)"
+Pub La Flaca,Elvira,pub,"C. Elvira 95, Granada",indie|rock,alternativo,casual,€,alternativo,20-30,tomar algo,alto,,"sí (música, ambiente, estilo, precio y público aproximados)"
+Pub Kocran (antes El Son),Elvira,pub-discoteca,"C. Joaquín Costa 13, Granada",comercial|reggaetón,para bailar|cierra tarde,arreglado,€€,mixto,20-28,bailar|hasta tarde,muy alto,Bar arriba y discoteca abajo; se llena tarde (2-3 h),"sí (música, ambiente, estilo, precio y público aproximados)"
+Pata Palo,Elvira,pub,"C. de los Naranjos 2, Granada",rock|indie,alternativo|suele estar lleno,casual,€,alternativo|Erasmus,19-28,tomar algo|bailar,alto,Suele estar lleno,"sí (música, ambiente, estilo, precio y público aproximados)"
+Miniclub,Elvira,pub,"C. de los Naranjos 4, Granada",electrónica|indie,alternativo,casual,€€,alternativo,20-30,bailar|hasta tarde,muy alto,Suele estar lleno,"sí (música, ambiente, estilo, precio y público aproximados)"
+Granada 10,Elvira,discoteca,"C. Cárcel Baja 10, Granada",comercial|reggaetón,discoteca|arreglado,arreglado,€€€,mixto,21-30,bailar|hasta tarde,muy alto,Antiguo teatro; DJs,"sí (música, ambiente, estilo, precio y público aproximados)"
+Boom Boom Room,Elvira,discoteca,[COMPLETAR dirección] (junto a la Catedral),comercial|house,exclusivo|arreglado,pijo,€€€,+25,23-35,bailar|hasta tarde,muy alto,Más exclusiva,"sí (música, ambiente, estilo, precio y público aproximados)"
+Twoo Club (antes Campus),Discotecas centro,discoteca,"Plaza de Gracia s/n, Granada",comercial|reggaetón,universitario|discoteca,casual,€€,universitario,18-23,bailar|hasta tarde,muy alto,Ambiente universitario; dos salas; abre a las 00:00,"sí (música, ambiente, estilo, precio y público aproximados)"
+Sala Aliatar,Discotecas centro,discoteca,"C. Recogidas 2, Granada",comercial|reggaetón|remember,universitario|varias salas,casual,€€,universitario|Erasmus,18-24,bailar|hasta tarde,muy alto,Antiguo cine,"sí (música, ambiente, estilo, precio y público aproximados)"
+Mae West,Discotecas centro,discoteca,"C. Arabial s/n (C.C. Neptuno), Granada",comercial|reggaetón,discoteca grande|arreglado,arreglado,€€€,mixto,20-30,bailar|hasta tarde,muy alto,Entrada aprox. 10 € con consumición (dato antiguo),"sí (música, ambiente, estilo, precio y público aproximados)"

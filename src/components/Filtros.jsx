@@ -1,11 +1,12 @@
-import { ZONAS, TIPOS, MUSICAS, AMBIENTES } from '../data.js';
+import { ZONAS, TIPOS, MUSICAS, AMBIENTES, ESTILOS, PRECIOS, PUBLICOS, euroSimbolos } from '../data.js';
 import { NIVELES } from '../afluencia.js';
 import { Chip, Sheet } from './ui.jsx';
 
-export const FILTROS_VACIOS = { zonas: [], tipos: [], musica: [], ambiente: [], niveles: [], abierto: false, ofertas: false };
+export const FILTROS_VACIOS = { zonas: [], tipos: [], musica: [], ambiente: [], niveles: [], estilos: [], precios: [], publico: [], abierto: false, ofertas: false };
 
 export const contarFiltros = (f) =>
-  f.zonas.length + f.tipos.length + f.musica.length + f.ambiente.length + f.niveles.length + (f.abierto ? 1 : 0) + (f.ofertas ? 1 : 0);
+  f.zonas.length + f.tipos.length + f.musica.length + f.ambiente.length + f.niveles.length +
+  (f.estilos?.length || 0) + (f.precios?.length || 0) + (f.publico?.length || 0) + (f.abierto ? 1 : 0) + (f.ofertas ? 1 : 0);
 
 export function aplicarFiltros(locales, f, estados) {
   return locales.filter((l) => {
@@ -17,6 +18,9 @@ export function aplicarFiltros(locales, f, estados) {
     if (f.niveles.length && (e.cerrado || !f.niveles.includes(e.nivel))) return false;
     if (f.abierto && e.cerrado) return false;
     if (f.ofertas && !l.adherido) return false;
+    if (f.estilos?.length && !f.estilos.includes(l.estilo)) return false;
+    if (f.precios?.length && !f.precios.includes(l.precio)) return false;
+    if (f.publico?.length && !l.publico.some((p) => f.publico.includes(p))) return false;
     return true;
   });
 }
@@ -54,6 +58,9 @@ export default function Filtros({ filtros, setFiltros, cerrar, total }) {
         </div>
       </section>
       {grupo('Afluencia', 'niveles', NIVELES.slice(1), (o) => o.color)}
+      {grupo('Estilo', 'estilos', ESTILOS.map((e) => ({ id: e, nombre: { casual: '👟 Casual', arreglado: '✨ Arreglado', pijo: '💎 Pijo' }[e] })))}
+      {grupo('Precio', 'precios', PRECIOS.map((p) => ({ id: p, nombre: euroSimbolos(p) })))}
+      {grupo('Público', 'publico', PUBLICOS)}
       {grupo('Zona', 'zonas', ZONAS)}
       {grupo('Tipo de local', 'tipos', TIPOS)}
       {grupo('Música', 'musica', MUSICAS)}

@@ -52,7 +52,9 @@ export default function Ofertas() {
 
   const lista = OFERTAS.filter((o) => !cat || o.categoria === cat)
     .map((o) => ({ o, e: estadoOferta(s, o, dia) }))
-    .sort((a, b) => b.e.disponible - a.e.disponible);
+    // Primero las disponibles; dentro, las de la bebida que prefiere (cuestionario).
+    .sort((a, b) => b.e.disponible - a.e.disponible ||
+      (b.o.categoria === s.gustos?.bebida) - (a.o.categoria === s.gustos?.bebida));
 
   return (
     <div className="pagina">
