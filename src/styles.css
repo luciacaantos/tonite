@@ -495,10 +495,13 @@ input { font: inherit; }
 .gustos-lista span { font-size: 14px; }
 
 /* ---------- Fotos del local ---------- */
-.portada { position: relative; margin: 0 -6px 14px; border-radius: 18px; overflow: hidden; height: 190px; background: var(--tarjeta-2); }
+.portada { position: relative; margin: 0 -6px 14px; border-radius: 18px; overflow: hidden; height: 210px; background: var(--tarjeta-2); }
 .portada-fila { display: flex; height: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
 .portada-fila::-webkit-scrollbar { display: none; }
-.portada-fila img { flex: none; width: 100%; height: 100%; object-fit: cover; scroll-snap-align: start; }
+.portada-foto { flex: none; width: 100%; height: 100%; scroll-snap-align: start; position: relative; overflow: hidden; }
+.portada-foto img { position: relative; width: 100%; height: 100%; object-fit: cover; display: block; }
+.portada-foto.vertical::before { content: ''; position: absolute; inset: -20px; background: var(--img) center / cover; filter: blur(18px) brightness(.55); }
+.portada-foto.vertical img { object-fit: contain; }
 .portada::after { content: ''; position: absolute; inset: auto 0 0; height: 50px; background: linear-gradient(transparent, #15152699); pointer-events: none; }
 .portada-puntos { position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; z-index: 1; }
 .portada-puntos i { width: 7px; height: 7px; border-radius: 50%; background: #ffffff66; }

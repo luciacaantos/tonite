@@ -48,7 +48,15 @@ function Portada({ local }) {
     <div className="portada">
       <div className="portada-fila" onScroll={(e) => setActual(Math.round(e.currentTarget.scrollLeft / e.currentTarget.clientWidth))}>
         {local.fotos.map((url, i) => (
-          <img key={url} src={url} alt={`${local.nombre} (${i + 1})`} loading={i ? 'lazy' : 'eager'} />
+          // Las fotos verticales se ven enteras sobre un fondo desenfocado de la misma foto.
+          <div key={url} className="portada-foto" style={{ '--img': `url("${url}")` }}>
+            <img
+              src={url}
+              alt={`${local.nombre} (${i + 1})`}
+              loading={i ? 'lazy' : 'eager'}
+              onLoad={(e) => e.currentTarget.naturalHeight > e.currentTarget.naturalWidth * 0.8 && e.currentTarget.parentElement.classList.add('vertical')}
+            />
+          </div>
         ))}
       </div>
       {local.fotos.length > 1 && (
