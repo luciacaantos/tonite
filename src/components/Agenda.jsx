@@ -5,7 +5,7 @@ import { diaDeNoche, DIAS_LARGO } from '../clock.js';
 import { Chip, NivelBadge } from './ui.jsx';
 
 const ordenHora = (h) => { const [a, b] = h.split(':').map(Number); return (a < 12 ? a + 24 : a) * 60 + b; };
-const COLOR_TIPO = { universitaria: '#7A5CFF', Erasmus: '#22D3EE', 'temática': '#FF2E9A', discoteca: '#FF9F1C' };
+const COLOR_TIPO = { universitaria: '#8FB3FF', Erasmus: '#5ED3C4', 'temática': '#FF2E9A', discoteca: '#E2B15B' };
 
 export default function Agenda() {
   const { now, estados, abrirLocal } = useApp();

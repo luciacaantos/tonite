@@ -7,11 +7,11 @@ import { FIESTAS } from './data.js';
 export const VIGENCIA_MIN = 25;
 
 export const NIVELES = [
-  { id: 0, nombre: 'Sin datos', corto: 'Sin datos', color: '#6B7280' },
-  { id: 1, nombre: 'Vacío', corto: 'Vacío', color: '#4EA8FF' },
+  { id: 0, nombre: 'Sin datos', corto: 'Sin datos', color: '#5B6482' },
+  { id: 1, nombre: 'Vacío', corto: 'Vacío', color: '#6FA8FF' },
   { id: 2, nombre: 'Algo de gente', corto: 'Algo', color: '#3DDC97' },
-  { id: 3, nombre: 'Animado', corto: 'Animado', color: '#FF9F1C' },
-  { id: 4, nombre: 'Lleno', corto: 'Lleno', color: '#FF3B3B' },
+  { id: 3, nombre: 'Animado', corto: 'Animado', color: '#E2B15B' },
+  { id: 4, nombre: 'Lleno', corto: 'Lleno', color: '#FF2E9A' },
 ];
 
 function hash(s) {

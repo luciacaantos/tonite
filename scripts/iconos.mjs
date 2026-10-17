@@ -2,13 +2,16 @@
 // Uso: npm run iconos   (necesita Playwright/Chromium)
 import { chromium } from 'playwright';
 
+const ESTRELLA = `<svg viewBox="0 0 24 24"><g fill="#FF2E9A"><rect x="5" y="5" width="14" height="14"/><rect x="5" y="5" width="14" height="14" transform="rotate(45 12 12)"/></g></svg>`;
 const html = (size) => `<!doctype html><html><head>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800&display=block" rel="stylesheet">
-<style>html,body{margin:0;width:${size}px;height:${size}px;background:#0b0b14;}
-.c{width:100%;height:100%;display:grid;place-items:center;background:radial-gradient(circle at 50% 45%,#ff2e9a55,#0b0b14 62%);}
-.t{font-family:Unbounded,'Arial Black',sans-serif;font-weight:800;font-size:${size * 0.155}px;color:#fff;letter-spacing:.01em;
-text-shadow:0 0 ${size * 0.03}px #ff2e9a,0 0 ${size * 0.07}px #ff2e9a;}
-.t b{color:#ff2e9a}</style></head><body><div class="c"><div class="t">TONI<b>TE</b></div></div></body></html>`;
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,600&display=block" rel="stylesheet">
+<style>html,body{margin:0;width:${size}px;height:${size}px;background:#0a0f1f;}
+.c{width:100%;height:100%;display:grid;place-items:center;
+background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='${size / 4}' height='${size / 4}' viewBox='0 0 56 56'><g fill='none' stroke='%23E2B15B' stroke-opacity='.12' stroke-width='1.2'><rect x='17' y='17' width='22' height='22'/><rect x='17' y='17' width='22' height='22' transform='rotate(45 28 28)'/></g></svg>");}
+.t{font-family:Fraunces,serif;font-style:italic;font-weight:600;font-size:${size * 0.24}px;color:#F4E9DA;letter-spacing:-.01em;position:relative;}
+.i{position:relative;display:inline-block}
+.i svg{position:absolute;left:62%;top:.14em;width:.3em;height:.3em;transform:translateX(-50%)}</style></head>
+<body><div class="c"><div class="t">ton<span class="i">ı${ESTRELLA}</span>te</div></div></body></html>`;
 
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
 for (const [file, size] of [['icon-512.png', 512], ['icon-192.png', 192], ['apple-touch-icon.png', 180]]) {

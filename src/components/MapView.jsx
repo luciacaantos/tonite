@@ -17,7 +17,8 @@ function icono(nivel, elegido, adherido) {
   const k = `${nivel}-${elegido}-${adherido}`;
   return (iconoCache[k] ??= L.divIcon({
     className: '',
-    html: `<div class="pin n${nivel} ${elegido ? 'pin-elegido' : ''}" style="--c:${NIVELES[nivel].color}"><i></i>${adherido ? '<b class="pin-oferta">🎟️</b>' : ''}</div>`,
+    // Estrella de ocho puntas del color de la afluencia; rombo dorado = local adherido con ofertas.
+    html: `<div class="pin n${nivel} ${elegido ? 'pin-elegido' : ''}" style="--c:${NIVELES[nivel].color}"><svg viewBox="0 0 24 24"><g fill="${NIVELES[nivel].color}"><rect x="5" y="5" width="14" height="14"/><rect x="5" y="5" width="14" height="14" transform="rotate(45 12 12)"/></g></svg>${adherido ? '<b class="pin-oferta"></b>' : ''}</div>`,
     iconSize: [34, 34],
     iconAnchor: [17, 17],
   }));
@@ -125,7 +126,7 @@ export default function MapView({ seleccionado }) {
           <Icono n="filtro" size={16} /> Filtros{n ? ` · ${n}` : ''}
         </Chip>
         <Chip activo={filtros.abierto} onClick={() => setFiltros({ ...filtros, abierto: !filtros.abierto })}>Abierto ahora</Chip>
-        <Chip activo={filtros.ofertas} onClick={() => setFiltros({ ...filtros, ofertas: !filtros.ofertas })}>🎟️ Con ofertas</Chip>
+        <Chip activo={filtros.ofertas} onClick={() => setFiltros({ ...filtros, ofertas: !filtros.ofertas })}><i className="rombo-oro" /> Con ofertas</Chip>
         {['Pedro Antonio', 'Ganivet', 'Elvira'].map((z) => (
           <Chip key={z} activo={filtros.zonas.includes(z)}
             onClick={() => setFiltros({ ...filtros, zonas: filtros.zonas.includes(z) ? filtros.zonas.filter((x) => x !== z) : [...filtros.zonas, z] })}>

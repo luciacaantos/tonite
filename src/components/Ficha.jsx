@@ -5,7 +5,7 @@ import { afinidad, encajeAhora, TEXTO_GENTE, TEXTO_GENTE_PREFIERE } from '../gus
 import { diaDeNoche, DIAS_LARGO } from '../clock.js';
 import { textoHace, VIGENCIA_MIN, NIVELES } from '../afluencia.js';
 import { minutosParaNuevoCheckin } from '../store.js';
-import { Sheet, NivelBadge, Icono, Punto } from './ui.jsx';
+import { Sheet, NivelBadge, Icono, Punto, Estrella } from './ui.jsx';
 import CheckIn from './CheckIn.jsx';
 import GaleriaGente, { SubirFoto } from './FotosGente.jsx';
 import Canje from './Canje.jsx';
@@ -35,11 +35,9 @@ const EMOJI_TIPO = (tipo) => (tipo.includes('discoteca') ? '🪩' : tipo.include
 function Portada({ local }) {
   const [actual, setActual] = useState(0);
   if (!local.fotos.length) {
-    let h = 0;
-    for (const c of local.id) h = (h * 31 + c.charCodeAt(0)) % 90;
-    h += 250; // tonos de la marca: del violeta al rosa
     return (
-      <div className="portada portada-vacia" style={{ '--h': h }}>
+      <div className="portada portada-vacia">
+        <Estrella className="portada-estrella" color="var(--acento)" />
         <span className="portada-emoji">{EMOJI_TIPO(local.tipo)}</span>
         <span className="portada-zona">{local.zona}</span>
       </div>
@@ -108,7 +106,7 @@ export default function Ficha({ id, cerrar }) {
         <div>
           <h2>{l.nombre}</h2>
           <p className="sub">{mayus(l.tipo)} · {l.zona} · <Precio n={l.precio} /> · {ICONO_ESTILO[l.estilo]} {mayus(l.estilo)}</p>
-          {l.adherido && <span className="adherido">🎟️ Local adherido · ofertas TONITE</span>}
+          {l.adherido && <span className="adherido"><i className="rombo-oro" /> Local adherido · ofertas TONITE</span>}
         </div>
         <button className="btn-icono" onClick={cerrar} aria-label="Cerrar"><Icono n="cerrar" /></button>
       </div>

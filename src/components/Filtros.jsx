@@ -54,7 +54,7 @@ export default function Filtros({ filtros, setFiltros, cerrar, total }) {
       <section className="filtro-grupo">
         <div className="chips">
           <Chip activo={filtros.abierto} onClick={() => setFiltros({ ...filtros, abierto: !filtros.abierto })}>Abierto ahora</Chip>
-          <Chip activo={filtros.ofertas} onClick={() => setFiltros({ ...filtros, ofertas: !filtros.ofertas })}>🎟️ Con ofertas</Chip>
+          <Chip activo={filtros.ofertas} onClick={() => setFiltros({ ...filtros, ofertas: !filtros.ofertas })}><i className="rombo-oro" /> Con ofertas</Chip>
         </div>
       </section>
       {grupo('Afluencia', 'niveles', NIVELES.slice(1), (o) => o.color)}

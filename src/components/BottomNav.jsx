@@ -1,5 +1,3 @@
-import { Icono } from './ui.jsx';
-
 const TABS = [
   { id: 'mapa', nombre: 'Mapa' },
   { id: 'ofertas', nombre: 'Ofertas' },
@@ -13,7 +11,7 @@ export default function BottomNav({ actual, ir }) {
     <nav className="bottomnav">
       {TABS.map((t) => (
         <button key={t.id} className={actual === t.id ? 'on' : ''} onClick={() => ir(t.id)}>
-          <Icono n={t.id} />
+          <i className="rombo" aria-hidden="true" />
           <span>{t.nombre}</span>
         </button>
       ))}

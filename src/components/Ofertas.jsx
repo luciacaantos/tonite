@@ -72,7 +72,7 @@ export default function Ofertas() {
       </div>
       <div className="para-locales">
         <strong>¿Tienes un bar, pub o discoteca?</strong>
-        <p>Únete a TONITE por <b>{euros(CUOTA_MENSUAL)} al mes</b>: tus ofertas en esta pestaña, tus fiestas en la Agenda, el icono 🎟️ en el mapa y clientes que canjean en tu barra.</p>
+        <p>Únete a TONITE por <b>{euros(CUOTA_MENSUAL)} al mes</b>: tus ofertas en esta pestaña, tus fiestas en la Agenda, el rombo dorado en el mapa y clientes que canjean en tu barra.</p>
         <small>La afluencia no se compra: siempre sale de los check-ins de la gente.</small>
       </div>
       {usando && <Canje tipo="oferta" item={usando} cerrar={() => setUsando(null)} />}

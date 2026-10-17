@@ -2,10 +2,23 @@ import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { NIVELES } from '../afluencia.js';
 
+// Estrella de ocho puntas (la del alicatado nazarí): el símbolo de TONITE.
+export function Estrella({ color = 'var(--acento)', size, className = '', style }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" width={size} height={size} style={style} aria-hidden="true">
+      <g fill={color}>
+        <rect x="5" y="5" width="14" height="14" />
+        <rect x="5" y="5" width="14" height="14" transform="rotate(45 12 12)" />
+      </g>
+    </svg>
+  );
+}
+
 export function Logo({ grande }) {
   return (
-    <span className={`logo ${grande ? 'logo-grande' : ''}`} aria-label="TONITE">
-      TONI<b>TE</b>
+    <span className={`logo ${grande ? 'logo-grande' : ''}`} aria-label="tonite">
+      <span className="logo-texto">ton<span className="logo-i">ı<Estrella className="logo-estrella" /></span>te</span>
+      {grande && <span className="logo-lema">Granada de noche</span>}
     </span>
   );
 }
@@ -29,8 +42,7 @@ export function Sheet({ cerrar, children, alto, className = '' }) {
 }
 
 export function Punto({ nivel, size = 12 }) {
-  const n = NIVELES[nivel];
-  return <span className={`punto n${nivel}`} style={{ width: size, height: size, background: n.color }} />;
+  return <Estrella className={`punto n${nivel}`} color={NIVELES[nivel].color} size={size + 3} />;
 }
 
 export function NivelBadge({ estado, grande }) {

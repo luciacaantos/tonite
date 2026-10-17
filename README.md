@@ -174,4 +174,5 @@ Consejo: el día anterior, ábrela en el móvil, **regístrate** y añádela a l
 - `src/store.js` guarda la cuenta, los check-ins, los puntos y los canjes en el móvil (`localStorage`).
 - `src/gustos.js`: preguntas del cuestionario y cálculo del «% para ti».
 - `src/components/`: una pieza por pantalla (Mapa, Ficha, Filtros, CheckIn, Ofertas, Canje, Puntos, Agenda, Perfil, Login, Cuestionario).
-- Paleta **A «Neón rosa»**: fondo `#0B0B14`, acento `#FF2E9A` y secundario `#7A5CFF` (en `src/styles.css`, arriba del todo).
+- Identidad **«Granada de noche»** (en `src/styles.css`, arriba del todo): azul noche `#0A0F1F`, rosa neón `#FF2E9A` para lo importante y dorado de farol `#E2B15B` para los detalles. Titulares en **Fraunces** (serifa) y textos en **Manrope**.
+- Logo: «tonite» en cursiva con el punto de la i convertido en la **estrella de ocho puntas** de los alicatados nazaríes (componente `Logo` en `src/components/ui.jsx`). Elementos propios: fondo con alicatado muy suave, fotos enmarcadas en **arco de herradura**, marcadores del mapa como estrellas (más grandes cuanta más gente) y rombos en la barra de abajo. Los iconos de la app se regeneran con `npm run iconos`.
