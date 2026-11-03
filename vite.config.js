@@ -27,6 +27,8 @@ export default defineConfig({
       workbox: {
         // Las fotos de los locales no se precargan (pesan); se descargan al abrir la ficha.
         globPatterns: ['**/*.{js,css,html,svg}', 'icon-*.png', 'apple-touch-icon.png'],
+        // La landing del experimento (/votar/) es una página aparte: no se sirve la app en su lugar.
+        navigateFallbackDenylist: [/^\/votar/],
         runtimeCaching: [
           { urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/, handler: 'CacheFirst', options: { cacheName: 'fuentes', expiration: { maxEntries: 20 } } },
         ],

@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0f1f" />
+  <title>¿Dónde vas esta noche? · TONITE</title>
+  <meta name="description" content="Vota en 20 segundos y a las 22:00 te mandamos dónde va a haber más gente en Granada esta noche." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tonite-theta.vercel.app/votar/" />
+  <meta property="og:title" content="¿Dónde vas esta noche? · TONITE" />
+  <meta property="og:description" content="Vota en 20 segundos y a las 22:00 te mandamos dónde va a haber más gente en Granada." />
+  <meta property="og:image" content="https://tonite-theta.vercel.app/votar/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500..700&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --fondo: #0a0f1f;
+      --tarjeta: #121a31;
+      --borde: #26314f;
+      --crema: #f4e9da;
+      --suave: #9aa3c4;
+      --rosa: #ff2e9a;
+      --oro: #e2b15b;
+      --serif: 'Fraunces', Georgia, serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: 'Manrope', system-ui, sans-serif;
+      color: var(--crema);
+      background-color: var(--fondo);
+      /* Alicatado nazarí muy tenue */
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cg fill='none' stroke='%23E2B15B' stroke-opacity='0.06' stroke-width='2'%3E%3Crect x='29' y='29' width='38' height='38'/%3E%3Crect x='29' y='29' width='38' height='38' transform='rotate(45 48 48)'/%3E%3Ccircle cx='48' cy='48' r='8'/%3E%3Cpath d='M0 48h19M77 48h19M48 0v19M48 77v19'/%3E%3C/g%3E%3C/svg%3E");
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    main { max-width: 560px; margin: 0 auto; padding: 0 16px calc(32px + env(safe-area-inset-bottom)); }
+    .estrella { display: inline-block; width: 1em; height: 1em; vertical-align: -0.12em; }
+
+    /* Logo: ton·ı·te con la estrella como punto de la i */
+    .logo { font-family: var(--serif); font-style: italic; font-weight: 600; line-height: 1; letter-spacing: -.01em; display: inline-flex; flex-direction: column; align-items: center; }
+    .logo-i { position: relative; display: inline-block; }
+    .logo-i .estrella { position: absolute; left: 62%; top: .14em; width: .3em; height: .3em; transform: translateX(-50%); }
+    .logo-lema { font-family: 'Manrope', sans-serif; font-style: normal; font-size: 11px; font-weight: 700; letter-spacing: .32em; text-transform: uppercase; color: var(--oro); margin-top: 8px; }
+
+    /* Portada en arco */
+    .portada {
+      margin-top: calc(24px + env(safe-area-inset-top));
+      padding: 44px 24px 32px;
+      border: 2px solid rgba(226, 177, 91, .4);
+      border-bottom: 0;
+      border-radius: 240px 240px 0 0;
+      background: radial-gradient(circle at 50% 110%, #3a1a45 0%, rgba(10, 15, 31, 0) 70%);
+      text-align: center;
+    }
+    .portada .logo { font-size: 52px; }
+    .aviso {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 28px; padding: 6px 14px;
+      border: 1px solid rgba(255, 46, 154, .5); border-radius: 999px;
+      font-size: 13px; font-weight: 700; color: var(--rosa);
+    }
+    .aviso::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--rosa); box-shadow: 0 0 10px var(--rosa); animation: latido 1.6s ease-in-out infinite; }
+    @keyframes latido { 50% { opacity: .35; } }
+    h1 { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: clamp(40px, 11vw, 56px); line-height: 1.05; margin-top: 16px; }
+    .sub { color: var(--suave); font-size: 17px; margin: 14px auto 0; max-width: 400px; }
+    .sub strong { color: var(--crema); }
+
+    .boton {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; margin-top: 28px; padding: 18px 24px;
+      border: 0; border-radius: 999px;
+      background: var(--rosa); color: #1b0b16;
+      font: 800 19px 'Manrope', sans-serif; text-decoration: none;
+      box-shadow: 0 0 0 6px rgba(255, 46, 154, .15), 0 12px 32px rgba(255, 46, 154, .35);
+      transition: transform .15s ease;
+    }
+    .boton:active { transform: scale(.98); }
+    .boton[aria-disabled="true"] { background: var(--borde); color: var(--suave); box-shadow: none; pointer-events: none; }
+    .micro { margin-top: 12px; font-size: 13px; color: var(--suave); }
+    .erasmus { margin-top: 6px; font-size: 13px; color: var(--suave); font-style: italic; }
+
+    section { margin-top: 56px; }
+    .etiqueta { font-size: 12px; font-weight: 800; letter-spacing: .28em; text-transform: uppercase; color: var(--oro); }
+    h2 { font-family: var(--serif); font-weight: 600; font-size: 30px; line-height: 1.15; margin-top: 8px; }
+    section > p { color: var(--suave); margin-top: 12px; font-size: 16px; }
+
+    /* Avance del ranking: los nombres se desvelan a las 22:00 */
+    .mensaje {
+      margin-top: 20px; padding: 18px 18px 14px;
+      background: var(--tarjeta); border: 1px solid var(--borde);
+      border-radius: 20px 20px 20px 6px;
+    }
+    .mensaje-titulo { font-weight: 800; font-size: 15px; }
+    .mensaje-titulo .estrella { color: var(--rosa); }
+    .fila { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+    .pos { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: 22px; width: 22px; color: var(--oro); }
+    .tapado { flex: 1; height: 14px; border-radius: 7px; background: linear-gradient(90deg, #26314f, #3a4568, #26314f); filter: blur(1.5px); }
+    .fila .estrella { font-size: 20px; }
+    .mensaje-pie { margin-top: 14px; font-size: 13px; color: var(--suave); text-align: right; }
+
+    /* Pasos en arco */
+    .pasos { display: grid; gap: 14px; margin-top: 20px; }
+    .paso {
+      display: grid; grid-template-columns: 64px 1fr; align-items: center; gap: 16px;
+      padding: 14px 18px 14px 14px;
+      background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 18px;
+    }
+    .paso-icono {
+      height: 72px; display: grid; place-items: center;
+      border: 2px solid var(--oro); border-radius: 32px 32px 8px 8px;
+      font-family: var(--serif); font-style: italic; font-weight: 600; font-size: 18px; color: var(--oro);
+    }
+    .paso h3 { font-size: 17px; font-weight: 800; }
+    .paso p { color: var(--suave); font-size: 15px; }
+
+    .niveles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 20px; text-align: center; font-size: 12px; color: var(--suave); }
+    .niveles .estrella { display: block; margin: 0 auto 6px; font-size: 28px; }
+
+    .final { text-align: center; padding: 32px 20px; border: 2px solid rgba(255, 46, 154, .35); border-radius: 28px; background: rgba(18, 26, 49, .7); }
+    .privacidad { margin-top: 24px; font-size: 13px; color: var(--suave); }
+    footer { margin-top: 48px; text-align: center; color: var(--suave); font-size: 13px; }
+    footer .logo { font-size: 28px; color: var(--crema); margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="estrella" viewBox="0 0 24 24"><g fill="currentColor"><rect x="5" y="5" width="14" height="14"/><rect x="5" y="5" width="14" height="14" transform="rotate(45 12 12)"/></g></symbol>
+  </svg>
+
+  <main>
+    <header class="portada">
+      <span class="logo" aria-label="tonite, Granada de noche">
+        <span>ton<span class="logo-i">ı<svg class="estrella" style="color:var(--rosa)"><use href="#estrella"/></svg></span>te</span>
+        <span class="logo-lema">Granada de noche</span>
+      </span>
+      <div><span class="aviso" id="aviso">Ranking de esta noche a las 22:00</span></div>
+      <h1>¿Dónde vas esta noche?</h1>
+      <p class="sub">Vota en 20 segundos y <strong>a las 22:00 te mandamos dónde va a haber más gente</strong> en Granada.</p>
+      <a class="boton" data-votar href="#">Votar ahora</a>
+      <p class="micro">Gratis · sin descargar nada · 4 preguntas</p>
+      <p class="erasmus" lang="en">Erasmus? Tell us where you're going tonight and get the 22:00 ranking.</p>
+    </header>
+
+    <section>
+      <p class="etiqueta">Así te llega</p>
+      <h2>El ranking, antes de salir</h2>
+      <div class="mensaje" aria-label="Ejemplo de mensaje con el ranking; los nombres se desvelan a las 22:00">
+        <p class="mensaje-titulo"><svg class="estrella"><use href="#estrella"/></svg> Ranking TONITE · esta noche</p>
+        <div class="fila"><span class="pos">1</span><span class="tapado"></span><svg class="estrella" style="color:#ff2e9a"><use href="#estrella"/></svg></div>
+        <div class="fila"><span class="pos">2</span><span class="tapado" style="flex:.8"></span><svg class="estrella" style="color:#e2b15b"><use href="#estrella"/></svg></div>
+        <div class="fila"><span class="pos">3</span><span class="tapado" style="flex:.6"></span><svg class="estrella" style="color:#3ddc97"><use href="#estrella"/></svg></div>
+        <p class="mensaje-pie">Los nombres se desvelan a las 22:00</p>
+      </div>
+    </section>
+
+    <section>
+      <p class="etiqueta">¿Te ha pasado?</p>
+      <h2>Llegar a una discoteca y que esté vacía</h2>
+      <p>Y encima el plan lo propusiste tú. Hoy nadie sabe cuánta gente hay en un sitio hasta que llega a la puerta. Con el ranking lo sabes antes de salir.</p>
+    </section>
+
+    <section>
+      <p class="etiqueta">Cómo funciona</p>
+      <h2>Tres pasos</h2>
+      <div class="pasos">
+        <div class="paso"><span class="paso-icono">1</span><div><h3>Vota</h3><p>Dinos dónde vas esta noche, o si aún no lo sabes.</p></div></div>
+        <div class="paso"><span class="paso-icono">22:00</span><div><h3>Recibe el ranking</h3><p>Te lo mandamos por WhatsApp o email.</p></div></div>
+        <div class="paso"><span class="paso-icono">3</span><div><h3>Elige con ventaja</h3><p>Ve donde está el ambiente. Al día siguiente te preguntamos qué tal.</p></div></div>
+      </div>
+    </section>
+
+    <section>
+      <p class="etiqueta">Qué es TONITE</p>
+      <h2>Un mapa del ambiente de Granada</h2>
+      <p>Somos estudiantes de la Universidad de Granada y estamos creando TONITE, una app para ver cuánta gente hay en cada bar y discoteca antes de salir. Este ranking es nuestra primera prueba: con tu voto nos ayudas a construirla.</p>
+      <div class="niveles" aria-hidden="true">
+        <span><svg class="estrella" style="color:#6fa8ff"><use href="#estrella"/></svg>Vacío</span>
+        <span><svg class="estrella" style="color:#3ddc97"><use href="#estrella"/></svg>Algo de gente</span>
+        <span><svg class="estrella" style="color:#e2b15b"><use href="#estrella"/></svg>Animado</span>
+        <span><svg class="estrella" style="color:#ff2e9a"><use href="#estrella"/></svg>Lleno</span>
+      </div>
+    </section>
+
+    <section class="final">
+      <h2>¿Dónde vas esta noche?</h2>
+      <a class="boton" data-votar href="#">Votar ahora</a>
+      <p class="privacidad">Tu WhatsApp o email es opcional. Solo lo usamos para mandarte el ranking esa noche y preguntarte al día siguiente qué tal. No lo compartimos con nadie y, si quieres que lo borremos, basta con decírnoslo respondiendo a nuestro mensaje.</p>
+    </section>
+
+    <footer>
+      <span class="logo" aria-label="tonite"><span>ton<span class="logo-i">ı<svg class="estrella" style="color:var(--rosa)"><use href="#estrella"/></svg></span>te</span></span>
+      <p>Proyecto de estudiantes de la Universidad de Granada</p>
+    </footer>
+  </main>
+
+  <script>
+    // Enlace al formulario de votos (Google Forms). Mientras esté vacío, el botón sale desactivado.
+    var FORMULARIO = '';
+
+    document.querySelectorAll('[data-votar]').forEach(function (boton) {
+      if (FORMULARIO) {
+        boton.href = FORMULARIO;
+      } else {
+        boton.textContent = 'Votación disponible muy pronto';
+        boton.setAttribute('aria-disabled', 'true');
+      }
+    });
+
+    // Cuenta atrás hasta las 22:00, en hora de Granada.
+    function horaGranada() {
+      var partes = new Intl.DateTimeFormat('es-ES', { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date());
+      var valor = function (tipo) { return Number(partes.find(function (p) { return p.type === tipo; }).value); };
+      return valor('hour') * 60 + valor('minute');
+    }
+    function actualizarAviso() {
+      var aviso = document.getElementById('aviso');
+      var ahora = horaGranada();
+      var falta = 22 * 60 - ahora;
+      if (ahora >= 6 * 60 && falta > 0) {
+        var h = Math.floor(falta / 60), m = falta % 60;
+        aviso.textContent = 'Ranking a las 22:00 · faltan ' + (h ? h + ' h ' : '') + m + ' min';
+      } else {
+        aviso.textContent = 'El ranking de esta noche ya ha salido · vota para el próximo';
+      }
+    }
+    actualizarAviso();
+    setInterval(actualizarAviso, 30000);
+  </script>
+</body>
+</html>
