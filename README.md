@@ -168,8 +168,9 @@ Consejo: el día anterior, ábrela en el móvil, **regístrate** y añádela a l
 ## 6. Experimento de validación: landing «¿Dónde vas esta noche?»
 
 - **Landing:** `public/votar/index.html`. Se publica en `https://tonite-theta.vercel.app/votar/`. Es una página aparte de la app.
-- **Enlace al formulario:** al final del archivo, en la línea `var FORMULARIO = '';`, va entre las comillas el enlace del formulario de votos. Mientras esté vacío, el botón pone «Votación disponible muy pronto».
-- **Formularios y ranking:** `scripts/experimento_votos.gs` se pega en script.google.com. `crearFormularios` crea los dos formularios y la hoja de respuestas (una sola vez). `rankingDeHoy` escribe a las 22:00 el mensaje del ranking y la lista de contactos. `resultados` comprueba los criterios de validación.
+- **Se vota en la propia landing**, en español o en inglés (botón ES/EN; con `?lang=en` en el enlace se abre en inglés). Los votos se guardan en un formulario de Google Forms: las respuestas van siempre en español, aunque la página esté en inglés.
+- **Conectar el formulario:** en el `<script>` de la landing, `var FORMULARIO = null;` se sustituye por la línea que da la función `datosParaLaLanding`. Mientras sea `null`, el botón pone «Votación disponible muy pronto».
+- **Formularios y ranking:** `scripts/experimento_votos.gs` se pega en script.google.com. `crearFormularios` crea los dos formularios y la hoja de respuestas (una sola vez). `datosParaLaLanding` da los datos para conectar la landing. `rankingDeHoy` escribe a las 22:00 el mensaje del ranking y la lista de contactos. `resultados` comprueba los criterios de validación.
 - **Imagen al compartir el enlace** (WhatsApp, Instagram): `public/votar/og.png`.
 
 ## 7. Para los curiosos: cómo está hecha

@@ -23,26 +23,44 @@
     :root {
       --fondo: #0a0f1f;
       --tarjeta: #121a31;
+      --tarjeta-2: #19223f;
       --borde: #26314f;
       --crema: #f4e9da;
       --suave: #9aa3c4;
       --rosa: #ff2e9a;
       --oro: #e2b15b;
+      --whatsapp: #25d366;
+      --error: #ff7a7a;
       --serif: 'Fraunces', Georgia, serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { -webkit-text-size-adjust: 100%; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
     body {
       font-family: 'Manrope', system-ui, sans-serif;
       color: var(--crema);
       background-color: var(--fondo);
       /* Alicatado nazarí muy tenue */
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cg fill='none' stroke='%23E2B15B' stroke-opacity='0.06' stroke-width='2'%3E%3Crect x='29' y='29' width='38' height='38'/%3E%3Crect x='29' y='29' width='38' height='38' transform='rotate(45 48 48)'/%3E%3Ccircle cx='48' cy='48' r='8'/%3E%3Cpath d='M0 48h19M77 48h19M48 0v19M48 77v19'/%3E%3C/g%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cg fill='none' stroke='%23E2B15B' stroke-opacity='0.05' stroke-width='2'%3E%3Crect x='29' y='29' width='38' height='38'/%3E%3Crect x='29' y='29' width='38' height='38' transform='rotate(45 48 48)'/%3E%3Ccircle cx='48' cy='48' r='8'/%3E%3Cpath d='M0 48h19M77 48h19M48 0v19M48 77v19'/%3E%3C/g%3E%3C/svg%3E");
       line-height: 1.5;
       min-height: 100vh;
     }
-    main { max-width: 560px; margin: 0 auto; padding: 0 16px calc(32px + env(safe-area-inset-bottom)); }
+    main { position: relative; max-width: 560px; margin: 0 auto; padding: 0 16px calc(32px + env(safe-area-inset-bottom)); }
     .estrella { display: inline-block; width: 1em; height: 1em; vertical-align: -0.12em; }
+    [hidden] { display: none !important; }
+
+    /* Selector de idioma */
+    .idioma {
+      position: absolute; z-index: 2;
+      top: calc(12px + env(safe-area-inset-top)); right: 16px;
+      display: flex; padding: 3px; gap: 2px;
+      background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 999px;
+    }
+    .idioma button {
+      border: 0; border-radius: 999px; padding: 6px 12px;
+      background: transparent; color: var(--suave);
+      font: 800 13px 'Manrope', sans-serif; letter-spacing: .06em; cursor: pointer;
+    }
+    .idioma button[aria-pressed="true"] { background: var(--rosa); color: #1b0b16; }
 
     /* Logo: ton·ı·te con la estrella como punto de la i */
     .logo { font-family: var(--serif); font-style: italic; font-weight: 600; line-height: 1; letter-spacing: -.01em; display: inline-flex; flex-direction: column; align-items: center; }
@@ -52,40 +70,93 @@
 
     /* Portada en arco */
     .portada {
-      margin-top: calc(24px + env(safe-area-inset-top));
-      padding: 44px 24px 32px;
+      margin-top: calc(56px + env(safe-area-inset-top));
+      padding: 40px 22px 28px;
       border: 2px solid rgba(226, 177, 91, .4);
       border-bottom: 0;
       border-radius: 240px 240px 0 0;
       background: radial-gradient(circle at 50% 110%, #3a1a45 0%, rgba(10, 15, 31, 0) 70%);
       text-align: center;
     }
-    .portada .logo { font-size: 52px; }
+    .portada .logo { font-size: 48px; }
     .aviso {
       display: inline-flex; align-items: center; gap: 8px;
-      margin-top: 28px; padding: 6px 14px;
+      margin-top: 24px; padding: 6px 14px;
       border: 1px solid rgba(255, 46, 154, .5); border-radius: 999px;
       font-size: 13px; font-weight: 700; color: var(--rosa);
     }
-    .aviso::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--rosa); box-shadow: 0 0 10px var(--rosa); animation: latido 1.6s ease-in-out infinite; }
+    .aviso::before { content: ''; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--rosa); box-shadow: 0 0 10px var(--rosa); animation: latido 1.6s ease-in-out infinite; }
     @keyframes latido { 50% { opacity: .35; } }
-    h1 { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: clamp(40px, 11vw, 56px); line-height: 1.05; margin-top: 16px; }
-    .sub { color: var(--suave); font-size: 17px; margin: 14px auto 0; max-width: 400px; }
+    h1 { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: clamp(38px, 10.5vw, 54px); line-height: 1.05; margin-top: 14px; }
+    .sub { color: var(--suave); font-size: 17px; margin: 12px auto 0; max-width: 400px; }
     .sub strong { color: var(--crema); }
+
+    /* Formulario de voto */
+    .tarjeta-voto {
+      scroll-margin-top: 16px;
+      padding: 24px 20px;
+      background: var(--tarjeta); border: 1px solid var(--borde);
+      border-top: 3px solid var(--rosa);
+      border-radius: 0 0 24px 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .35);
+    }
+    .campo { border: 0; min-width: 0; }
+    .campo + .campo { margin-top: 24px; }
+    .pregunta { display: flex; align-items: flex-start; gap: 10px; font-weight: 800; font-size: 16px; margin-bottom: 10px; padding: 0; }
+    .pregunta-texto { flex: 1; }
+    .num {
+      flex: none; display: inline-grid; place-items: center; width: 24px; height: 24px;
+      border-radius: 50%; background: var(--rosa); color: #1b0b16; font-size: 13px;
+    }
+    .opcional { display: block; font-weight: 600; font-size: 13px; color: var(--suave); }
+    select, input[type="text"] {
+      width: 100%; padding: 14px 16px;
+      background: var(--tarjeta-2); color: var(--crema);
+      border: 1px solid var(--borde); border-radius: 14px;
+      font: 600 16px 'Manrope', sans-serif;
+    }
+    select {
+      appearance: none; -webkit-appearance: none; padding-right: 44px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' fill='none' stroke='%23E2B15B' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center; background-size: 20px;
+    }
+    select:invalid { color: var(--suave); }
+    option, optgroup { background: var(--tarjeta); color: var(--crema); }
+    select:focus, input[type="text"]:focus { outline: 2px solid var(--oro); outline-offset: 1px; }
+    input::placeholder { color: #6b7496; }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill { position: relative; }
+    .pill input { position: absolute; opacity: 0; pointer-events: none; }
+    .pill span {
+      display: inline-block; padding: 10px 16px;
+      background: var(--tarjeta-2); border: 1px solid var(--borde); border-radius: 999px;
+      font-weight: 700; font-size: 15px; cursor: pointer; user-select: none;
+      transition: background .15s ease, border-color .15s ease;
+    }
+    .pill input:checked + span { background: rgba(255, 46, 154, .16); border-color: var(--rosa); color: #fff; }
+    .pill input:focus-visible + span { outline: 2px solid var(--oro); outline-offset: 2px; }
+    .ayuda { margin-top: 8px; font-size: 13px; color: var(--suave); }
+    .error { color: var(--error); font-size: 14px; font-weight: 700; margin-top: 8px; }
+    .error:empty { display: none; }
 
     .boton {
       display: flex; align-items: center; justify-content: center; gap: 10px;
       width: 100%; margin-top: 28px; padding: 18px 24px;
-      border: 0; border-radius: 999px;
+      border: 0; border-radius: 999px; cursor: pointer;
       background: var(--rosa); color: #1b0b16;
-      font: 800 19px 'Manrope', sans-serif; text-decoration: none;
+      font: 800 19px 'Manrope', sans-serif; text-decoration: none; text-align: center;
       box-shadow: 0 0 0 6px rgba(255, 46, 154, .15), 0 12px 32px rgba(255, 46, 154, .35);
       transition: transform .15s ease;
     }
     .boton:active { transform: scale(.98); }
-    .boton[aria-disabled="true"] { background: var(--borde); color: var(--suave); box-shadow: none; pointer-events: none; }
-    .micro { margin-top: 12px; font-size: 13px; color: var(--suave); }
-    .erasmus { margin-top: 6px; font-size: 13px; color: var(--suave); font-style: italic; }
+    .boton:disabled { background: var(--borde); color: var(--suave); box-shadow: none; cursor: default; }
+    .boton-whatsapp { background: var(--whatsapp); color: #062b14; box-shadow: 0 12px 32px rgba(37, 211, 102, .25); }
+
+    /* Después de votar */
+    .hecho { text-align: center; padding: 8px 0 4px; }
+    .hecho .estrella { font-size: 56px; color: var(--rosa); filter: drop-shadow(0 0 16px rgba(255, 46, 154, .6)); }
+    .hecho h2 { margin-top: 12px; }
+    .hecho p { color: var(--suave); margin-top: 8px; }
 
     section { margin-top: 56px; }
     .etiqueta { font-size: 12px; font-weight: 800; letter-spacing: .28em; text-transform: uppercase; color: var(--oro); }
@@ -136,102 +207,383 @@
   </svg>
 
   <main>
+    <div class="idioma" role="group" aria-label="Idioma / Language">
+      <button type="button" data-idioma="es" aria-pressed="true">ES</button>
+      <button type="button" data-idioma="en" aria-pressed="false">EN</button>
+    </div>
+
     <header class="portada">
       <span class="logo" aria-label="tonite, Granada de noche">
         <span>ton<span class="logo-i">ı<svg class="estrella" style="color:var(--rosa)"><use href="#estrella"/></svg></span>te</span>
         <span class="logo-lema">Granada de noche</span>
       </span>
       <div><span class="aviso" id="aviso">Ranking de esta noche a las 22:00</span></div>
-      <h1>¿Dónde vas esta noche?</h1>
-      <p class="sub">Vota en 20 segundos y <strong>a las 22:00 te mandamos dónde va a haber más gente</strong> en Granada.</p>
-      <a class="boton" data-votar href="#">Votar ahora</a>
-      <p class="micro">Gratis · sin descargar nada · 4 preguntas</p>
-      <p class="erasmus" lang="en">Erasmus? Tell us where you're going tonight and get the 22:00 ranking.</p>
+      <h1 data-t="titulo">¿Dónde vas esta noche?</h1>
+      <p class="sub" data-t-html="sub">Vota aquí en 20 segundos y <strong>a las 22:00 te mandamos dónde va a haber más gente</strong> en Granada.</p>
     </header>
 
+    <div class="tarjeta-voto" id="votar">
+      <form id="formulario" novalidate>
+        <div class="campo">
+          <label class="pregunta" for="sitio"><span class="num">1</span><span class="pregunta-texto" data-t="q1">¿Dónde vas esta noche?</span></label>
+          <select id="sitio" name="sitio" required>
+            <option value="" disabled selected data-t="q1ph">Elige un sitio…</option>
+            <option value="Aún no lo sé" data-t="aunNo">Aún no lo sé</option>
+            <optgroup label="Pedro Antonio">
+              <option>Chupitería 69</option>
+              <option>El Larguero</option>
+              <option>La Habana</option>
+              <option>L'scandalo Pub</option>
+              <option>Las Marismas</option>
+              <option>PlaymobilClub</option>
+              <option>Pub Babel</option>
+              <option>Pub Imperial</option>
+              <option>Pub Legend</option>
+              <option>Pub Lokura Latina</option>
+              <option>Pub Namek</option>
+              <option>Pub Rubik</option>
+              <option>Pub Wall Street</option>
+              <option>Sonora Desert Saloon</option>
+            </optgroup>
+            <optgroup label="Calle Elvira" data-t-label="zonaElvira">
+              <option>Boom Boom Room</option>
+              <option>Granada 10</option>
+              <option>Miniclub</option>
+              <option>Pata Palo</option>
+              <option>Pub Kocran (antes El Son)</option>
+              <option>Pub La Flaca</option>
+            </optgroup>
+            <optgroup label="Ganivet">
+              <option>Kinsasa</option>
+              <option>Pub Ganivet 13</option>
+              <option>Pub La Estrella</option>
+            </optgroup>
+            <optgroup label="Discotecas del centro" data-t-label="zonaDiscotecas">
+              <option>Mae West</option>
+              <option>Sala Aliatar</option>
+              <option>Twoo Club (antes Campus)</option>
+            </optgroup>
+            <option value="Otro sitio" data-t="otro">Otro sitio</option>
+          </select>
+          <p class="error" data-error="sitio"></p>
+        </div>
+
+        <fieldset class="campo">
+          <legend class="pregunta"><span class="num">2</span><span class="pregunta-texto"><span data-t="q2">¿Qué te hace elegir sitio?</span><span class="opcional" data-t="varias">Puedes marcar varias</span></span></legend>
+          <div class="pills">
+            <label class="pill"><input type="checkbox" name="eleccion" value="Ambiente"><span data-t="ambiente">Ambiente</span></label>
+            <label class="pill"><input type="checkbox" name="eleccion" value="Música"><span data-t="musica">Música</span></label>
+            <label class="pill"><input type="checkbox" name="eleccion" value="Precio"><span data-t="precio">Precio</span></label>
+            <label class="pill"><input type="checkbox" name="eleccion" value="Que vayan mis amigos"><span data-t="amigos">Que vayan mis amigos</span></label>
+            <label class="pill"><input type="checkbox" name="eleccion" value="Cercanía"><span data-t="cercania">Cercanía</span></label>
+          </div>
+          <p class="error" data-error="eleccion"></p>
+        </fieldset>
+
+        <fieldset class="campo">
+          <legend class="pregunta"><span class="num">3</span><span class="pregunta-texto" data-t="q3">¿En qué estás?</span></legend>
+          <div class="pills">
+            <label class="pill"><input type="radio" name="curso" value="Primero"><span data-t="primero">Primero</span></label>
+            <label class="pill"><input type="radio" name="curso" value="Erasmus"><span>Erasmus</span></label>
+            <label class="pill"><input type="radio" name="curso" value="Otro curso"><span data-t="otroCurso">Otro curso</span></label>
+            <label class="pill"><input type="radio" name="curso" value="No estudio"><span data-t="noEstudio">No estudio</span></label>
+          </div>
+          <p class="error" data-error="curso"></p>
+        </fieldset>
+
+        <div class="campo">
+          <label class="pregunta" for="contacto"><span class="num">4</span><span class="pregunta-texto"><span data-t="q4">Tu WhatsApp o email para recibir el ranking a las 22:00</span><span class="opcional" data-t="opcional">(opcional)</span></span></label>
+          <input id="contacto" name="contacto" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" data-t-ph="q4ph" placeholder="600 000 000 o tu@email.com" />
+          <p class="ayuda" data-t="q4ayuda">Solo lo usamos para mandarte el ranking esta noche y preguntarte mañana qué tal. No lo compartimos con nadie.</p>
+          <p class="error" data-error="contacto"></p>
+        </div>
+
+        <button class="boton" type="submit" id="enviar">Votar</button>
+        <p class="error" data-error="envio"></p>
+      </form>
+
+      <div class="hecho" id="hecho" hidden>
+        <svg class="estrella"><use href="#estrella"/></svg>
+        <h2 id="hecho-titulo" data-t="hechoTitulo">¡Voto registrado!</h2>
+        <p id="hecho-texto" data-t="hechoCon"></p>
+        <a class="boton boton-whatsapp" id="compartir" href="#" target="_blank" rel="noopener" data-t="compartir">Pásalo a tu grupo</a>
+      </div>
+    </div>
+
     <section>
-      <p class="etiqueta">Así te llega</p>
-      <h2>El ranking, antes de salir</h2>
-      <div class="mensaje" aria-label="Ejemplo de mensaje con el ranking; los nombres se desvelan a las 22:00">
-        <p class="mensaje-titulo"><svg class="estrella"><use href="#estrella"/></svg> Ranking TONITE · esta noche</p>
+      <p class="etiqueta" data-t="asiLlega">Así te llega</p>
+      <h2 data-t="asiLlegaTitulo">El ranking, antes de salir</h2>
+      <div class="mensaje">
+        <p class="mensaje-titulo"><svg class="estrella"><use href="#estrella"/></svg> <span data-t="mensajeTitulo">Ranking TONITE · esta noche</span></p>
         <div class="fila"><span class="pos">1</span><span class="tapado"></span><svg class="estrella" style="color:#ff2e9a"><use href="#estrella"/></svg></div>
         <div class="fila"><span class="pos">2</span><span class="tapado" style="flex:.8"></span><svg class="estrella" style="color:#e2b15b"><use href="#estrella"/></svg></div>
         <div class="fila"><span class="pos">3</span><span class="tapado" style="flex:.6"></span><svg class="estrella" style="color:#3ddc97"><use href="#estrella"/></svg></div>
-        <p class="mensaje-pie">Los nombres se desvelan a las 22:00</p>
+        <p class="mensaje-pie" data-t="mensajePie">Los nombres se desvelan a las 22:00</p>
       </div>
     </section>
 
     <section>
-      <p class="etiqueta">¿Te ha pasado?</p>
-      <h2>Llegar a una discoteca y que esté vacía</h2>
-      <p>Y encima el plan lo propusiste tú. Hoy nadie sabe cuánta gente hay en un sitio hasta que llega a la puerta. Con el ranking lo sabes antes de salir.</p>
+      <p class="etiqueta" data-t="teHaPasado">¿Te ha pasado?</p>
+      <h2 data-t="vaciaTitulo">Llegar a una discoteca y que esté vacía</h2>
+      <p data-t="vaciaTexto">Y encima el plan lo propusiste tú. Hoy nadie sabe cuánta gente hay en un sitio hasta que llega a la puerta. Con el ranking lo sabes antes de salir.</p>
     </section>
 
     <section>
-      <p class="etiqueta">Cómo funciona</p>
-      <h2>Tres pasos</h2>
+      <p class="etiqueta" data-t="comoFunciona">Cómo funciona</p>
+      <h2 data-t="tresPasos">Tres pasos</h2>
       <div class="pasos">
-        <div class="paso"><span class="paso-icono">1</span><div><h3>Vota</h3><p>Dinos dónde vas esta noche, o si aún no lo sabes.</p></div></div>
-        <div class="paso"><span class="paso-icono">22:00</span><div><h3>Recibe el ranking</h3><p>Te lo mandamos por WhatsApp o email.</p></div></div>
-        <div class="paso"><span class="paso-icono">3</span><div><h3>Elige con ventaja</h3><p>Ve donde está el ambiente. Al día siguiente te preguntamos qué tal.</p></div></div>
+        <div class="paso"><span class="paso-icono">1</span><div><h3 data-t="paso1">Vota</h3><p data-t="paso1Texto">Aquí arriba: dónde vas esta noche, o si aún no lo sabes.</p></div></div>
+        <div class="paso"><span class="paso-icono" data-t="hora">22:00</span><div><h3 data-t="paso2">Recibe el ranking</h3><p data-t="paso2Texto">Te lo mandamos por WhatsApp o email.</p></div></div>
+        <div class="paso"><span class="paso-icono">3</span><div><h3 data-t="paso3">Elige con ventaja</h3><p data-t="paso3Texto">Ve donde está el ambiente. Al día siguiente te preguntamos qué tal.</p></div></div>
       </div>
     </section>
 
     <section>
-      <p class="etiqueta">Qué es TONITE</p>
-      <h2>Un mapa del ambiente de Granada</h2>
-      <p>Somos estudiantes de la Universidad de Granada y estamos creando TONITE, una app para ver cuánta gente hay en cada bar y discoteca antes de salir. Este ranking es nuestra primera prueba: con tu voto nos ayudas a construirla.</p>
+      <p class="etiqueta" data-t="queEs">Qué es TONITE</p>
+      <h2 data-t="queEsTitulo">Un mapa del ambiente de Granada</h2>
+      <p data-t="queEsTexto">Somos estudiantes de la Universidad de Granada y estamos creando TONITE, una app para ver cuánta gente hay en cada bar y discoteca antes de salir. Este ranking es nuestra primera prueba: con tu voto nos ayudas a construirla.</p>
       <div class="niveles" aria-hidden="true">
-        <span><svg class="estrella" style="color:#6fa8ff"><use href="#estrella"/></svg>Vacío</span>
-        <span><svg class="estrella" style="color:#3ddc97"><use href="#estrella"/></svg>Algo de gente</span>
-        <span><svg class="estrella" style="color:#e2b15b"><use href="#estrella"/></svg>Animado</span>
-        <span><svg class="estrella" style="color:#ff2e9a"><use href="#estrella"/></svg>Lleno</span>
+        <span><svg class="estrella" style="color:#6fa8ff"><use href="#estrella"/></svg><span data-t="vacio">Vacío</span></span>
+        <span><svg class="estrella" style="color:#3ddc97"><use href="#estrella"/></svg><span data-t="algo">Algo de gente</span></span>
+        <span><svg class="estrella" style="color:#e2b15b"><use href="#estrella"/></svg><span data-t="animado">Animado</span></span>
+        <span><svg class="estrella" style="color:#ff2e9a"><use href="#estrella"/></svg><span data-t="lleno">Lleno</span></span>
       </div>
     </section>
 
     <section class="final">
-      <h2>¿Dónde vas esta noche?</h2>
-      <a class="boton" data-votar href="#">Votar ahora</a>
-      <p class="privacidad">Tu WhatsApp o email es opcional. Solo lo usamos para mandarte el ranking esa noche y preguntarte al día siguiente qué tal. No lo compartimos con nadie y, si quieres que lo borremos, basta con decírnoslo respondiendo a nuestro mensaje.</p>
+      <h2 data-t="titulo">¿Dónde vas esta noche?</h2>
+      <a class="boton" href="#votar" data-t="votarAhora">Votar ahora</a>
+      <p class="privacidad" data-t="privacidad">Tu WhatsApp o email es opcional. Solo lo usamos para mandarte el ranking esa noche y preguntarte al día siguiente qué tal. No lo compartimos con nadie y, si quieres que lo borremos, basta con decírnoslo respondiendo a nuestro mensaje.</p>
     </section>
 
     <footer>
       <span class="logo" aria-label="tonite"><span>ton<span class="logo-i">ı<svg class="estrella" style="color:var(--rosa)"><use href="#estrella"/></svg></span>te</span></span>
-      <p>Proyecto de estudiantes de la Universidad de Granada</p>
+      <p data-t="pie">Proyecto de estudiantes de la Universidad de Granada</p>
     </footer>
   </main>
 
   <script>
-    // Enlace al formulario de votos (Google Forms). Mientras esté vacío, el botón sale desactivado.
-    var FORMULARIO = '';
+    // Formulario de Google Forms al que llegan los votos. Lo da la función «datosParaLaLanding»
+    // de scripts/experimento_votos.gs. Mientras sea null, el botón de votar sale desactivado.
+    var FORMULARIO = null;
+    // Ejemplo: { url: 'https://docs.google.com/forms/d/e/…/formResponse', sitio: 'entry.1', eleccion: 'entry.2', curso: 'entry.3', contacto: 'entry.4' }
 
-    document.querySelectorAll('[data-votar]').forEach(function (boton) {
-      if (FORMULARIO) {
-        boton.href = FORMULARIO;
-      } else {
-        boton.textContent = 'Votación disponible muy pronto';
-        boton.setAttribute('aria-disabled', 'true');
+    var URL_LANDING = 'https://tonite-theta.vercel.app/votar/';
+
+    var TEXTOS = {
+      es: {
+        tituloPagina: '¿Dónde vas esta noche? · TONITE',
+        titulo: '¿Dónde vas esta noche?',
+        sub: 'Vota aquí en 20 segundos y <strong>a las 22:00 te mandamos dónde va a haber más gente</strong> en Granada.',
+        avisoFalta: 'Ranking a las 22:00 · faltan {t}',
+        avisoSalido: 'El ranking de esta noche ya ha salido · vota para el próximo',
+        q1: '¿Dónde vas esta noche?', q1ph: 'Elige un sitio…', aunNo: 'Aún no lo sé', otro: 'Otro sitio',
+        zonaElvira: 'Calle Elvira', zonaDiscotecas: 'Discotecas del centro',
+        q2: '¿Qué te hace elegir sitio?', varias: 'Puedes marcar varias',
+        ambiente: 'Ambiente', musica: 'Música', precio: 'Precio', amigos: 'Que vayan mis amigos', cercania: 'Cercanía',
+        q3: '¿En qué estás?', primero: 'Primero', otroCurso: 'Otro curso', noEstudio: 'No estudio',
+        q4: 'Tu WhatsApp o email para recibir el ranking a las 22:00', opcional: '(opcional)',
+        q4ph: '600 000 000 o tu@email.com',
+        q4ayuda: 'Solo lo usamos para mandarte el ranking esta noche y preguntarte mañana qué tal. No lo compartimos con nadie.',
+        votar: 'Votar', enviando: 'Enviando…', pronto: 'Votación disponible muy pronto',
+        eSitio: 'Elige dónde vas (o «Aún no lo sé»).', eEleccion: 'Marca al menos una opción.', eCurso: 'Dinos en qué estás.',
+        eContacto: 'Revisa tu WhatsApp o email.', eEnvio: 'No se ha podido enviar. Revisa tu conexión y vuelve a intentarlo.',
+        hechoTitulo: '¡Voto registrado!', yaVotaste: '¡Ya has votado hoy!',
+        hechoCon: 'A las 22:00 te mandamos el ranking. Mañana te preguntamos qué tal.',
+        hechoSin: 'Gracias por votar. Como no has dejado WhatsApp ni email, esta vez no te llegará el ranking.',
+        compartir: 'Pásalo a tu grupo',
+        compartirTexto: '¿Dónde vas esta noche? Vota y a las 22:00 te dicen dónde va a haber más gente en Granada 👉',
+        asiLlega: 'Así te llega', asiLlegaTitulo: 'El ranking, antes de salir',
+        mensajeTitulo: 'Ranking TONITE · esta noche', mensajePie: 'Los nombres se desvelan a las 22:00',
+        teHaPasado: '¿Te ha pasado?', vaciaTitulo: 'Llegar a una discoteca y que esté vacía',
+        vaciaTexto: 'Y encima el plan lo propusiste tú. Hoy nadie sabe cuánta gente hay en un sitio hasta que llega a la puerta. Con el ranking lo sabes antes de salir.',
+        comoFunciona: 'Cómo funciona', tresPasos: 'Tres pasos',
+        paso1: 'Vota', paso1Texto: 'Aquí arriba: dónde vas esta noche, o si aún no lo sabes.',
+        hora: '22:00', paso2: 'Recibe el ranking', paso2Texto: 'Te lo mandamos por WhatsApp o email.',
+        paso3: 'Elige con ventaja', paso3Texto: 'Ve donde está el ambiente. Al día siguiente te preguntamos qué tal.',
+        queEs: 'Qué es TONITE', queEsTitulo: 'Un mapa del ambiente de Granada',
+        queEsTexto: 'Somos estudiantes de la Universidad de Granada y estamos creando TONITE, una app para ver cuánta gente hay en cada bar y discoteca antes de salir. Este ranking es nuestra primera prueba: con tu voto nos ayudas a construirla.',
+        vacio: 'Vacío', algo: 'Algo de gente', animado: 'Animado', lleno: 'Lleno',
+        votarAhora: 'Votar ahora',
+        privacidad: 'Tu WhatsApp o email es opcional. Solo lo usamos para mandarte el ranking esa noche y preguntarte al día siguiente qué tal. No lo compartimos con nadie y, si quieres que lo borremos, basta con decírnoslo respondiendo a nuestro mensaje.',
+        pie: 'Proyecto de estudiantes de la Universidad de Granada'
+      },
+      en: {
+        tituloPagina: 'Where are you going tonight? · TONITE',
+        titulo: 'Where are you going tonight?',
+        sub: 'Vote here in 20 seconds and <strong>at 10 pm we’ll tell you where the crowd is going</strong> in Granada.',
+        avisoFalta: 'Ranking at 10 pm · {t} to go',
+        avisoSalido: 'Tonight’s ranking is out · vote for the next one',
+        q1: 'Where are you going tonight?', q1ph: 'Pick a place…', aunNo: 'I don’t know yet', otro: 'Somewhere else',
+        zonaElvira: 'Calle Elvira', zonaDiscotecas: 'Clubs in the centre',
+        q2: 'What makes you choose a place?', varias: 'Pick as many as you like',
+        ambiente: 'Atmosphere', musica: 'Music', precio: 'Price', amigos: 'My friends are going', cercania: 'Close by',
+        q3: 'Which one are you?', primero: 'First year', otroCurso: 'Other year', noEstudio: 'Not a student',
+        q4: 'Your WhatsApp or email to get the ranking at 10 pm', opcional: '(optional)',
+        q4ph: '+49 151 0000000 or you@email.com',
+        q4ayuda: 'We only use it to send you tonight’s ranking and ask you tomorrow how it went. We never share it.',
+        votar: 'Vote', enviando: 'Sending…', pronto: 'Voting opens very soon',
+        eSitio: 'Pick where you’re going (or “I don’t know yet”).', eEleccion: 'Pick at least one option.', eCurso: 'Tell us which one you are.',
+        eContacto: 'Check your WhatsApp or email.', eEnvio: 'Your vote couldn’t be sent. Check your connection and try again.',
+        hechoTitulo: 'Vote saved!', yaVotaste: 'You’ve already voted today!',
+        hechoCon: 'We’ll send you the ranking at 10 pm, and tomorrow we’ll ask how it went.',
+        hechoSin: 'Thanks for voting. You didn’t leave a WhatsApp or email, so this time you won’t get the ranking.',
+        compartir: 'Send it to your group',
+        compartirTexto: 'Where are you going tonight? Vote and at 10 pm you’ll know where the crowd is in Granada 👉',
+        asiLlega: 'What you get', asiLlegaTitulo: 'The ranking, before you go out',
+        mensajeTitulo: 'TONITE ranking · tonight', mensajePie: 'Names revealed at 10 pm',
+        teHaPasado: 'Sound familiar?', vaciaTitulo: 'Getting to a club and finding it empty',
+        vaciaTexto: 'And it was your idea. Right now nobody knows how busy a place is until they’re at the door. With the ranking, you know before you go out.',
+        comoFunciona: 'How it works', tresPasos: 'Three steps',
+        paso1: 'Vote', paso1Texto: 'Up here: where you’re going tonight, or whether you don’t know yet.',
+        hora: '10 pm', paso2: 'Get the ranking', paso2Texto: 'We send it to you by WhatsApp or email.',
+        paso3: 'Choose smart', paso3Texto: 'Go where the vibe is. The next day we’ll ask how it went.',
+        queEs: 'What is TONITE', queEsTitulo: 'A live map of Granada’s nightlife',
+        queEsTexto: 'We’re students at the University of Granada building TONITE, an app that shows how busy each bar and club is before you go out. This ranking is our first test: your vote helps us build it.',
+        vacio: 'Empty', algo: 'Some people', animado: 'Lively', lleno: 'Packed',
+        votarAhora: 'Vote now',
+        privacidad: 'Your WhatsApp or email is optional. We only use it to send you the ranking that night and ask you the next day how it went. We never share it, and if you want us to delete it, just reply to our message.',
+        pie: 'A project by students at the University of Granada'
       }
-    });
+    };
 
-    // Cuenta atrás hasta las 22:00, en hora de Granada.
-    function horaGranada() {
-      var partes = new Intl.DateTimeFormat('es-ES', { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date());
-      var valor = function (tipo) { return Number(partes.find(function (p) { return p.type === tipo; }).value); };
-      return valor('hour') * 60 + valor('minute');
+    var idioma = 'es';
+    var formulario = document.getElementById('formulario');
+    var enviar = document.getElementById('enviar');
+    var enviando = false;
+
+    function t(clave) { return TEXTOS[idioma][clave]; }
+
+    // localStorage puede fallar (modo privado): la página funciona igual sin él.
+    function leer(clave) { try { return localStorage.getItem(clave); } catch (e) { return null; } }
+    function guardar(clave, valor) { try { localStorage.setItem(clave, valor); } catch (e) {} }
+
+    function elegirIdiomaInicial() {
+      var pedido = new URLSearchParams(location.search).get('lang');
+      if (pedido === 'es' || pedido === 'en') return pedido;
+      var guardado = leer('tonite-idioma');
+      if (guardado === 'es' || guardado === 'en') return guardado;
+      return /^(es|ca|gl|eu)\b/i.test(navigator.language || '') ? 'es' : 'en';
+    }
+
+    function aplicarIdioma(nuevo) {
+      idioma = nuevo;
+      document.documentElement.lang = idioma;
+      document.title = t('tituloPagina');
+      document.querySelectorAll('[data-t]').forEach(function (el) { el.textContent = t(el.getAttribute('data-t')); });
+      document.querySelectorAll('[data-t-html]').forEach(function (el) { el.innerHTML = t(el.getAttribute('data-t-html')); });
+      document.querySelectorAll('[data-t-label]').forEach(function (el) { el.label = t(el.getAttribute('data-t-label')); });
+      document.querySelectorAll('[data-t-ph]').forEach(function (el) { el.placeholder = t(el.getAttribute('data-t-ph')); });
+      document.querySelectorAll('[data-idioma]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-idioma') === idioma)); });
+      document.querySelectorAll('[data-error]').forEach(function (el) {
+        var clave = el.getAttribute('data-clave');
+        el.textContent = clave ? t(clave) : '';
+      });
+      var texto = t('compartirTexto') + ' ' + URL_LANDING + (idioma === 'en' ? '?lang=en' : '');
+      document.getElementById('compartir').href = 'https://wa.me/?text=' + encodeURIComponent(texto);
+      prepararBoton();
+      actualizarAviso();
+    }
+
+    function prepararBoton() {
+      if (enviando) { enviar.textContent = t('enviando'); return; }
+      enviar.disabled = !FORMULARIO;
+      enviar.textContent = FORMULARIO ? t('votar') : t('pronto');
+    }
+
+    // Hora y día en Granada, para la cuenta atrás y para saber si ya se votó hoy.
+    function ahoraEnGranada() {
+      var partes = {};
+      new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Madrid', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+        .formatToParts(new Date()).forEach(function (p) { partes[p.type] = p.value; });
+      return { dia: partes.year + '-' + partes.month + '-' + partes.day, minutos: Number(partes.hour) * 60 + Number(partes.minute) };
     }
     function actualizarAviso() {
       var aviso = document.getElementById('aviso');
-      var ahora = horaGranada();
+      var ahora = ahoraEnGranada().minutos;
       var falta = 22 * 60 - ahora;
       if (ahora >= 6 * 60 && falta > 0) {
         var h = Math.floor(falta / 60), m = falta % 60;
-        aviso.textContent = 'Ranking a las 22:00 · faltan ' + (h ? h + ' h ' : '') + m + ' min';
+        aviso.textContent = t('avisoFalta').replace('{t}', (h ? h + ' h ' : '') + m + ' min');
       } else {
-        aviso.textContent = 'El ranking de esta noche ya ha salido · vota para el próximo';
+        aviso.textContent = t('avisoSalido');
       }
     }
-    actualizarAviso();
+
+    function ponerError(campo, clave) {
+      var el = document.querySelector('[data-error="' + campo + '"]');
+      el.setAttribute('data-clave', clave);
+      el.textContent = t(clave);
+    }
+    function quitarErrores() {
+      document.querySelectorAll('[data-error]').forEach(function (el) { el.removeAttribute('data-clave'); el.textContent = ''; });
+    }
+    function contactoValido(valor) {
+      return /\S+@\S+\.\S+/.test(valor) || valor.replace(/\D/g, '').length >= 9;
+    }
+
+    function mostrarHecho(conContacto, yaVotado) {
+      formulario.hidden = true;
+      document.getElementById('hecho-titulo').setAttribute('data-t', yaVotado ? 'yaVotaste' : 'hechoTitulo');
+      document.getElementById('hecho-texto').setAttribute('data-t', conContacto ? 'hechoCon' : 'hechoSin');
+      document.getElementById('hecho').hidden = false;
+      aplicarIdioma(idioma);
+    }
+
+    formulario.addEventListener('submit', function (evento) {
+      evento.preventDefault();
+      if (!FORMULARIO || enviando) return;
+      quitarErrores();
+      var sitio = formulario.elements.sitio.value;
+      var eleccion = Array.prototype.map.call(formulario.querySelectorAll('input[name="eleccion"]:checked'), function (i) { return i.value; });
+      var curso = formulario.querySelector('input[name="curso"]:checked');
+      var contacto = formulario.elements.contacto.value.trim();
+      var errores = [];
+      if (!sitio) errores.push(['sitio', 'eSitio']);
+      if (!eleccion.length) errores.push(['eleccion', 'eEleccion']);
+      if (!curso) errores.push(['curso', 'eCurso']);
+      if (contacto && !contactoValido(contacto)) errores.push(['contacto', 'eContacto']);
+      if (errores.length) {
+        errores.forEach(function (e) { ponerError(e[0], e[1]); });
+        document.querySelector('[data-error="' + errores[0][0] + '"]').parentNode.scrollIntoView({ block: 'center' });
+        return;
+      }
+
+      // Los valores van siempre en español, como las opciones del formulario de Google.
+      var datos = new URLSearchParams();
+      datos.append(FORMULARIO.sitio, sitio);
+      eleccion.forEach(function (valor) { datos.append(FORMULARIO.eleccion, valor); });
+      datos.append(FORMULARIO.curso, curso.value);
+      if (contacto) datos.append(FORMULARIO.contacto, contacto);
+
+      enviando = true;
+      enviar.disabled = true;
+      prepararBoton();
+      fetch(FORMULARIO.url, { method: 'POST', mode: 'no-cors', body: datos })
+        .then(function () {
+          guardar('tonite-voto', JSON.stringify({ dia: ahoraEnGranada().dia, contacto: !!contacto }));
+          enviando = false;
+          mostrarHecho(!!contacto, false);
+        })
+        .catch(function () {
+          enviando = false;
+          ponerError('envio', 'eEnvio');
+          prepararBoton();
+        });
+    });
+
+    document.querySelectorAll('[data-idioma]').forEach(function (boton) {
+      boton.addEventListener('click', function () {
+        guardar('tonite-idioma', boton.getAttribute('data-idioma'));
+        aplicarIdioma(boton.getAttribute('data-idioma'));
+      });
+    });
+
+    aplicarIdioma(elegirIdiomaInicial());
+    try {
+      var voto = JSON.parse(leer('tonite-voto') || 'null');
+      if (voto && voto.dia === ahoraEnGranada().dia) mostrarHecho(voto.contacto, true);
+    } catch (e) {}
     setInterval(actualizarAviso, 30000);
   </script>
 </body>

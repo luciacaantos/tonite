@@ -1,8 +1,10 @@
 // TONITE · experimento de validación (Google Apps Script).
-// Se pega en script.google.com. Hay tres funciones:
+// Se pega en script.google.com. Hay cuatro funciones:
 //   1. crearFormularios: una sola vez. Crea el formulario de votos, el del día siguiente y una hoja con las respuestas.
-//   2. rankingDeHoy: cada noche de votación a las 22:00. Escribe el mensaje del ranking y a quién mandarlo.
-//   3. resultados: al final de las 2 semanas. Comprueba los criterios de validación.
+//   2. datosParaLaLanding: una sola vez, después de la anterior. Escribe los datos para que la landing
+//      (public/votar/index.html, variable FORMULARIO) mande los votos a ese formulario.
+//   3. rankingDeHoy: cada noche de votación a las 22:00. Escribe el mensaje del ranking y a quién mandarlo.
+//   4. resultados: al final de las 2 semanas. Comprueba los criterios de validación.
 
 var ZONA = 'Europe/Madrid';
 
@@ -61,9 +63,29 @@ function crearFormularios() {
     cambio: String(cambio.getId())
   });
 
-  Logger.log('Formulario de votos (este es el enlace para la landing): ' + votos.getPublishedUrl());
+  Logger.log('Formulario de votos (por si alguien prefiere votar en Google Forms): ' + votos.getPublishedUrl());
   Logger.log('Formulario del día siguiente: ' + seguimiento.getPublishedUrl());
   Logger.log('Hoja con todas las respuestas: ' + hoja.getUrl());
+}
+
+function datosParaLaLanding() {
+  var c = PropertiesService.getScriptProperties().getProperties();
+  var form = FormApp.openById(c.votos);
+  var datos = {};
+  form.getItems().forEach(function (item) {
+    var tipo = item.getType();
+    var campo, respuestaDePrueba;
+    if (tipo === FormApp.ItemType.LIST) { campo = 'sitio'; respuestaDePrueba = item.asListItem().createResponse(AUN_NO); }
+    else if (tipo === FormApp.ItemType.CHECKBOX) { campo = 'eleccion'; respuestaDePrueba = item.asCheckboxItem().createResponse(['Ambiente']); }
+    else if (tipo === FormApp.ItemType.MULTIPLE_CHOICE) { campo = 'curso'; respuestaDePrueba = item.asMultipleChoiceItem().createResponse('Primero'); }
+    else if (tipo === FormApp.ItemType.TEXT) { campo = 'contacto'; respuestaDePrueba = item.asTextItem().createResponse('x'); }
+    else return;
+    // El enlace prerrellenado lleva el nombre interno de la pregunta («entry.123…»), que es lo que necesita la landing.
+    var enlace = form.createResponse().withItemResponse(respuestaDePrueba).toPrefilledUrl();
+    datos[campo] = 'entry.' + enlace.match(/entry\.(\d+)=/)[1];
+    datos.url = enlace.split('?')[0].replace(/viewform$/, 'formResponse');
+  });
+  Logger.log('Copia esta línea entera y mándasela a Claude:\n\n' + JSON.stringify(datos));
 }
 
 function rankingDeHoy() {
