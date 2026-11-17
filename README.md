@@ -167,10 +167,15 @@ Consejo: el día anterior, ábrela en el móvil, **regístrate** y añádela a l
 
 ## 6. Experimento de validación: landing «¿Dónde vas esta noche?»
 
-- **Landing:** `public/votar/index.html`. Se publica en `https://tonite-theta.vercel.app/votar/`. Es una página aparte de la app.
-- **Se vota en la propia landing**, en español o en inglés (botón ES/EN; con `?lang=en` en el enlace se abre en inglés). Los votos se guardan en un formulario de Google Forms: las respuestas van siempre en español, aunque la página esté en inglés.
-- **Conectar el formulario:** en el `<script>` de la landing, `var FORMULARIO = null;` se sustituye por la línea que da la función `datosParaLaLanding`. Mientras sea `null`, el botón pone «Votación disponible muy pronto».
-- **Formularios y ranking:** `scripts/experimento_votos.gs` se pega en script.google.com. `crearFormularios` crea los dos formularios y la hoja de respuestas (una sola vez). `datosParaLaLanding` da los datos para conectar la landing. `rankingDeHoy` escribe a las 22:00 el mensaje del ranking y la lista de contactos. `resultados` comprueba los criterios de validación.
+- **Landing:** `public/votar/index.html`, publicada en `https://tonite-theta.vercel.app/votar/`. Es una página aparte de la app.
+- **Qué se vota:** hasta 2 sitios (o «Aún no lo sé» / «Otro sitio» con su nombre), qué hace elegir sitio, edad, si es Erasmus (y si no, si es su primer año en Granada) y, opcional, WhatsApp o email.
+- **Después de votar**, quien responde «¿Cambiarás de plan esta noche según dónde esté más animado?» desbloquea el ranking en directo, con filtros por edad y por Erasmus.
+- **Idiomas:** botón ES/EN; con `?lang=en` se abre en inglés. Las respuestas se guardan siempre en español.
+- **Canal:** con `?c=nombre` (por ejemplo `?c=esn`) se apunta de qué canal llega cada voto.
+- **Pregunta del día siguiente:** `https://tonite-theta.vercel.app/votar/?anoche` (y `?anoche&lang=en`).
+- **Dónde se guarda todo:** `scripts/experimento_votos.gs` es una aplicación web de Google Apps Script que escribe en una hoja de cálculo (pestañas «Votos» y «Seguimiento») y da el ranking en directo, sin contactos. `preparar` crea la hoja; `rankingDeHoy` escribe a las 22:00 el mensaje en español y en inglés y a quién mandarlo; `resultados` comprueba los criterios y los desglosa por edad y Erasmus.
+- **Conectar la landing:** en el `<script>` de la landing, `var API = null;` se sustituye por la URL de la aplicación web (la que acaba en `/exec`). Mientras sea `null`, el botón pone «Votación disponible muy pronto».
+- **Lista de locales:** está en la landing y en el script; tiene que ser la misma en los dos.
 - **Imagen al compartir el enlace** (WhatsApp, Instagram): `public/votar/og.png`.
 
 ## 7. Para los curiosos: cómo está hecha

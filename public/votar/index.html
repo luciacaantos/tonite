@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0a0f1f" />
   <title>¿Dónde vas esta noche? · TONITE</title>
-  <meta name="description" content="Vota en 20 segundos y a las 22:00 te mandamos dónde va a haber más gente en Granada esta noche." />
+  <meta name="description" content="Vota en 20 segundos, mira el ranking en directo y a las 22:00 te mandamos dónde va a haber más gente en Granada." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://tonite-theta.vercel.app/votar/" />
   <meta property="og:title" content="¿Dónde vas esta noche? · TONITE" />
-  <meta property="og:description" content="Vota en 20 segundos y a las 22:00 te mandamos dónde va a haber más gente en Granada." />
+  <meta property="og:description" content="Vota en 20 segundos, mira el ranking en directo y a las 22:00 te mandamos dónde va a haber más gente en Granada." />
   <meta property="og:image" content="https://tonite-theta.vercel.app/votar/og.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -47,6 +47,7 @@
     main { position: relative; max-width: 560px; margin: 0 auto; padding: 0 16px calc(32px + env(safe-area-inset-bottom)); }
     .estrella { display: inline-block; width: 1em; height: 1em; vertical-align: -0.12em; }
     [hidden] { display: none !important; }
+    .modo-anoche .solo-voto { display: none !important; }
 
     /* Selector de idioma */
     .idioma {
@@ -85,13 +86,13 @@
       border: 1px solid rgba(255, 46, 154, .5); border-radius: 999px;
       font-size: 13px; font-weight: 700; color: var(--rosa);
     }
-    .aviso::before { content: ''; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--rosa); box-shadow: 0 0 10px var(--rosa); animation: latido 1.6s ease-in-out infinite; }
+    .aviso::before, .en-directo::before { content: ''; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--rosa); box-shadow: 0 0 10px var(--rosa); animation: latido 1.6s ease-in-out infinite; }
     @keyframes latido { 50% { opacity: .35; } }
     h1 { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: clamp(38px, 10.5vw, 54px); line-height: 1.05; margin-top: 14px; }
     .sub { color: var(--suave); font-size: 17px; margin: 12px auto 0; max-width: 400px; }
     .sub strong { color: var(--crema); }
 
-    /* Formulario de voto */
+    /* Tarjeta del voto */
     .tarjeta-voto {
       scroll-margin-top: 16px;
       padding: 24px 20px;
@@ -102,6 +103,7 @@
     }
     .campo { border: 0; min-width: 0; }
     .campo + .campo { margin-top: 24px; }
+    .campo-extra { margin-top: 14px; padding-left: 34px; }
     .pregunta { display: flex; align-items: flex-start; gap: 10px; font-weight: 800; font-size: 16px; margin-bottom: 10px; padding: 0; }
     .pregunta-texto { flex: 1; }
     .num {
@@ -115,26 +117,31 @@
       border: 1px solid var(--borde); border-radius: 14px;
       font: 600 16px 'Manrope', sans-serif;
     }
+    select + select, select + input, .campo-otro { margin-top: 10px; }
     select {
       appearance: none; -webkit-appearance: none; padding-right: 44px;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' fill='none' stroke='%23E2B15B' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
       background-repeat: no-repeat; background-position: right 14px center; background-size: 20px;
     }
-    select:invalid { color: var(--suave); }
+    select:disabled { opacity: .45; }
+    select.vacio { color: var(--suave); }
     option, optgroup { background: var(--tarjeta); color: var(--crema); }
     select:focus, input[type="text"]:focus { outline: 2px solid var(--oro); outline-offset: 1px; }
     input::placeholder { color: #6b7496; }
+
     .pills { display: flex; flex-wrap: wrap; gap: 8px; }
     .pill { position: relative; }
     .pill input { position: absolute; opacity: 0; pointer-events: none; }
-    .pill span {
+    .pill span, .chip {
       display: inline-block; padding: 10px 16px;
-      background: var(--tarjeta-2); border: 1px solid var(--borde); border-radius: 999px;
-      font-weight: 700; font-size: 15px; cursor: pointer; user-select: none;
+      background: var(--tarjeta-2); color: var(--crema); border: 1px solid var(--borde); border-radius: 999px;
+      font: 700 15px 'Manrope', sans-serif; cursor: pointer; user-select: none;
       transition: background .15s ease, border-color .15s ease;
     }
-    .pill input:checked + span { background: rgba(255, 46, 154, .16); border-color: var(--rosa); color: #fff; }
-    .pill input:focus-visible + span { outline: 2px solid var(--oro); outline-offset: 2px; }
+    .pill input:checked + span, .chip[aria-pressed="true"] { background: rgba(255, 46, 154, .16); border-color: var(--rosa); color: #fff; }
+    .pill input:focus-visible + span, .chip:focus-visible { outline: 2px solid var(--oro); outline-offset: 2px; }
+    .chip:disabled { opacity: .5; cursor: default; }
+    .chips-peque .chip { padding: 6px 12px; font-size: 13px; }
     .ayuda { margin-top: 8px; font-size: 13px; color: var(--suave); }
     .error { color: var(--error); font-size: 14px; font-weight: 700; margin-top: 8px; }
     .error:empty { display: none; }
@@ -153,17 +160,44 @@
     .boton-whatsapp { background: var(--whatsapp); color: #062b14; box-shadow: 0 12px 32px rgba(37, 211, 102, .25); }
 
     /* Después de votar */
-    .hecho { text-align: center; padding: 8px 0 4px; }
-    .hecho .estrella { font-size: 56px; color: var(--rosa); filter: drop-shadow(0 0 16px rgba(255, 46, 154, .6)); }
-    .hecho h2 { margin-top: 12px; }
-    .hecho p { color: var(--suave); margin-top: 8px; }
+    .hecho, .anoche { text-align: center; padding: 8px 0 4px; }
+    .hecho > .estrella, .anoche > .estrella { font-size: 56px; color: var(--rosa); filter: drop-shadow(0 0 16px rgba(255, 46, 154, .6)); }
+    .hecho h2, .anoche h2 { margin-top: 12px; }
+    .hecho > p, .anoche > p { color: var(--suave); margin-top: 8px; }
+    .anoche .pills { justify-content: center; margin-top: 18px; }
+    .anoche .chip { width: 100%; }
+
+    .candado {
+      margin-top: 24px; padding: 20px 18px;
+      border: 2px dashed rgba(226, 177, 91, .5); border-radius: 20px;
+      background: rgba(10, 15, 31, .5);
+    }
+    .candado-titulo { font-size: 12px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: var(--oro); }
+    .candado-pregunta { font-family: var(--serif); font-weight: 600; font-size: 21px; line-height: 1.25; margin-top: 8px; }
+    .candado .pills { justify-content: center; margin-top: 16px; }
+
+    /* Ranking en directo */
+    .ranking { margin-top: 24px; text-align: left; }
+    .ranking-cabecera { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .en-directo { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: var(--rosa); }
+    .actualizar { border: 0; background: transparent; color: var(--oro); font: 800 14px 'Manrope', sans-serif; cursor: pointer; padding: 6px 0; }
+    .filtros { display: grid; gap: 8px; margin-top: 14px; }
+    .lista { list-style: none; margin-top: 16px; display: grid; gap: 10px; }
+    .lista li { display: grid; grid-template-columns: 26px 1fr; align-items: center; gap: 10px; }
+    .lista .pos { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: 22px; color: var(--oro); text-align: center; }
+    .lista .nombre { display: flex; justify-content: space-between; gap: 8px; font-weight: 800; font-size: 15px; }
+    .lista .cuenta { flex: none; color: var(--suave); font-weight: 700; font-size: 13px; }
+    .lista .barra { height: 8px; margin-top: 5px; border-radius: 4px; background: var(--tarjeta-2); overflow: hidden; }
+    .lista .barra span { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--oro), var(--rosa)); }
+    .lista .vacio { display: block; color: var(--suave); text-align: center; padding: 12px 0; }
+    .ranking-pie { margin-top: 14px; font-size: 13px; color: var(--suave); }
 
     section { margin-top: 56px; }
     .etiqueta { font-size: 12px; font-weight: 800; letter-spacing: .28em; text-transform: uppercase; color: var(--oro); }
     h2 { font-family: var(--serif); font-weight: 600; font-size: 30px; line-height: 1.15; margin-top: 8px; }
     section > p { color: var(--suave); margin-top: 12px; font-size: 16px; }
 
-    /* Avance del ranking: los nombres se desvelan a las 22:00 */
+    /* Avance del ranking: se desbloquea al votar */
     .mensaje {
       margin-top: 20px; padding: 18px 18px 14px;
       background: var(--tarjeta); border: 1px solid var(--borde);
@@ -172,7 +206,7 @@
     .mensaje-titulo { font-weight: 800; font-size: 15px; }
     .mensaje-titulo .estrella { color: var(--rosa); }
     .fila { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
-    .pos { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: 22px; width: 22px; color: var(--oro); }
+    .fila .pos { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: 22px; width: 22px; color: var(--oro); }
     .tapado { flex: 1; height: 14px; border-radius: 7px; background: linear-gradient(90deg, #26314f, #3a4568, #26314f); filter: blur(1.5px); }
     .fila .estrella { font-size: 20px; }
     .mensaje-pie { margin-top: 14px; font-size: 13px; color: var(--suave); text-align: right; }
@@ -217,84 +251,65 @@
         <span>ton<span class="logo-i">ı<svg class="estrella" style="color:var(--rosa)"><use href="#estrella"/></svg></span>te</span>
         <span class="logo-lema">Granada de noche</span>
       </span>
-      <div><span class="aviso" id="aviso">Ranking de esta noche a las 22:00</span></div>
-      <h1 data-t="titulo">¿Dónde vas esta noche?</h1>
-      <p class="sub" data-t-html="sub">Vota aquí en 20 segundos y <strong>a las 22:00 te mandamos dónde va a haber más gente</strong> en Granada.</p>
+      <div class="solo-voto"><span class="aviso" id="aviso">Ranking de esta noche a las 22:00</span></div>
+      <h1 id="titulo" data-t="titulo">¿Dónde vas esta noche?</h1>
+      <p class="sub" id="sub" data-t-html="sub">Vota en 20 segundos, <strong>desbloquea el ranking en directo</strong> y a las 22:00 te mandamos el definitivo.</p>
     </header>
 
     <div class="tarjeta-voto" id="votar">
-      <form id="formulario" novalidate>
+      <form id="formulario" class="solo-voto" novalidate>
         <div class="campo">
-          <label class="pregunta" for="sitio"><span class="num">1</span><span class="pregunta-texto" data-t="q1">¿Dónde vas esta noche?</span></label>
-          <select id="sitio" name="sitio" required>
-            <option value="" disabled selected data-t="q1ph">Elige un sitio…</option>
-            <option value="Aún no lo sé" data-t="aunNo">Aún no lo sé</option>
-            <optgroup label="Pedro Antonio">
-              <option>Chupitería 69</option>
-              <option>El Larguero</option>
-              <option>La Habana</option>
-              <option>L'scandalo Pub</option>
-              <option>Las Marismas</option>
-              <option>PlaymobilClub</option>
-              <option>Pub Babel</option>
-              <option>Pub Imperial</option>
-              <option>Pub Legend</option>
-              <option>Pub Lokura Latina</option>
-              <option>Pub Namek</option>
-              <option>Pub Rubik</option>
-              <option>Pub Wall Street</option>
-              <option>Sonora Desert Saloon</option>
-            </optgroup>
-            <optgroup label="Calle Elvira" data-t-label="zonaElvira">
-              <option>Boom Boom Room</option>
-              <option>Granada 10</option>
-              <option>Miniclub</option>
-              <option>Pata Palo</option>
-              <option>Pub Kocran (antes El Son)</option>
-              <option>Pub La Flaca</option>
-            </optgroup>
-            <optgroup label="Ganivet">
-              <option>Kinsasa</option>
-              <option>Pub Ganivet 13</option>
-              <option>Pub La Estrella</option>
-            </optgroup>
-            <optgroup label="Discotecas del centro" data-t-label="zonaDiscotecas">
-              <option>Mae West</option>
-              <option>Sala Aliatar</option>
-              <option>Twoo Club (antes Campus)</option>
-            </optgroup>
-            <option value="Otro sitio" data-t="otro">Otro sitio</option>
-          </select>
+          <label class="pregunta" for="sitio1"><span class="num">1</span><span class="pregunta-texto"><span data-t="q1">¿Dónde vas esta noche?</span><span class="opcional" data-t="q1hint">Puedes elegir hasta 2 sitios</span></span></label>
+          <select id="sitio1" name="sitio1" class="vacio"></select>
+          <select id="sitio2" name="sitio2" class="vacio" disabled aria-label="Segundo sitio"></select>
+          <input class="campo-otro" id="otro" name="otro" type="text" maxlength="80" autocomplete="off" data-t-ph="otroPh" placeholder="¿Cuál? Escribe el nombre del sitio" hidden />
           <p class="error" data-error="sitio"></p>
         </div>
 
         <fieldset class="campo">
           <legend class="pregunta"><span class="num">2</span><span class="pregunta-texto"><span data-t="q2">¿Qué te hace elegir sitio?</span><span class="opcional" data-t="varias">Puedes marcar varias</span></span></legend>
           <div class="pills">
-            <label class="pill"><input type="checkbox" name="eleccion" value="Ambiente"><span data-t="ambiente">Ambiente</span></label>
-            <label class="pill"><input type="checkbox" name="eleccion" value="Música"><span data-t="musica">Música</span></label>
-            <label class="pill"><input type="checkbox" name="eleccion" value="Precio"><span data-t="precio">Precio</span></label>
-            <label class="pill"><input type="checkbox" name="eleccion" value="Que vayan mis amigos"><span data-t="amigos">Que vayan mis amigos</span></label>
-            <label class="pill"><input type="checkbox" name="eleccion" value="Cercanía"><span data-t="cercania">Cercanía</span></label>
+            <label class="pill"><input type="checkbox" name="motivos" value="Ambiente"><span data-t="ambiente">Ambiente</span></label>
+            <label class="pill"><input type="checkbox" name="motivos" value="Música"><span data-t="musica">Música</span></label>
+            <label class="pill"><input type="checkbox" name="motivos" value="Precio"><span data-t="precio">Precio</span></label>
+            <label class="pill"><input type="checkbox" name="motivos" value="Que vayan mis amigos"><span data-t="amigos">Que vayan mis amigos</span></label>
+            <label class="pill"><input type="checkbox" name="motivos" value="Cercanía"><span data-t="cercania">Cercanía</span></label>
           </div>
-          <p class="error" data-error="eleccion"></p>
+          <p class="error" data-error="motivos"></p>
         </fieldset>
 
         <fieldset class="campo">
-          <legend class="pregunta"><span class="num">3</span><span class="pregunta-texto" data-t="q3">¿En qué estás?</span></legend>
+          <legend class="pregunta"><span class="num">3</span><span class="pregunta-texto" data-t="q3">¿Cuántos años tienes?</span></legend>
           <div class="pills">
-            <label class="pill"><input type="radio" name="curso" value="Primero"><span data-t="primero">Primero</span></label>
-            <label class="pill"><input type="radio" name="curso" value="Erasmus"><span>Erasmus</span></label>
-            <label class="pill"><input type="radio" name="curso" value="Otro curso"><span data-t="otroCurso">Otro curso</span></label>
-            <label class="pill"><input type="radio" name="curso" value="No estudio"><span data-t="noEstudio">No estudio</span></label>
+            <label class="pill"><input type="radio" name="edad" value="18-20"><span>18-20</span></label>
+            <label class="pill"><input type="radio" name="edad" value="21-23"><span>21-23</span></label>
+            <label class="pill"><input type="radio" name="edad" value="24-26"><span>24-26</span></label>
+            <label class="pill"><input type="radio" name="edad" value="27+"><span data-t="edad27">27 o más</span></label>
           </div>
-          <p class="error" data-error="curso"></p>
+          <p class="error" data-error="edad"></p>
+        </fieldset>
+
+        <fieldset class="campo">
+          <legend class="pregunta"><span class="num">4</span><span class="pregunta-texto" data-t="q4">¿Eres Erasmus?</span></legend>
+          <div class="pills">
+            <label class="pill"><input type="radio" name="erasmus" value="Sí"><span data-t="si">Sí</span></label>
+            <label class="pill"><input type="radio" name="erasmus" value="No"><span data-t="no">No</span></label>
+          </div>
+          <p class="error" data-error="erasmus"></p>
+          <div class="campo-extra" id="campo-primer" hidden>
+            <p class="pregunta"><span class="pregunta-texto" data-t="q4b">¿Es tu primer año en Granada?</span></p>
+            <div class="pills">
+              <label class="pill"><input type="radio" name="primerAno" value="Sí"><span data-t="si">Sí</span></label>
+              <label class="pill"><input type="radio" name="primerAno" value="No"><span data-t="no">No</span></label>
+            </div>
+            <p class="error" data-error="primerAno"></p>
+          </div>
         </fieldset>
 
         <div class="campo">
-          <label class="pregunta" for="contacto"><span class="num">4</span><span class="pregunta-texto"><span data-t="q4">Tu WhatsApp o email para recibir el ranking a las 22:00</span><span class="opcional" data-t="opcional">(opcional)</span></span></label>
-          <input id="contacto" name="contacto" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" data-t-ph="q4ph" placeholder="600 000 000 o tu@email.com" />
-          <p class="ayuda" data-t="q4ayuda">Solo lo usamos para mandarte el ranking esta noche y preguntarte mañana qué tal. No lo compartimos con nadie.</p>
+          <label class="pregunta" for="contacto"><span class="num">5</span><span class="pregunta-texto"><span data-t="q5">Tu WhatsApp o email para recibir el ranking a las 22:00</span><span class="opcional" data-t="opcional">(opcional)</span></span></label>
+          <input id="contacto" name="contacto" type="text" maxlength="80" autocomplete="off" autocapitalize="off" spellcheck="false" data-t-ph="q5ph" placeholder="600 000 000 o tu@email.com" />
+          <p class="ayuda" data-t="q5ayuda">Solo lo usamos para mandarte el ranking esta noche y preguntarte mañana qué tal. No lo compartimos con nadie.</p>
           <p class="error" data-error="contacto"></p>
         </div>
 
@@ -306,39 +321,88 @@
         <svg class="estrella"><use href="#estrella"/></svg>
         <h2 id="hecho-titulo" data-t="hechoTitulo">¡Voto registrado!</h2>
         <p id="hecho-texto" data-t="hechoCon"></p>
+
+        <div class="candado" id="desbloquear">
+          <p class="candado-titulo">🔒 <span data-t="candadoTitulo">Desbloquea el ranking en directo</span></p>
+          <p class="candado-pregunta" data-t="candadoPregunta">¿Cambiarás de plan esta noche según dónde esté más animado?</p>
+          <div class="pills">
+            <button type="button" class="chip" data-plan="Sí" data-t="si">Sí</button>
+            <button type="button" class="chip" data-plan="Puede" data-t="puede">Puede</button>
+            <button type="button" class="chip" data-plan="No" data-t="no">No</button>
+          </div>
+          <p class="error" data-error="plan"></p>
+        </div>
+
+        <div class="ranking" id="ranking" hidden>
+          <div class="ranking-cabecera">
+            <span class="en-directo" data-t="enDirecto">En directo · esta noche</span>
+            <button type="button" class="actualizar" id="actualizar" data-t="actualizar">Actualizar</button>
+          </div>
+          <div class="filtros">
+            <div class="pills chips-peque" data-filtro="edad" role="group">
+              <button type="button" class="chip" data-valor="" aria-pressed="true" data-t="todasEdades">Todas las edades</button>
+              <button type="button" class="chip" data-valor="18-20" aria-pressed="false">18-20</button>
+              <button type="button" class="chip" data-valor="21-23" aria-pressed="false">21-23</button>
+              <button type="button" class="chip" data-valor="24-26" aria-pressed="false">24-26</button>
+              <button type="button" class="chip" data-valor="27+" aria-pressed="false">27+</button>
+            </div>
+            <div class="pills chips-peque" data-filtro="erasmus" role="group">
+              <button type="button" class="chip" data-valor="" aria-pressed="true" data-t="todos">Todos</button>
+              <button type="button" class="chip" data-valor="si" aria-pressed="false">Erasmus</button>
+              <button type="button" class="chip" data-valor="no" aria-pressed="false" data-t="noErasmus">No Erasmus</button>
+            </div>
+          </div>
+          <ol class="lista" id="lista"></ol>
+          <p class="ranking-pie" id="ranking-pie"></p>
+          <p class="error" data-error="ranking"></p>
+        </div>
+
         <a class="boton boton-whatsapp" id="compartir" href="#" target="_blank" rel="noopener" data-t="compartir">Pásalo a tu grupo</a>
+      </div>
+
+      <div class="anoche" id="anoche" hidden>
+        <svg class="estrella"><use href="#estrella"/></svg>
+        <h2 data-t="anochePregunta">¿Fuiste a donde votaste o cambiaste de plan al ver el ranking?</h2>
+        <div class="pills" id="anoche-opciones">
+          <button type="button" class="chip" data-respuesta="Fui donde dije" data-t="seg1">Fui donde dije</button>
+          <button type="button" class="chip" data-respuesta="Cambié por el ranking" data-t="seg2">Cambié por el ranking</button>
+          <button type="button" class="chip" data-respuesta="Cambié por otra razón" data-t="seg3">Cambié por otra razón</button>
+          <button type="button" class="chip" data-respuesta="No salí" data-t="seg4">No salí</button>
+        </div>
+        <p id="anoche-gracias" data-t="anocheGracias" hidden>¡Gracias! Nos ayudas muchísimo 🌙</p>
+        <p class="error" data-error="anoche"></p>
       </div>
     </div>
 
-    <section>
-      <p class="etiqueta" data-t="asiLlega">Así te llega</p>
-      <h2 data-t="asiLlegaTitulo">El ranking, antes de salir</h2>
+    <section class="solo-voto" id="avance">
+      <p class="etiqueta" data-t="asiLlega">En directo</p>
+      <h2 data-t="asiLlegaTitulo">Mira cómo va la noche</h2>
       <div class="mensaje">
-        <p class="mensaje-titulo"><svg class="estrella"><use href="#estrella"/></svg> <span data-t="mensajeTitulo">Ranking TONITE · esta noche</span></p>
+        <p class="mensaje-titulo"><svg class="estrella"><use href="#estrella"/></svg> <span data-t="mensajeTitulo">Ranking en directo · esta noche</span></p>
         <div class="fila"><span class="pos">1</span><span class="tapado"></span><svg class="estrella" style="color:#ff2e9a"><use href="#estrella"/></svg></div>
         <div class="fila"><span class="pos">2</span><span class="tapado" style="flex:.8"></span><svg class="estrella" style="color:#e2b15b"><use href="#estrella"/></svg></div>
         <div class="fila"><span class="pos">3</span><span class="tapado" style="flex:.6"></span><svg class="estrella" style="color:#3ddc97"><use href="#estrella"/></svg></div>
-        <p class="mensaje-pie" data-t="mensajePie">Los nombres se desvelan a las 22:00</p>
+        <p class="mensaje-pie" data-t="mensajePie">Vota para desbloquearlo, por edad y Erasmus</p>
       </div>
     </section>
 
-    <section>
+    <section class="solo-voto">
       <p class="etiqueta" data-t="teHaPasado">¿Te ha pasado?</p>
       <h2 data-t="vaciaTitulo">Llegar a una discoteca y que esté vacía</h2>
       <p data-t="vaciaTexto">Y encima el plan lo propusiste tú. Hoy nadie sabe cuánta gente hay en un sitio hasta que llega a la puerta. Con el ranking lo sabes antes de salir.</p>
     </section>
 
-    <section>
+    <section class="solo-voto">
       <p class="etiqueta" data-t="comoFunciona">Cómo funciona</p>
       <h2 data-t="tresPasos">Tres pasos</h2>
       <div class="pasos">
-        <div class="paso"><span class="paso-icono">1</span><div><h3 data-t="paso1">Vota</h3><p data-t="paso1Texto">Aquí arriba: dónde vas esta noche, o si aún no lo sabes.</p></div></div>
-        <div class="paso"><span class="paso-icono" data-t="hora">22:00</span><div><h3 data-t="paso2">Recibe el ranking</h3><p data-t="paso2Texto">Te lo mandamos por WhatsApp o email.</p></div></div>
-        <div class="paso"><span class="paso-icono">3</span><div><h3 data-t="paso3">Elige con ventaja</h3><p data-t="paso3Texto">Ve donde está el ambiente. Al día siguiente te preguntamos qué tal.</p></div></div>
+        <div class="paso"><span class="paso-icono">1</span><div><h3 data-t="paso1">Vota</h3><p data-t="paso1Texto">Aquí arriba: hasta 2 sitios, o «Aún no lo sé».</p></div></div>
+        <div class="paso"><span class="paso-icono">2</span><div><h3 data-t="paso2">Mira el ranking</h3><p data-t="paso2Texto">Responde una pregunta y desbloquéalo en directo, por edad y Erasmus.</p></div></div>
+        <div class="paso"><span class="paso-icono" data-t="hora">22:00</span><div><h3 data-t="paso3">Recibe el definitivo</h3><p data-t="paso3Texto">Por WhatsApp o email. Al día siguiente te preguntamos qué tal.</p></div></div>
       </div>
     </section>
 
-    <section>
+    <section class="solo-voto">
       <p class="etiqueta" data-t="queEs">Qué es TONITE</p>
       <h2 data-t="queEsTitulo">Un mapa del ambiente de Granada</h2>
       <p data-t="queEsTexto">Somos estudiantes de la Universidad de Granada y estamos creando TONITE, una app para ver cuánta gente hay en cada bar y discoteca antes de salir. Este ranking es nuestra primera prueba: con tu voto nos ayudas a construirla.</p>
@@ -350,7 +414,7 @@
       </div>
     </section>
 
-    <section class="final">
+    <section class="final solo-voto">
       <h2 data-t="titulo">¿Dónde vas esta noche?</h2>
       <a class="boton" href="#votar" data-t="votarAhora">Votar ahora</a>
       <p class="privacidad" data-t="privacidad">Tu WhatsApp o email es opcional. Solo lo usamos para mandarte el ranking esa noche y preguntarte al día siguiente qué tal. No lo compartimos con nadie y, si quieres que lo borremos, basta con decírnoslo respondiendo a nuestro mensaje.</p>
@@ -363,44 +427,74 @@
   </main>
 
   <script>
-    // Formulario de Google Forms al que llegan los votos. Lo da la función «datosParaLaLanding»
-    // de scripts/experimento_votos.gs. Mientras sea null, el botón de votar sale desactivado.
-    var FORMULARIO = null;
-    // Ejemplo: { url: 'https://docs.google.com/forms/d/e/…/formResponse', sitio: 'entry.1', eleccion: 'entry.2', curso: 'entry.3', contacto: 'entry.4' }
+    // URL de la aplicación web de Google Apps Script (scripts/experimento_votos.gs), la que acaba en /exec.
+    // Ahí se guardan los votos y de ahí sale el ranking en directo. Mientras sea null, no se puede votar.
+    var API = null;
 
     var URL_LANDING = 'https://tonite-theta.vercel.app/votar/';
+    var AUN_NO = 'Aún no lo sé';
+    var OTRO = 'Otro sitio';
+
+    // La misma lista que en scripts/experimento_votos.gs: si cambia aquí, hay que cambiarla allí.
+    var LOCALES = {
+      'Pedro Antonio': ['Chupitería 69', 'El Larguero', 'La Habana', "L'scandalo Pub", 'Las Marismas', 'Margot Bar',
+        'PlaymobilClub', 'Pub Babel', 'Pub Imperial', 'Pub Legend', 'Pub Lokura Latina', 'Pub Namek', 'Pub Nocta',
+        'Pub Rubik', 'Pub Wall Street', 'Soho', 'Sonora Desert Saloon'],
+      'Elvira y Plaza Nueva': ['Eshavira', 'Garrison Drinks & Music', 'Miniclub', 'Pata Palo',
+        'Pub Kocran (antes El Son)', 'Pub La Flaca'],
+      'Centro y Ganivet': ['Hannigan & Sons', 'Kinsasa', 'La Tertulia', 'Pub Ganivet 13', 'Pub La Estrella'],
+      'Discotecas y salas': ['BoogaClub', 'Boom Boom Room', 'El Camborio', 'Granada 10', 'Industrial Copera', 'Mae West',
+        'Planta Baja', 'Sala Aliatar', 'Sala Príncipe', 'Sala Vogue', 'Twoo Club (antes Campus)']
+    };
+    var ZONAS_EN = { 'Elvira y Plaza Nueva': 'Elvira & Plaza Nueva', 'Centro y Ganivet': 'Centre & Ganivet', 'Discotecas y salas': 'Clubs & music venues' };
 
     var TEXTOS = {
       es: {
         tituloPagina: '¿Dónde vas esta noche? · TONITE',
         titulo: '¿Dónde vas esta noche?',
-        sub: 'Vota aquí en 20 segundos y <strong>a las 22:00 te mandamos dónde va a haber más gente</strong> en Granada.',
-        avisoFalta: 'Ranking a las 22:00 · faltan {t}',
+        sub: 'Vota en 20 segundos, <strong>desbloquea el ranking en directo</strong> y a las 22:00 te mandamos el definitivo.',
+        avisoFalta: 'Ranking definitivo a las 22:00 · faltan {t}',
         avisoSalido: 'El ranking de esta noche ya ha salido · vota para el próximo',
-        q1: '¿Dónde vas esta noche?', q1ph: 'Elige un sitio…', aunNo: 'Aún no lo sé', otro: 'Otro sitio',
-        zonaElvira: 'Calle Elvira', zonaDiscotecas: 'Discotecas del centro',
+        q1: '¿Dónde vas esta noche?', q1hint: 'Puedes elegir hasta 2 sitios',
+        q1ph: 'Elige un sitio…', q1ph2: 'Segundo sitio (opcional)', aunNo: 'Aún no lo sé', otro: 'Otro sitio',
+        otroPh: '¿Cuál? Escribe el nombre del sitio',
         q2: '¿Qué te hace elegir sitio?', varias: 'Puedes marcar varias',
         ambiente: 'Ambiente', musica: 'Música', precio: 'Precio', amigos: 'Que vayan mis amigos', cercania: 'Cercanía',
-        q3: '¿En qué estás?', primero: 'Primero', otroCurso: 'Otro curso', noEstudio: 'No estudio',
-        q4: 'Tu WhatsApp o email para recibir el ranking a las 22:00', opcional: '(opcional)',
-        q4ph: '600 000 000 o tu@email.com',
-        q4ayuda: 'Solo lo usamos para mandarte el ranking esta noche y preguntarte mañana qué tal. No lo compartimos con nadie.',
+        q3: '¿Cuántos años tienes?', edad27: '27 o más',
+        q4: '¿Eres Erasmus?', q4b: '¿Es tu primer año en Granada?', si: 'Sí', no: 'No', puede: 'Puede',
+        q5: 'Tu WhatsApp o email para recibir el ranking a las 22:00', opcional: '(opcional)',
+        q5ph: '600 000 000 o tu@email.com',
+        q5ayuda: 'Solo lo usamos para mandarte el ranking esta noche y preguntarte mañana qué tal. No lo compartimos con nadie.',
         votar: 'Votar', enviando: 'Enviando…', pronto: 'Votación disponible muy pronto',
-        eSitio: 'Elige dónde vas (o «Aún no lo sé»).', eEleccion: 'Marca al menos una opción.', eCurso: 'Dinos en qué estás.',
+        eSitio: 'Elige dónde vas (o «Aún no lo sé»).', eMotivos: 'Marca al menos una opción.', eEdad: 'Dinos tu edad.',
+        eErasmus: 'Dinos si eres Erasmus.', ePrimerAno: 'Dinos si es tu primer año en Granada.',
         eContacto: 'Revisa tu WhatsApp o email.', eEnvio: 'No se ha podido enviar. Revisa tu conexión y vuelve a intentarlo.',
-        hechoTitulo: '¡Voto registrado!', yaVotaste: '¡Ya has votado hoy!',
-        hechoCon: 'A las 22:00 te mandamos el ranking. Mañana te preguntamos qué tal.',
-        hechoSin: 'Gracias por votar. Como no has dejado WhatsApp ni email, esta vez no te llegará el ranking.',
+        eRanking: 'No se ha podido cargar el ranking. Pulsa «Actualizar».',
+        hechoTitulo: '¡Voto registrado!', yaVotaste: '¡Ya has votado esta noche!',
+        hechoCon: 'A las 22:00 te mandamos el ranking definitivo. Mañana te preguntamos qué tal.',
+        hechoSin: 'Como no has dejado WhatsApp ni email, esta vez no te llegará el ranking de las 22:00.',
+        candadoTitulo: 'Desbloquea el ranking en directo',
+        candadoPregunta: '¿Cambiarás de plan esta noche según dónde esté más animado?',
+        enDirecto: 'En directo · esta noche', actualizar: 'Actualizar',
+        todasEdades: 'Todas las edades', todos: 'Todos', noErasmus: 'No Erasmus',
+        personas1: '1 persona', personas: '{n} personas',
+        rankingPie0: 'Actualizado a las {h}.', rankingPie1: 'Según 1 voto, actualizado a las {h}.', rankingPie: 'Según {n} votos, actualizado a las {h}.',
+        pocosVotos: 'Aún hay pocos votos: vuelve a mirarlo más tarde.',
+        rankingVacio: 'Todavía no hay votos de este grupo.',
         compartir: 'Pásalo a tu grupo',
-        compartirTexto: '¿Dónde vas esta noche? Vota y a las 22:00 te dicen dónde va a haber más gente en Granada 👉',
-        asiLlega: 'Así te llega', asiLlegaTitulo: 'El ranking, antes de salir',
-        mensajeTitulo: 'Ranking TONITE · esta noche', mensajePie: 'Los nombres se desvelan a las 22:00',
+        compartirTexto: '¿Dónde vas esta noche? Vota y mira en directo dónde va a haber más gente en Granada 👉',
+        tituloAnoche: '¿Qué tal anoche?', subAnoche: 'Una pregunta y listo. ¡Gracias por ayudarnos!',
+        anochePregunta: '¿Fuiste a donde votaste o cambiaste de plan al ver el ranking?',
+        seg1: 'Fui donde dije', seg2: 'Cambié por el ranking', seg3: 'Cambié por otra razón', seg4: 'No salí',
+        anocheGracias: '¡Gracias! Nos ayudas muchísimo 🌙', anocheYa: 'Ya nos lo contaste. ¡Gracias! 🌙',
+        asiLlega: 'En directo', asiLlegaTitulo: 'Mira cómo va la noche',
+        mensajeTitulo: 'Ranking en directo · esta noche', mensajePie: 'Vota para desbloquearlo, por edad y Erasmus',
         teHaPasado: '¿Te ha pasado?', vaciaTitulo: 'Llegar a una discoteca y que esté vacía',
         vaciaTexto: 'Y encima el plan lo propusiste tú. Hoy nadie sabe cuánta gente hay en un sitio hasta que llega a la puerta. Con el ranking lo sabes antes de salir.',
         comoFunciona: 'Cómo funciona', tresPasos: 'Tres pasos',
-        paso1: 'Vota', paso1Texto: 'Aquí arriba: dónde vas esta noche, o si aún no lo sabes.',
-        hora: '22:00', paso2: 'Recibe el ranking', paso2Texto: 'Te lo mandamos por WhatsApp o email.',
-        paso3: 'Elige con ventaja', paso3Texto: 'Ve donde está el ambiente. Al día siguiente te preguntamos qué tal.',
+        paso1: 'Vota', paso1Texto: 'Aquí arriba: hasta 2 sitios, o «Aún no lo sé».',
+        paso2: 'Mira el ranking', paso2Texto: 'Responde una pregunta y desbloquéalo en directo, por edad y Erasmus.',
+        hora: '22:00', paso3: 'Recibe el definitivo', paso3Texto: 'Por WhatsApp o email. Al día siguiente te preguntamos qué tal.',
         queEs: 'Qué es TONITE', queEsTitulo: 'Un mapa del ambiente de Granada',
         queEsTexto: 'Somos estudiantes de la Universidad de Granada y estamos creando TONITE, una app para ver cuánta gente hay en cada bar y discoteca antes de salir. Este ranking es nuestra primera prueba: con tu voto nos ayudas a construirla.',
         vacio: 'Vacío', algo: 'Algo de gente', animado: 'Animado', lleno: 'Lleno',
@@ -411,33 +505,49 @@
       en: {
         tituloPagina: 'Where are you going tonight? · TONITE',
         titulo: 'Where are you going tonight?',
-        sub: 'Vote here in 20 seconds and <strong>at 10 pm we’ll tell you where the crowd is going</strong> in Granada.',
-        avisoFalta: 'Ranking at 10 pm · {t} to go',
+        sub: 'Vote in 20 seconds, <strong>unlock the live ranking</strong> and at 10 pm we’ll send you the final one.',
+        avisoFalta: 'Final ranking at 10 pm · {t} to go',
         avisoSalido: 'Tonight’s ranking is out · vote for the next one',
-        q1: 'Where are you going tonight?', q1ph: 'Pick a place…', aunNo: 'I don’t know yet', otro: 'Somewhere else',
-        zonaElvira: 'Calle Elvira', zonaDiscotecas: 'Clubs in the centre',
+        q1: 'Where are you going tonight?', q1hint: 'You can pick up to 2 places',
+        q1ph: 'Pick a place…', q1ph2: 'Second place (optional)', aunNo: 'I don’t know yet', otro: 'Somewhere else',
+        otroPh: 'Which one? Type the name of the place',
         q2: 'What makes you choose a place?', varias: 'Pick as many as you like',
         ambiente: 'Atmosphere', musica: 'Music', precio: 'Price', amigos: 'My friends are going', cercania: 'Close by',
-        q3: 'Which one are you?', primero: 'First year', otroCurso: 'Other year', noEstudio: 'Not a student',
-        q4: 'Your WhatsApp or email to get the ranking at 10 pm', opcional: '(optional)',
-        q4ph: '+49 151 0000000 or you@email.com',
-        q4ayuda: 'We only use it to send you tonight’s ranking and ask you tomorrow how it went. We never share it.',
+        q3: 'How old are you?', edad27: '27 or older',
+        q4: 'Are you an Erasmus student?', q4b: 'Is this your first year in Granada?', si: 'Yes', no: 'No', puede: 'Maybe',
+        q5: 'Your WhatsApp or email to get the ranking at 10 pm', opcional: '(optional)',
+        q5ph: '+49 151 0000000 or you@email.com',
+        q5ayuda: 'We only use it to send you tonight’s ranking and ask you tomorrow how it went. We never share it.',
         votar: 'Vote', enviando: 'Sending…', pronto: 'Voting opens very soon',
-        eSitio: 'Pick where you’re going (or “I don’t know yet”).', eEleccion: 'Pick at least one option.', eCurso: 'Tell us which one you are.',
+        eSitio: 'Pick where you’re going (or “I don’t know yet”).', eMotivos: 'Pick at least one option.', eEdad: 'Tell us your age.',
+        eErasmus: 'Tell us whether you’re an Erasmus student.', ePrimerAno: 'Tell us whether this is your first year in Granada.',
         eContacto: 'Check your WhatsApp or email.', eEnvio: 'Your vote couldn’t be sent. Check your connection and try again.',
-        hechoTitulo: 'Vote saved!', yaVotaste: 'You’ve already voted today!',
-        hechoCon: 'We’ll send you the ranking at 10 pm, and tomorrow we’ll ask how it went.',
-        hechoSin: 'Thanks for voting. You didn’t leave a WhatsApp or email, so this time you won’t get the ranking.',
+        eRanking: 'The ranking couldn’t be loaded. Tap “Refresh”.',
+        hechoTitulo: 'Vote saved!', yaVotaste: 'You’ve already voted tonight!',
+        hechoCon: 'We’ll send you the final ranking at 10 pm, and tomorrow we’ll ask how it went.',
+        hechoSin: 'You didn’t leave a WhatsApp or email, so this time you won’t get the 10 pm ranking.',
+        candadoTitulo: 'Unlock the live ranking',
+        candadoPregunta: 'Will you change your plans tonight depending on where it’s busiest?',
+        enDirecto: 'Live · tonight', actualizar: 'Refresh',
+        todasEdades: 'All ages', todos: 'Everyone', noErasmus: 'Not Erasmus',
+        personas1: '1 person', personas: '{n} people',
+        rankingPie0: 'Updated at {h}.', rankingPie1: 'Based on 1 vote, updated at {h}.', rankingPie: 'Based on {n} votes, updated at {h}.',
+        pocosVotos: 'Only a few votes so far: check back later.',
+        rankingVacio: 'No votes from this group yet.',
         compartir: 'Send it to your group',
-        compartirTexto: 'Where are you going tonight? Vote and at 10 pm you’ll know where the crowd is in Granada 👉',
-        asiLlega: 'What you get', asiLlegaTitulo: 'The ranking, before you go out',
-        mensajeTitulo: 'TONITE ranking · tonight', mensajePie: 'Names revealed at 10 pm',
+        compartirTexto: 'Where are you going tonight? Vote and see live where the crowd is going in Granada 👉',
+        tituloAnoche: 'How was last night?', subAnoche: 'One question and you’re done. Thanks for helping us!',
+        anochePregunta: 'Did you go where you voted, or change plans after seeing the ranking?',
+        seg1: 'I went where I said', seg2: 'I changed because of the ranking', seg3: 'I changed for another reason', seg4: 'I didn’t go out',
+        anocheGracias: 'Thank you! This really helps us 🌙', anocheYa: 'You already told us. Thank you! 🌙',
+        asiLlega: 'Live', asiLlegaTitulo: 'See how the night is going',
+        mensajeTitulo: 'Live ranking · tonight', mensajePie: 'Vote to unlock it, by age and Erasmus',
         teHaPasado: 'Sound familiar?', vaciaTitulo: 'Getting to a club and finding it empty',
         vaciaTexto: 'And it was your idea. Right now nobody knows how busy a place is until they’re at the door. With the ranking, you know before you go out.',
         comoFunciona: 'How it works', tresPasos: 'Three steps',
-        paso1: 'Vote', paso1Texto: 'Up here: where you’re going tonight, or whether you don’t know yet.',
-        hora: '10 pm', paso2: 'Get the ranking', paso2Texto: 'We send it to you by WhatsApp or email.',
-        paso3: 'Choose smart', paso3Texto: 'Go where the vibe is. The next day we’ll ask how it went.',
+        paso1: 'Vote', paso1Texto: 'Up here: up to 2 places, or “I don’t know yet”.',
+        paso2: 'See the ranking', paso2Texto: 'Answer one question and unlock it live, by age and Erasmus.',
+        hora: '10 pm', paso3: 'Get the final one', paso3Texto: 'By WhatsApp or email. The next day we’ll ask how it went.',
         queEs: 'What is TONITE', queEsTitulo: 'A live map of Granada’s nightlife',
         queEsTexto: 'We’re students at the University of Granada building TONITE, an app that shows how busy each bar and club is before you go out. This ranking is our first test: your vote helps us build it.',
         vacio: 'Empty', algo: 'Some people', animado: 'Lively', lleno: 'Packed',
@@ -447,19 +557,45 @@
       }
     };
 
+    var parametros = new URLSearchParams(location.search);
+    var modoAnoche = parametros.has('anoche');
+    var canal = (parametros.get('c') || parametros.get('canal') || '').replace(/[^\w-]/g, '').slice(0, 30);
     var idioma = 'es';
     var formulario = document.getElementById('formulario');
-    var enviar = document.getElementById('enviar');
+    var botonVotar = document.getElementById('enviar');
+    var sitio1 = document.getElementById('sitio1');
+    var sitio2 = document.getElementById('sitio2');
     var enviando = false;
+    var ranking = null;
+    var filtro = { edad: '', erasmus: '' };
 
     function t(clave) { return TEXTOS[idioma][clave]; }
+    function $(selector) { return document.querySelector(selector); }
+    function todos(selector) { return Array.prototype.slice.call(document.querySelectorAll(selector)); }
 
     // localStorage puede fallar (modo privado): la página funciona igual sin él.
-    function leer(clave) { try { return localStorage.getItem(clave); } catch (e) { return null; } }
-    function guardar(clave, valor) { try { localStorage.setItem(clave, valor); } catch (e) {} }
+    function leer(clave) { try { return JSON.parse(localStorage.getItem(clave)); } catch (e) { return null; } }
+    function guardar(clave, valor) { try { localStorage.setItem(clave, JSON.stringify(valor)); } catch (e) {} }
+
+    // Hora en Granada. Una «noche» va de las 6:00 a las 5:59 del día siguiente, igual que en el script.
+    function partesGranada(fecha) {
+      var partes = {};
+      new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Madrid', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+        .formatToParts(fecha).forEach(function (p) { partes[p.type] = p.value; });
+      return partes;
+    }
+    function noche() {
+      var p = partesGranada(new Date(Date.now() - 6 * 3600 * 1000));
+      return p.year + '-' + p.month + '-' + p.day;
+    }
+    function nuevoId() {
+      return Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+    }
+
+    // ---------- Idioma ----------
 
     function elegirIdiomaInicial() {
-      var pedido = new URLSearchParams(location.search).get('lang');
+      var pedido = parametros.get('lang');
       if (pedido === 'es' || pedido === 'en') return pedido;
       var guardado = leer('tonite-idioma');
       if (guardado === 'es' || guardado === 'en') return guardado;
@@ -469,101 +605,134 @@
     function aplicarIdioma(nuevo) {
       idioma = nuevo;
       document.documentElement.lang = idioma;
-      document.title = t('tituloPagina');
-      document.querySelectorAll('[data-t]').forEach(function (el) { el.textContent = t(el.getAttribute('data-t')); });
-      document.querySelectorAll('[data-t-html]').forEach(function (el) { el.innerHTML = t(el.getAttribute('data-t-html')); });
-      document.querySelectorAll('[data-t-label]').forEach(function (el) { el.label = t(el.getAttribute('data-t-label')); });
-      document.querySelectorAll('[data-t-ph]').forEach(function (el) { el.placeholder = t(el.getAttribute('data-t-ph')); });
-      document.querySelectorAll('[data-idioma]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-idioma') === idioma)); });
-      document.querySelectorAll('[data-error]').forEach(function (el) {
-        var clave = el.getAttribute('data-clave');
-        el.textContent = clave ? t(clave) : '';
-      });
+      document.title = modoAnoche ? t('tituloAnoche') + ' · TONITE' : t('tituloPagina');
+      todos('[data-t]').forEach(function (el) { el.textContent = t(el.getAttribute('data-t')); });
+      todos('[data-t-html]').forEach(function (el) { el.innerHTML = t(el.getAttribute('data-t-html')); });
+      todos('[data-t-ph]').forEach(function (el) { el.placeholder = t(el.getAttribute('data-t-ph')); });
+      todos('[data-idioma]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-idioma') === idioma)); });
+      todos('[data-error]').forEach(function (el) { var clave = el.getAttribute('data-clave'); el.textContent = clave ? t(clave) : ''; });
+      if (modoAnoche) {
+        $('#titulo').textContent = t('tituloAnoche');
+        $('#sub').textContent = t('subAnoche');
+      }
       var texto = t('compartirTexto') + ' ' + URL_LANDING + (idioma === 'en' ? '?lang=en' : '');
-      document.getElementById('compartir').href = 'https://wa.me/?text=' + encodeURIComponent(texto);
+      $('#compartir').href = 'https://wa.me/?text=' + encodeURIComponent(texto);
+      rellenarSitios();
       prepararBoton();
       actualizarAviso();
+      if (ranking) pintarRanking();
+    }
+
+    function rellenarSitios() {
+      [sitio1, sitio2].forEach(function (select, n) {
+        var actual = select.value;
+        select.innerHTML = '';
+        var vacio = new Option(n === 0 ? t('q1ph') : t('q1ph2'), '');
+        if (n === 0) vacio.disabled = true;
+        select.add(vacio);
+        if (n === 0) select.add(new Option(t('aunNo'), AUN_NO));
+        Object.keys(LOCALES).forEach(function (zona) {
+          var grupo = document.createElement('optgroup');
+          grupo.label = idioma === 'en' && ZONAS_EN[zona] ? ZONAS_EN[zona] : zona;
+          LOCALES[zona].forEach(function (local) { grupo.appendChild(new Option(local, local)); });
+          select.appendChild(grupo);
+        });
+        select.add(new Option(t('otro'), OTRO));
+        select.value = actual;
+        if (select.selectedIndex < 0) select.selectedIndex = 0;
+      });
+      actualizarSitios();
+    }
+
+    function actualizarSitios() {
+      var primero = sitio1.value;
+      sitio2.disabled = !primero || primero === AUN_NO;
+      if (sitio2.disabled || sitio2.value === primero) sitio2.value = '';
+      sitio1.classList.toggle('vacio', !primero);
+      sitio2.classList.toggle('vacio', !sitio2.value);
+      $('#otro').hidden = primero !== OTRO && sitio2.value !== OTRO;
     }
 
     function prepararBoton() {
-      if (enviando) { enviar.textContent = t('enviando'); return; }
-      enviar.disabled = !FORMULARIO;
-      enviar.textContent = FORMULARIO ? t('votar') : t('pronto');
+      if (enviando) { botonVotar.textContent = t('enviando'); return; }
+      botonVotar.disabled = !API;
+      botonVotar.textContent = API ? t('votar') : t('pronto');
     }
 
-    // Hora y día en Granada, para la cuenta atrás y para saber si ya se votó hoy.
-    function ahoraEnGranada() {
-      var partes = {};
-      new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Madrid', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
-        .formatToParts(new Date()).forEach(function (p) { partes[p.type] = p.value; });
-      return { dia: partes.year + '-' + partes.month + '-' + partes.day, minutos: Number(partes.hour) * 60 + Number(partes.minute) };
-    }
     function actualizarAviso() {
-      var aviso = document.getElementById('aviso');
-      var ahora = ahoraEnGranada().minutos;
+      var p = partesGranada(new Date());
+      var ahora = Number(p.hour) * 60 + Number(p.minute);
       var falta = 22 * 60 - ahora;
       if (ahora >= 6 * 60 && falta > 0) {
         var h = Math.floor(falta / 60), m = falta % 60;
-        aviso.textContent = t('avisoFalta').replace('{t}', (h ? h + ' h ' : '') + m + ' min');
+        $('#aviso').textContent = t('avisoFalta').replace('{t}', (h ? h + ' h ' : '') + m + ' min');
       } else {
-        aviso.textContent = t('avisoSalido');
+        $('#aviso').textContent = t('avisoSalido');
       }
     }
 
+    // ---------- Envío ----------
+
+    // Apps Script no deja leer su respuesta a un POST desde otra web, pero sí recibe el envío.
+    function enviar(datos) {
+      return fetch(API, { method: 'POST', mode: 'no-cors', body: JSON.stringify(datos) });
+    }
+
     function ponerError(campo, clave) {
-      var el = document.querySelector('[data-error="' + campo + '"]');
+      var el = $('[data-error="' + campo + '"]');
       el.setAttribute('data-clave', clave);
       el.textContent = t(clave);
     }
     function quitarErrores() {
-      document.querySelectorAll('[data-error]').forEach(function (el) { el.removeAttribute('data-clave'); el.textContent = ''; });
+      todos('[data-error]').forEach(function (el) { el.removeAttribute('data-clave'); el.textContent = ''; });
+    }
+    function marcado(nombre) {
+      var el = formulario.querySelector('input[name="' + nombre + '"]:checked');
+      return el ? el.value : '';
     }
     function contactoValido(valor) {
       return /\S+@\S+\.\S+/.test(valor) || valor.replace(/\D/g, '').length >= 9;
     }
 
-    function mostrarHecho(conContacto, yaVotado) {
-      formulario.hidden = true;
-      document.getElementById('hecho-titulo').setAttribute('data-t', yaVotado ? 'yaVotaste' : 'hechoTitulo');
-      document.getElementById('hecho-texto').setAttribute('data-t', conContacto ? 'hechoCon' : 'hechoSin');
-      document.getElementById('hecho').hidden = false;
-      aplicarIdioma(idioma);
-    }
-
     formulario.addEventListener('submit', function (evento) {
       evento.preventDefault();
-      if (!FORMULARIO || enviando) return;
+      if (!API || enviando) return;
       quitarErrores();
-      var sitio = formulario.elements.sitio.value;
-      var eleccion = Array.prototype.map.call(formulario.querySelectorAll('input[name="eleccion"]:checked'), function (i) { return i.value; });
-      var curso = formulario.querySelector('input[name="curso"]:checked');
-      var contacto = formulario.elements.contacto.value.trim();
+      var datos = {
+        tipo: 'voto',
+        id: nuevoId(),
+        sitios: [sitio1.value, sitio2.value].filter(Boolean),
+        otro: $('#otro').hidden ? '' : $('#otro').value.trim(),
+        motivos: todos('input[name="motivos"]:checked').map(function (i) { return i.value; }),
+        edad: marcado('edad'),
+        erasmus: marcado('erasmus'),
+        primerAno: marcado('erasmus') === 'No' ? marcado('primerAno') : '',
+        contacto: formulario.elements.contacto.value.trim(),
+        idioma: idioma,
+        canal: canal
+      };
       var errores = [];
-      if (!sitio) errores.push(['sitio', 'eSitio']);
-      if (!eleccion.length) errores.push(['eleccion', 'eEleccion']);
-      if (!curso) errores.push(['curso', 'eCurso']);
-      if (contacto && !contactoValido(contacto)) errores.push(['contacto', 'eContacto']);
+      if (!datos.sitios.length) errores.push(['sitio', 'eSitio']);
+      if (!datos.motivos.length) errores.push(['motivos', 'eMotivos']);
+      if (!datos.edad) errores.push(['edad', 'eEdad']);
+      if (!datos.erasmus) errores.push(['erasmus', 'eErasmus']);
+      if (datos.erasmus === 'No' && !datos.primerAno) errores.push(['primerAno', 'ePrimerAno']);
+      if (datos.contacto && !contactoValido(datos.contacto)) errores.push(['contacto', 'eContacto']);
       if (errores.length) {
         errores.forEach(function (e) { ponerError(e[0], e[1]); });
-        document.querySelector('[data-error="' + errores[0][0] + '"]').parentNode.scrollIntoView({ block: 'center' });
+        $('[data-error="' + errores[0][0] + '"]').parentNode.scrollIntoView({ block: 'center' });
         return;
       }
 
-      // Los valores van siempre en español, como las opciones del formulario de Google.
-      var datos = new URLSearchParams();
-      datos.append(FORMULARIO.sitio, sitio);
-      eleccion.forEach(function (valor) { datos.append(FORMULARIO.eleccion, valor); });
-      datos.append(FORMULARIO.curso, curso.value);
-      if (contacto) datos.append(FORMULARIO.contacto, contacto);
-
       enviando = true;
-      enviar.disabled = true;
+      botonVotar.disabled = true;
       prepararBoton();
-      fetch(FORMULARIO.url, { method: 'POST', mode: 'no-cors', body: datos })
+      enviar(datos)
         .then(function () {
-          guardar('tonite-voto', JSON.stringify({ dia: ahoraEnGranada().dia, contacto: !!contacto }));
           enviando = false;
-          mostrarHecho(!!contacto, false);
+          guardar('tonite-voto', { noche: noche(), id: datos.id, contacto: !!datos.contacto, plan: null });
+          mostrarHecho(false);
+          $('#votar').scrollIntoView({ block: 'start' });
         })
         .catch(function () {
           enviando = false;
@@ -572,18 +741,148 @@
         });
     });
 
-    document.querySelectorAll('[data-idioma]').forEach(function (boton) {
+    // ---------- Después de votar: desbloquear y ver el ranking ----------
+
+    function mostrarHecho(yaVotado) {
+      var voto = leer('tonite-voto') || {};
+      formulario.hidden = true;
+      $('#hecho-titulo').setAttribute('data-t', yaVotado ? 'yaVotaste' : 'hechoTitulo');
+      $('#hecho-texto').setAttribute('data-t', voto.contacto ? 'hechoCon' : 'hechoSin');
+      $('#hecho').hidden = false;
+      $('#avance').hidden = true;
+      aplicarIdioma(idioma);
+      if (voto.plan) abrirRanking();
+    }
+
+    todos('[data-plan]').forEach(function (boton) {
+      boton.addEventListener('click', function () {
+        var voto = leer('tonite-voto');
+        if (!voto || !API) return;
+        todos('[data-plan]').forEach(function (b) { b.disabled = true; });
+        boton.setAttribute('aria-pressed', 'true');
+        enviar({ tipo: 'plan', id: voto.id, plan: boton.getAttribute('data-plan') })
+          .then(function () {
+            voto.plan = boton.getAttribute('data-plan');
+            guardar('tonite-voto', voto);
+            abrirRanking();
+          })
+          .catch(function () {
+            todos('[data-plan]').forEach(function (b) { b.disabled = false; b.setAttribute('aria-pressed', 'false'); });
+            ponerError('plan', 'eEnvio');
+          });
+      });
+    });
+
+    function abrirRanking() {
+      $('#desbloquear').hidden = true;
+      $('#ranking').hidden = false;
+      cargarRanking();
+    }
+
+    function cargarRanking() {
+      if (!API) return;
+      $('[data-error="ranking"]').removeAttribute('data-clave');
+      $('[data-error="ranking"]').textContent = '';
+      fetch(API + (API.indexOf('?') === -1 ? '?' : '&') + 't=' + Date.now())
+        .then(function (r) { return r.json(); })
+        .then(function (datos) {
+          ranking = datos;
+          ranking.cargado = new Date();
+          pintarRanking();
+        })
+        .catch(function () { ponerError('ranking', 'eRanking'); });
+    }
+
+    function pintarRanking() {
+      var votos = ranking.votos.filter(function (v) {
+        return (!filtro.edad || v.e === filtro.edad) && (!filtro.erasmus || (filtro.erasmus === 'si') === v.x);
+      });
+      var cuenta = {};
+      votos.forEach(function (v) { v.s.forEach(function (s) { cuenta[s] = (cuenta[s] || 0) + 1; }); });
+      var orden = Object.keys(cuenta).sort(function (a, b) { return cuenta[b] - cuenta[a] || a.localeCompare(b, 'es'); }).slice(0, 10);
+      var lista = $('#lista');
+      lista.innerHTML = '';
+      orden.forEach(function (sitio, i) {
+        var li = document.createElement('li');
+        li.innerHTML = '<span class="pos"></span><div><div class="nombre"><span></span><span class="cuenta"></span></div><div class="barra"><span></span></div></div>';
+        li.querySelector('.pos').textContent = i + 1;
+        li.querySelector('.nombre span').textContent = sitio;
+        li.querySelector('.cuenta').textContent = cuenta[sitio] === 1 ? t('personas1') : t('personas').replace('{n}', cuenta[sitio]);
+        li.querySelector('.barra span').style.width = Math.round(100 * cuenta[sitio] / cuenta[orden[0]]) + '%';
+        lista.appendChild(li);
+      });
+      if (!orden.length) lista.innerHTML = '<li class="vacio"></li>';
+      if (!orden.length) lista.querySelector('.vacio').textContent = t('rankingVacio');
+      var p = partesGranada(ranking.cargado);
+      var plantilla = votos.length === 0 ? 'rankingPie0' : votos.length === 1 ? 'rankingPie1' : 'rankingPie';
+      var pie = t(plantilla).replace('{n}', votos.length).replace('{h}', p.hour + ':' + p.minute);
+      $('#ranking-pie').textContent = pie + (ranking.votos.length < 5 ? ' ' + t('pocosVotos') : '');
+    }
+
+    todos('[data-filtro]').forEach(function (grupo) {
+      grupo.addEventListener('click', function (evento) {
+        var boton = evento.target.closest('[data-valor]');
+        if (!boton) return;
+        filtro[grupo.getAttribute('data-filtro')] = boton.getAttribute('data-valor');
+        grupo.querySelectorAll('[data-valor]').forEach(function (b) { b.setAttribute('aria-pressed', String(b === boton)); });
+        if (ranking) pintarRanking();
+      });
+    });
+    $('#actualizar').addEventListener('click', cargarRanking);
+
+    // ---------- Pregunta del día siguiente (?anoche) ----------
+
+    todos('[data-respuesta]').forEach(function (boton) {
+      boton.addEventListener('click', function () {
+        if (!API) return;
+        var voto = leer('tonite-voto') || {};
+        todos('[data-respuesta]').forEach(function (b) { b.disabled = true; });
+        boton.setAttribute('aria-pressed', 'true');
+        enviar({ tipo: 'seguimiento', id: voto.id || '', respuesta: boton.getAttribute('data-respuesta'), idioma: idioma })
+          .then(function () {
+            guardar('tonite-seguimiento', noche());
+            $('#anoche-opciones').hidden = true;
+            $('#anoche-gracias').hidden = false;
+          })
+          .catch(function () {
+            todos('[data-respuesta]').forEach(function (b) { b.disabled = false; b.setAttribute('aria-pressed', 'false'); });
+            ponerError('anoche', 'eEnvio');
+          });
+      });
+    });
+
+    // ---------- Arranque ----------
+
+    sitio1.addEventListener('change', actualizarSitios);
+    sitio2.addEventListener('change', actualizarSitios);
+    todos('input[name="erasmus"]').forEach(function (radio) {
+      radio.addEventListener('change', function () {
+        var esNo = marcado('erasmus') === 'No';
+        $('#campo-primer').hidden = !esNo;
+        if (!esNo) todos('input[name="primerAno"]').forEach(function (r) { r.checked = false; });
+      });
+    });
+    todos('[data-idioma]').forEach(function (boton) {
       boton.addEventListener('click', function () {
         guardar('tonite-idioma', boton.getAttribute('data-idioma'));
         aplicarIdioma(boton.getAttribute('data-idioma'));
       });
     });
 
+    if (modoAnoche) {
+      document.body.classList.add('modo-anoche');
+      $('#anoche').hidden = false;
+      if (leer('tonite-seguimiento') === noche()) {
+        $('#anoche-opciones').hidden = true;
+        $('#anoche-gracias').setAttribute('data-t', 'anocheYa');
+        $('#anoche-gracias').hidden = false;
+      }
+    }
     aplicarIdioma(elegirIdiomaInicial());
-    try {
-      var voto = JSON.parse(leer('tonite-voto') || 'null');
-      if (voto && voto.dia === ahoraEnGranada().dia) mostrarHecho(voto.contacto, true);
-    } catch (e) {}
+    if (!modoAnoche) {
+      var voto = leer('tonite-voto');
+      if (voto && voto.noche === noche()) mostrarHecho(true);
+    }
     setInterval(actualizarAviso, 30000);
   </script>
 </body>
