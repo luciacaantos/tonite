@@ -8,7 +8,7 @@ const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
 const errores = [];
 page.on('pageerror', (e) => errores.push(e.message));
-await page.goto('file://' + path.resolve('video.html'));
+await page.goto('file://' + path.resolve(process.env.PAGINA || 'video.html'));
 await page.evaluate(async () => {
   await document.fonts.ready;
   await Promise.all([...document.images].map((i) => (i.complete ? 0 : new Promise((r) => { i.onload = i.onerror = r; }))));
