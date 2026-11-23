@@ -10,7 +10,7 @@ FRASES = [
     ("mapa", "Un mapa que te dice, en directo, si cada bar y discoteca está vacío, animado, o lleno."),
     ("checkin", "Lo ponen los que ya están dentro, con un chéquin de un toque. Ningún local puede maquillarlo."),
     ("ofertas", "Además, tienes ofertas que canjeas en la barra, y puntos para chupitos, copas y entradas."),
-    ("llamada", "¿Dónde vas esta noche? Vota en el enlace de la bio, y desbloquea el ranking en directo."),
+    ("llamada", "Llega muy pronto a Granada. Síguenos, y sé de los primeros en probarla."),
     ("cierre", "Tonáit. Granada de noche."),
 ]
 k = Kokoro("kokoro-v1.0.onnx", "voices-v1.0.bin")

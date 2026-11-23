@@ -1,5 +1,9 @@
 # Vídeo 01 · TikTok e Instagram (con voz)
 
+Hay dos versiones:
+- **Próximamente** (`video.html`, la que se publica ahora): termina con «Llega muy pronto a Granada. Síguenos, y sé de los primeros en probarla».
+- **Votación** (`video-votacion.html`, para más adelante): termina invitando a votar en la landing y desbloquear el ranking. Su frase final era «¿Dónde vas esta noche? Vota en el enlace de la bio, y desbloquea el ranking en directo».
+
 Vídeo vertical de 32 s hecho entero por ordenador: capturas reales de la app en modo demo, animación en HTML y voz femenina generada con Kokoro (voz `ef_dora`, licencia Apache 2.0, se puede usar en publicidad).
 
 ## Cómo se vuelve a generar

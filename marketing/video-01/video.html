@@ -59,6 +59,10 @@
 
   /* Cierre */
   #cierre-cta { position:absolute; left:50%; top:1080px; transform:translateX(-50%); padding:26px 52px; border-radius:999px; background:var(--rosa); color:#1b0b16; font:800 52px 'Manrope'; white-space:nowrap; box-shadow:0 0 0 10px rgba(255,46,154,.18), 0 20px 60px rgba(255,46,154,.45); opacity:0; }
+  #pronto { position:absolute; inset:0; z-index:5; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:26px; background:rgba(10,15,31,.55); backdrop-filter:blur(9px); opacity:0; }
+  #pronto .logo { font-size:120px; }
+  .pronto-sello { font:800 40px 'Manrope'; letter-spacing:.28em; color:var(--rosa); padding:14px 30px 14px 38px; border:4px solid var(--rosa); border-radius:999px; box-shadow:0 0 40px rgba(255,46,154,.45); }
+  .pronto-sub { font:600 italic 54px 'Fraunces', serif; color:var(--crema); }
   #cierre-web { position:absolute; left:0; right:0; top:1240px; text-align:center; font:700 34px 'Manrope'; color:var(--suave); opacity:0; }
 </style>
 </head>
@@ -92,8 +96,12 @@
       <img id="img-canje" src="capturas/canje.png">
       <img id="img-canjeada" src="capturas/canjeada.png">
       <img id="img-puntos" src="capturas/puntos.png">
-      <img id="img-landing" src="capturas/landing.png">
-      <img id="img-landing-candado" src="capturas/landing-candado.png">
+      <img id="img-mapa2" src="capturas/mapa.png">
+      <div id="pronto">
+        <span class="logo"><span>ton<span class="logo-i">ı<svg viewBox="0 0 24 24" style="color:#ff2e9a"><use href="#e"/></svg></span>te</span></span>
+        <span class="pronto-sello">MUY PRONTO</span>
+        <span class="pronto-sub">en Granada</span>
+      </div>
       <div id="anillos"></div>
       <div id="chispas"></div>
       <div id="toques"></div>
@@ -103,8 +111,8 @@
 
   <div class="escena" id="esc-cierre">
     <div id="cierre-logo"><span class="logo"><span>ton<span class="logo-i">ı<svg viewBox="0 0 24 24" style="color:#ff2e9a"><use href="#e"/></svg></span>te</span><span class="logo-lema">GRANADA DE NOCHE</span></span></div>
-    <div id="cierre-cta">Vota esta noche · enlace en la bio</div>
-    <div id="cierre-web">tonite-theta.vercel.app/votar</div>
+    <div id="cierre-cta">Muy pronto en Granada</div>
+    <div id="cierre-web">Síguenos para no perderte el lanzamiento</div>
   </div>
 
   <div id="subs"></div>
@@ -139,7 +147,7 @@
     mapa: ['arriba', ['Un mapa que te dice <em>en directo</em>', 'si está <i class="v1">vacío</i>, <i class="v3">animado</i> o <i class="v4">lleno</i>']],
     checkin: ['arriba', ['Lo ponen los que <em>ya están dentro</em>', 'con un <em>check-in</em> de un toque', 'Ningún local puede <em>maquillarlo</em>']],
     ofertas: ['arriba', ['Ofertas que canjeas <em>en la barra</em>', 'y puntos para <em>chupitos, copas y entradas</em>']],
-    llamada: ['arriba', ['¿Dónde vas <em>esta noche</em>?', 'Vota en el <em>enlace de la bio</em>', 'y desbloquea el <em>ranking en directo</em>']],
+    llamada: ['arriba', ['Llega <em>muy pronto</em> a Granada', 'Síguenos y sé de los <em>primeros en probarla</em>']],
   };
   const TROZOS = [];
   Object.entries(SUBS).forEach(([clave, [estilo, trozos]]) => {
@@ -166,7 +174,6 @@
   const tLleno = en('checkin', 0.5);
   const tUsar = en('ofertas', 0.14);
   const tCanjeada = en('ofertas', 0.38);
-  const tSi = en('llamada', 0.8);
   const PANTALLAS = [
     [ESC.mapa.a, 'mapa', 'funde'],
     [tLocal + 0.15, 'ficha', 'sube'],
@@ -176,8 +183,7 @@
     [tUsar + 0.15, 'canje', 'sube'],
     [tCanjeada + 0.15, 'canjeada', 'funde'],
     [en('ofertas', 0.6), 'puntos', 'funde'],
-    [ESC.llamada.a, 'landing', 'funde'],
-    [en('llamada', 0.42), 'landing-candado', 'sube'],
+    [ESC.llamada.a, 'mapa2', 'funde'],
   ];
   const centro = (c) => ({ x: (c.x + c.w / 2) * ESCALA, y: (c.y + c.h / 2) * ESCALA });
   const TOQUES = [
@@ -185,7 +191,6 @@
     { t: tLleno, ...centro(INFO.tocarLleno) },
     { t: tUsar, ...centro(INFO.tocarUsar) },
     { t: tCanjeada, ...centro(INFO.tocarCanjeada) },
-    { t: tSi, ...centro(INFO.tocarCandado) },
   ];
   TOQUES.forEach((q) => {
     q.dedo = document.createElement('div'); q.dedo.className = 'dedo';
@@ -331,6 +336,11 @@
       ch.el.style.opacity = pch > 0 && pch < 1 ? 1 - pch : 0;
       ch.el.style.transform = `rotate(${pch * 180}deg) scale(${0.6 + pch})`;
     });
+
+    // Llamada: la app, «muy pronto»
+    const pp = prog(t, ESC.llamada.a + 0.3, ESC.llamada.a + 0.7);
+    $('pronto').style.opacity = pp;
+    $('pronto').querySelector('.pronto-sello').style.transform = `scale(${pp < 1 ? 0.6 + 0.4 * rebote(pp) : 1 + 0.025 * Math.sin(t * 7)})`;
 
     // 8 · Cierre
     $('esc-cierre').style.opacity = prog(t, ESC.cierre.a, ESC.cierre.a + 0.3);
