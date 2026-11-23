@@ -1,0 +1,22 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,600&display=block" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; }
+  body { width:1080px; height:1080px; overflow:hidden; background:#0a0f1f; }
+  .lienzo { position:relative; width:1080px; height:1080px; display:flex; align-items:center; justify-content:center;
+    background: radial-gradient(circle at 50% 120%, #3a1a45 0%, rgba(10,15,31,0) 65%), #0a0f1f; }
+  .logo { font-family:'Fraunces', serif; font-style:italic; font-weight:600; font-size:320px; line-height:1; letter-spacing:-.01em; color:#f4e9da; transform:translateY(-14px); }
+  .i { position:relative; display:inline-block; }
+  .i svg { position:absolute; left:62%; top:.14em; width:.3em; height:.3em; transform:translateX(-50%); filter:drop-shadow(0 0 22px rgba(255,46,154,.75)); }
+  .estrella { width:640px; height:640px; filter:drop-shadow(0 0 60px rgba(255,46,154,.55)); }
+  .circulo .lienzo { clip-path: circle(540px at 50% 50%); }
+</style></head>
+<body><div class="lienzo" id="lienzo"></div>
+<script>
+  const tipo = new URLSearchParams(location.search).get('tipo');
+  const estrella = (color) => `<svg viewBox="0 0 24 24"><g fill="${color}"><rect x="5" y="5" width="14" height="14"/><rect x="5" y="5" width="14" height="14" transform="rotate(45 12 12)"/></g></svg>`;
+  document.getElementById('lienzo').innerHTML = tipo === 'estrella'
+    ? `<svg class="estrella" viewBox="0 0 64 64"><g fill="#FF2E9A"><rect x="18" y="18" width="28" height="28"/><rect x="18" y="18" width="28" height="28" transform="rotate(45 32 32)"/></g><circle cx="32" cy="32" r="6" fill="#0a0f1f"/></svg>`
+    : `<span class="logo">ton<span class="i">ı${estrella('#FF2E9A')}</span>te</span>`;
+</script></body></html>
