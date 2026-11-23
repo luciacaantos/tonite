@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>TONITE · vídeo 01</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500..700&family=Manrope:wght@500;700;800&display=block" rel="stylesheet">
+<style>
+  :root { --fondo:#0a0f1f; --tarjeta:#121a31; --crema:#f4e9da; --suave:#9aa3c4; --rosa:#ff2e9a; --oro:#e2b15b; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:1080px; height:1920px; overflow:hidden; background:var(--fondo); }
+  body { font-family:'Manrope', sans-serif; color:var(--crema); position:relative; }
+  #lienzo { position:absolute; inset:0; overflow:hidden; }
+  .fondo {
+    position:absolute; inset:-200px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cg fill='none' stroke='%23E2B15B' stroke-opacity='0.07' stroke-width='2'%3E%3Crect x='29' y='29' width='38' height='38'/%3E%3Crect x='29' y='29' width='38' height='38' transform='rotate(45 48 48)'/%3E%3Ccircle cx='48' cy='48' r='8'/%3E%3Cpath d='M0 48h19M77 48h19M48 0v19M48 77v19'/%3E%3C/g%3E%3C/svg%3E");
+    background-size:144px 144px;
+  }
+  .brillo { position:absolute; inset:0; background:radial-gradient(ellipse 90% 55% at 50% 105%, #3a1a45 0%, rgba(10,15,31,0) 70%); }
+  .escena { position:absolute; inset:0; opacity:0; }
+  .estrella { display:inline-block; }
+
+  /* Subtítulos */
+  .sub { position:absolute; left:110px; right:150px; text-align:center; opacity:0; }
+  .sub em { font-style:normal; color:var(--rosa); }
+  .sub .v1 { font-style:normal; color:#6fa8ff; } .sub .v3 { font-style:normal; color:#e2b15b; } .sub .v4 { font-style:normal; color:#ff2e9a; }
+  .arriba { top:262px; font:800 58px/1.14 'Manrope', sans-serif; text-shadow:0 4px 24px rgba(0,0,0,.6); }
+  .centro { top:640px; font:600 italic 124px/1.05 'Fraunces', serif; }
+  .centro b { color:var(--oro); font-weight:600; }
+  .abajo { top:1210px; font:800 64px/1.15 'Manrope', sans-serif; }
+
+  /* Gancho */
+  #contador { position:absolute; left:50%; top:1060px; transform:translateX(-50%); display:flex; align-items:center; gap:20px; padding:22px 40px; border:3px solid rgba(111,168,255,.6); border-radius:999px; background:rgba(18,26,49,.85); font:800 54px 'Manrope'; color:#6fa8ff; opacity:0; white-space:nowrap; }
+  #contador svg { width:52px; height:52px; }
+
+  /* Problema: arco con interrogación */
+  #arco { position:absolute; left:290px; top:400px; width:500px; height:720px; }
+  #interrogacion { position:absolute; left:0; right:0; top:620px; text-align:center; font:600 italic 300px/1 'Fraunces', serif; color:var(--rosa); text-shadow:0 0 60px rgba(255,46,154,.6); opacity:0; }
+
+  /* Logo */
+  .logo { font-family:'Fraunces', serif; font-style:italic; font-weight:600; line-height:1; letter-spacing:-.01em; display:inline-flex; flex-direction:column; align-items:center; }
+  .logo-i { position:relative; display:inline-block; }
+  .logo-i svg { position:absolute; left:62%; top:.14em; width:.3em; height:.3em; transform:translateX(-50%); overflow:visible; }
+  .logo-lema { font:700 30px 'Manrope'; font-style:normal; letter-spacing:.32em; color:var(--oro); margin-top:26px; }
+  #marca-logo, #cierre-logo { position:absolute; left:0; right:0; text-align:center; }
+  #marca-logo { top:820px; } #marca-logo .logo { font-size:210px; }
+  #cierre-logo { top:560px; } #cierre-logo .logo { font-size:190px; }
+  .onda { position:absolute; border-radius:50%; border:4px solid var(--rosa); pointer-events:none; }
+
+  /* Móvil */
+  #movil { position:absolute; left:270px; top:470px; width:540px; height:1141px; border-radius:72px; background:#05070f; padding:12px; box-shadow:0 0 0 3px #26314f, 0 40px 90px rgba(0,0,0,.6), 0 0 120px rgba(255,46,154,.22); opacity:0; }
+  #pantalla { position:relative; width:516px; height:1117px; border-radius:60px; overflow:hidden; background:#0a0f1f; }
+  #pantalla img { position:absolute; left:0; top:0; width:516px; height:1117px; opacity:0; }
+  #anillos, #toques, #chispas { position:absolute; inset:0; pointer-events:none; }
+  .anillo { position:absolute; width:44px; height:44px; margin:-22px 0 0 -22px; border-radius:50%; border:4px solid; }
+  .dedo { position:absolute; width:84px; height:84px; margin:-42px 0 0 -42px; border-radius:50%; background:rgba(255,255,255,.35); border:4px solid rgba(255,255,255,.9); box-shadow:0 0 30px rgba(255,255,255,.5); opacity:0; }
+  .onda-toque { position:absolute; width:84px; height:84px; margin:-42px 0 0 -42px; border-radius:50%; border:5px solid #fff; opacity:0; }
+  .chispa { position:absolute; width:40px; height:40px; margin:-20px 0 0 -20px; opacity:0; }
+  #etiqueta { position:absolute; left:50%; top:452px; transform:translateX(-50%); padding:6px 18px; border-radius:999px; background:#121a31; border:2px solid #26314f; font:700 22px 'Manrope'; color:var(--suave); white-space:nowrap; opacity:0; }
+
+  /* Cierre */
+  #cierre-cta { position:absolute; left:50%; top:1080px; transform:translateX(-50%); padding:26px 52px; border-radius:999px; background:var(--rosa); color:#1b0b16; font:800 52px 'Manrope'; white-space:nowrap; box-shadow:0 0 0 10px rgba(255,46,154,.18), 0 20px 60px rgba(255,46,154,.45); opacity:0; }
+  #pronto { position:absolute; inset:0; z-index:5; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:26px; background:rgba(10,15,31,.55); backdrop-filter:blur(9px); opacity:0; }
+  #pronto .logo { font-size:120px; }
+  .pronto-sello { font:800 40px 'Manrope'; letter-spacing:.28em; color:var(--rosa); padding:14px 30px 14px 38px; border:4px solid var(--rosa); border-radius:999px; box-shadow:0 0 40px rgba(255,46,154,.45); }
+  .pronto-sub { font:600 italic 54px 'Fraunces', serif; color:var(--crema); }
+  #cierre-web { position:absolute; left:0; right:0; top:1240px; text-align:center; font:700 34px 'Manrope'; color:var(--suave); opacity:0; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><symbol id="e" viewBox="0 0 24 24"><g fill="currentColor"><rect x="5" y="5" width="14" height="14"/><rect x="5" y="5" width="14" height="14" transform="rotate(45 12 12)"/></g></symbol></svg>
+<div id="lienzo">
+  <div class="fondo" id="fondo"></div>
+  <div class="brillo"></div>
+
+  <div class="escena" id="esc-gancho">
+    <svg id="gran-estrella" viewBox="0 0 24 24" style="position:absolute;left:190px;top:560px;width:700px;height:700px;overflow:visible"><g fill="none" stroke="#E2B15B" stroke-opacity=".22" stroke-width=".25"><rect x="5" y="5" width="14" height="14"/><rect x="5" y="5" width="14" height="14" transform="rotate(45 12 12)"/></g></svg>
+    <div id="contador"><svg style="color:#6fa8ff"><use href="#e"/></svg><span id="contador-num">0</span>&nbsp;personas dentro</div>
+  </div>
+
+  <div class="escena" id="esc-problema">
+    <svg id="arco" viewBox="0 0 500 720"><path id="arco-trazo" d="M20 720 V250 A230 230 0 0 1 480 250 V720" fill="none" stroke="#E2B15B" stroke-width="8" stroke-linecap="round"/></svg>
+    <div id="interrogacion">?</div>
+  </div>
+
+  <div class="escena" id="esc-marca">
+    <div id="marca-logo"><span class="logo"><span>ton<span class="logo-i">ı<svg viewBox="0 0 24 24" style="color:#ff2e9a"><use href="#e"/></svg></span>te</span><span class="logo-lema">GRANADA DE NOCHE</span></span></div>
+  </div>
+
+  <div id="movil">
+    <div id="pantalla">
+      <img id="img-mapa" src="capturas/mapa.png">
+      <img id="img-ficha" src="capturas/ficha.png">
+      <img id="img-checkin-niveles" src="capturas/checkin-niveles.png">
+      <img id="img-checkin-hecho" src="capturas/checkin-hecho.png">
+      <img id="img-ofertas" src="capturas/ofertas.png">
+      <img id="img-canje" src="capturas/canje.png">
+      <img id="img-canjeada" src="capturas/canjeada.png">
+      <img id="img-puntos" src="capturas/puntos.png">
+      <img id="img-mapa2" src="capturas/mapa.png">
+      <div id="pronto">
+        <span class="logo"><span>ton<span class="logo-i">ı<svg viewBox="0 0 24 24" style="color:#ff2e9a"><use href="#e"/></svg></span>te</span></span>
+        <span class="pronto-sello">MUY PRONTO</span>
+        <span class="pronto-sub">en Granada</span>
+      </div>
+      <div id="anillos"></div>
+      <div id="chispas"></div>
+      <div id="toques"></div>
+    </div>
+  </div>
+  <div id="etiqueta">Prototipo · datos de ejemplo</div>
+
+  <div class="escena" id="esc-cierre">
+    <div id="cierre-logo"><span class="logo"><span>ton<span class="logo-i">ı<svg viewBox="0 0 24 24" style="color:#ff2e9a"><use href="#e"/></svg></span>te</span><span class="logo-lema">GRANADA DE NOCHE</span></span></div>
+    <div id="cierre-cta">Muy pronto en Granada</div>
+    <div id="cierre-web">Síguenos para no perderte el lanzamiento</div>
+  </div>
+
+  <div id="subs"></div>
+</div>
+
+<script src="datos-elevenlabs.js"></script>
+<script>
+  // ---------- Utilidades de animación ----------
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const prog = (t, a, b) => clamp((t - a) / (b - a));
+  const salida = (x) => 1 - Math.pow(1 - x, 3);
+  const rebote = (x) => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+  const $ = (id) => document.getElementById(id);
+  const ESCALA = 516 / 390; // de la captura (390 px de ancho) a la pantalla del móvil
+
+  // ---------- Tiempos (de la locución) ----------
+  const F = Object.fromEntries(LINEA.frases.map((f) => [f.clave, f]));
+  const ORDEN = LINEA.frases.map((f) => f.clave);
+  const ESC = {};
+  ORDEN.forEach((clave, i) => {
+    const inicio = i === 0 ? 0 : F[clave].inicio - 0.18;
+    const fin = i === ORDEN.length - 1 ? LINEA.total : F[ORDEN[i + 1]].inicio - 0.18;
+    ESC[clave] = { a: inicio, b: fin };
+  });
+  const en = (clave, fraccion) => F[clave].inicio + F[clave].dur * fraccion;
+
+  // ---------- Subtítulos ----------
+  const SUBS = {
+    gancho: ['centro', ['¿Te ha pasado?', 'Propones <b>tú</b> el sitio…', '…y está <em style="color:#6fa8ff">VACÍO</em>']],
+    problema: ['abajo', ['En Granada, nadie sabe <em>cuánta gente</em> hay', 'en un bar <em>hasta que llegas</em>']],
+    marca: ['arriba', ['Por eso estamos creando']],
+    mapa: ['arriba', ['El mapa que te dice <em>en directo</em>', 'si está <i class="v1">vacío</i>, <i class="v3">animado</i> o <i class="v4">lleno</i>']],
+    checkin: ['arriba', ['Lo ponen los que <em>ya están dentro</em>', 'con un <em>check-in</em>', 'Ningún local puede <em>maquillarlo</em>']],
+    ofertas: ['arriba', ['Ofertas que canjeas <em>en la barra</em>', 'y puntos para <em>chupitos, copas y entradas</em>']],
+    llamada: ['arriba', ['Llega <em>muy pronto</em> a Granada', 'Síguenos y sé de <em>los primeros</em>']],
+  };
+  const TROZOS = [];
+  Object.entries(SUBS).forEach(([clave, [estilo, trozos]]) => {
+    const largo = (h) => h.replace(/<[^>]+>/g, '').length;
+    const total = trozos.reduce((s, h) => s + largo(h), 0);
+    let acumulado = 0;
+    trozos.forEach((html, i) => {
+      const el = document.createElement('div');
+      el.className = 'sub ' + estilo;
+      el.innerHTML = html;
+      $('subs').appendChild(el);
+      // Si la locución trae los tiempos de cada trozo (medidos en el audio), se usan; si no, se reparten por longitud.
+      const medido = F[clave].trozos && F[clave].trozos[i];
+      const a = clave === 'gancho' && i === 0 ? -0.5 : medido ? medido - 0.06 : i === 0 ? ESC[clave].a + 0.12 : F[clave].inicio + F[clave].dur * (acumulado / total) - 0.06;
+      acumulado += largo(html);
+      TROZOS.push({ el, a, clave, i, n: trozos.length });
+    });
+  });
+  TROZOS.forEach((tr, i) => {
+    const siguiente = TROZOS[i + 1];
+    tr.b = siguiente && siguiente.clave === tr.clave ? siguiente.a : ESC[tr.clave].b;
+  });
+
+  // ---------- Pantallas del móvil y toques ----------
+  const tLocal = ESC.mapa.b - 0.55;
+  const tLleno = en('checkin', 0.5);
+  const tUsar = en('ofertas', 0.14);
+  const tCanjeada = en('ofertas', 0.38);
+  const PANTALLAS = [
+    [ESC.mapa.a, 'mapa', 'funde'],
+    [tLocal + 0.15, 'ficha', 'sube'],
+    [en('checkin', 0.28), 'checkin-niveles', 'sube'],
+    [tLleno + 0.15, 'checkin-hecho', 'funde'],
+    [ESC.ofertas.a, 'ofertas', 'funde'],
+    [tUsar + 0.15, 'canje', 'sube'],
+    [tCanjeada + 0.15, 'canjeada', 'funde'],
+    [en('ofertas', 0.6), 'puntos', 'funde'],
+    [ESC.llamada.a, 'mapa2', 'funde'],
+  ];
+  const centro = (c) => ({ x: (c.x + c.w / 2) * ESCALA, y: (c.y + c.h / 2) * ESCALA });
+  const TOQUES = [
+    { t: tLocal, ...centro(INFO.tocarLocal) },
+    { t: tLleno, ...centro(INFO.tocarLleno) },
+    { t: tUsar, ...centro(INFO.tocarUsar) },
+    { t: tCanjeada, ...centro(INFO.tocarCanjeada) },
+  ];
+  TOQUES.forEach((q) => {
+    q.dedo = document.createElement('div'); q.dedo.className = 'dedo';
+    q.onda = document.createElement('div'); q.onda.className = 'onda-toque';
+    [q.dedo, q.onda].forEach((el) => { el.style.left = q.x + 'px'; el.style.top = q.y + 'px'; $('toques').appendChild(el); });
+  });
+  // Anillos que laten sobre las estrellas del mapa
+  const ANILLOS = INFO.pins.map((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'anillo';
+    el.style.left = p.x * ESCALA + 'px';
+    el.style.top = p.y * ESCALA + 'px';
+    el.style.borderColor = p.c;
+    $('anillos').appendChild(el);
+    return { el, c: p.c.toLowerCase(), fase: (i * 0.37) % 1 };
+  });
+  // Chispas (estrellas) al conseguir los puntos del check-in
+  const CHISPAS = Array.from({ length: 14 }, (_, i) => {
+    const el = document.createElement('div');
+    el.className = 'chispa';
+    el.innerHTML = `<svg viewBox="0 0 24 24" width="40" height="40" style="color:${['#ff2e9a', '#e2b15b', '#3ddc97', '#6fa8ff'][i % 4]}"><use href="#e"/></svg>`;
+    $('chispas').appendChild(el);
+    return { el, ang: (i / 14) * Math.PI * 2 + 0.2, dist: 260 + (i % 3) * 70 };
+  });
+  const ondasLogo = (contenedor) => Array.from({ length: 3 }, () => {
+    const el = document.createElement('div'); el.className = 'onda'; contenedor.appendChild(el); return el;
+  });
+  const ONDAS_MARCA = ondasLogo($('esc-marca'));
+
+  // ---------- Dibujar el fotograma del segundo t ----------
+  function opacidadEscena(clave, t) {
+    const { a, b } = ESC[clave];
+    return Math.min(prog(t, a, a + 0.22), 1 - prog(t, b - 0.18, b));
+  }
+
+  function pintar(t) {
+    $('fondo').style.transform = `translate(${-t * 6}px, ${-t * 10}px)`;
+
+    // Subtítulos
+    TROZOS.forEach((tr) => {
+      const visible = t >= tr.a && t < tr.b;
+      const entrada = salida(prog(t, tr.a, tr.a + 0.2));
+      const fuera = tr.i === tr.n - 1 ? 1 - prog(t, tr.b - 0.18, tr.b) : 1;
+      tr.el.style.opacity = visible ? entrada * fuera : 0;
+      const escala = tr.el.classList.contains('centro') ? 0.7 + 0.3 * rebote(prog(t, tr.a, tr.a + 0.35)) : 1;
+      tr.el.style.transform = `translateY(${(1 - entrada) * 30}px) scale(${escala})`;
+    });
+
+    // 1 · Gancho
+    $('esc-gancho').style.opacity = t < 0.2 ? 1 : opacidadEscena('gancho', t);
+    $('gran-estrella').style.transform = `rotate(${t * 14}deg) scale(${1 + 0.03 * Math.sin(t * 3)})`;
+    const tVacio = TROZOS.find((tr) => tr.clave === 'gancho' && tr.i === 2).a;
+    const pc = prog(t, tVacio, tVacio + 0.9);
+    $('contador').style.opacity = salida(prog(t, tVacio - 0.1, tVacio + 0.15));
+    $('contador-num').textContent = Math.round(120 * (1 - salida(pc)));
+    const temblor = pc > 0.85 && pc < 1 ? Math.sin(t * 90) * 8 : 0;
+    $('contador').style.transform = `translateX(calc(-50% + ${temblor}px))`;
+
+    // 2 · Problema: se dibuja el arco y late la interrogación
+    $('esc-problema').style.opacity = opacidadEscena('problema', t);
+    const largoArco = 1650;
+    const pa = salida(prog(t, ESC.problema.a, ESC.problema.a + 1.1));
+    $('arco-trazo').style.strokeDasharray = largoArco;
+    $('arco-trazo').style.strokeDashoffset = largoArco * (1 - pa);
+    const pi = prog(t, ESC.problema.a + 0.6, ESC.problema.a + 1.0);
+    $('interrogacion').style.opacity = pi;
+    $('interrogacion').style.transform = `scale(${(0.5 + 0.5 * rebote(pi)) * (1 + 0.04 * Math.sin(t * 6))})`;
+
+    // 3 · Marca: entra el logo y se enciende la estrella
+    $('esc-marca').style.opacity = opacidadEscena('marca', t);
+    const pl = prog(t, F.marca.inicio + 0.55, F.marca.inicio + 1.0);
+    $('marca-logo').style.opacity = pl;
+    $('marca-logo').style.transform = `scale(${0.8 + 0.2 * rebote(pl)})`;
+    const estrella = $('marca-logo').querySelector('.logo-i svg');
+    const pe = prog(t, F.marca.inicio + 0.95, F.marca.inicio + 1.3);
+    estrella.style.transform = `translateX(-50%) scale(${pe < 1 ? 0.3 + 1.2 * rebote(pe) : 1})`;
+    estrella.style.filter = `drop-shadow(0 0 ${30 * pe}px #ff2e9a)`;
+    const caja = $('marca-logo').querySelector('.logo-i').getBoundingClientRect();
+    ONDAS_MARCA.forEach((el, i) => {
+      const po = prog(t, F.marca.inicio + 1.0 + i * 0.18, F.marca.inicio + 1.9 + i * 0.18);
+      const r = 30 + 360 * salida(po);
+      el.style.width = el.style.height = 2 * r + 'px';
+      el.style.left = caja.left + caja.width * 0.62 - r + 'px';
+      el.style.top = caja.top + caja.height * 0.2 - r + 'px';
+      el.style.opacity = po > 0 && po < 1 ? 1 - po : 0;
+    });
+
+    // Móvil (del mapa a la llamada a la acción)
+    const pm = salida(prog(t, ESC.mapa.a, ESC.mapa.a + 0.5));
+    const pmFuera = prog(t, ESC.llamada.b - 0.3, ESC.llamada.b);
+    let golpe = 0;
+    if (t > tLleno + 0.15 && t < tLleno + 0.6) golpe = Math.sin(prog(t, tLleno + 0.15, tLleno + 0.6) * Math.PI) * 0.035;
+    $('movil').style.opacity = Math.min(pm, 1 - pmFuera);
+    $('movil').style.transform = `translateY(${(1 - pm) * 380}px) scale(${(0.92 + 0.08 * pm + golpe) * (1 - 0.1 * pmFuera)}) rotate(${Math.sin(t * 0.9) * 0.6}deg)`;
+    const appVisible = t >= ESC.mapa.a && t < ESC.ofertas.b;
+    $('etiqueta').style.opacity = appVisible ? Math.min(pm, 1 - prog(t, ESC.ofertas.b - 0.3, ESC.ofertas.b)) : 0;
+
+    // Qué captura se ve
+    let actual = -1;
+    PANTALLAS.forEach((p, i) => { if (t >= p[0]) actual = i; });
+    PANTALLAS.forEach((p, i) => {
+      const img = $('img-' + p[1]);
+      if (i === actual) {
+        const pt = salida(prog(t, p[0], p[0] + (p[2] === 'sube' ? 0.32 : 0.22)));
+        img.style.opacity = p[2] === 'sube' ? 1 : pt;
+        img.style.transform = p[2] === 'sube' ? `translateY(${(1 - pt) * 100}%)` : 'none';
+        img.style.zIndex = 2;
+      } else if (i === actual - 1) {
+        img.style.opacity = 1; img.style.transform = 'none'; img.style.zIndex = 1;
+      } else {
+        img.style.opacity = 0; img.style.zIndex = 0;
+      }
+    });
+
+    // Anillos del mapa: laten, y se iluminan los de cada color cuando la voz lo dice
+    const enMapa = actual === 0;
+    const tTrozo = TROZOS.find((tr) => tr.clave === 'mapa' && tr.i === 1).a;
+    const destacado = ['#6fa8ff', '#e2b15b', '#ff2e9a'][Math.floor(clamp((t - tTrozo) / 0.55, -1, 2.99))];
+    ANILLOS.forEach((an) => {
+      const fase = (t * 0.8 + an.fase) % 1;
+      const fuerte = t >= tTrozo && an.c === destacado;
+      an.el.style.opacity = enMapa ? (1 - fase) * (fuerte ? 1 : 0.55) : 0;
+      an.el.style.transform = `scale(${1 + fase * (fuerte ? 2.6 : 1.5)})`;
+      an.el.style.borderWidth = fuerte ? '6px' : '4px';
+    });
+
+    // Toques con el dedo
+    TOQUES.forEach((q) => {
+      const antes = prog(t, q.t - 0.35, q.t);
+      const despues = prog(t, q.t, q.t + 0.45);
+      q.dedo.style.opacity = t > q.t - 0.35 && t < q.t + 0.3 ? Math.min(antes * 1.5, 1 - prog(t, q.t + 0.1, q.t + 0.3)) : 0;
+      q.dedo.style.transform = `scale(${t < q.t ? 1.15 - 0.15 * antes : 0.85})`;
+      q.onda.style.opacity = t >= q.t && t < q.t + 0.45 ? 1 - despues : 0;
+      q.onda.style.transform = `scale(${1 + 1.6 * salida(despues)})`;
+    });
+
+    // Chispas al ganar los puntos
+    const pch = prog(t, tLleno + 0.2, tLleno + 1.0);
+    CHISPAS.forEach((ch) => {
+      const d = ch.dist * salida(pch);
+      ch.el.style.left = 258 + Math.cos(ch.ang) * d + 'px';
+      ch.el.style.top = 480 + Math.sin(ch.ang) * d + 'px';
+      ch.el.style.opacity = pch > 0 && pch < 1 ? 1 - pch : 0;
+      ch.el.style.transform = `rotate(${pch * 180}deg) scale(${0.6 + pch})`;
+    });
+
+    // Llamada: la app, «muy pronto»
+    const pp = prog(t, ESC.llamada.a + 0.3, ESC.llamada.a + 0.7);
+    $('pronto').style.opacity = pp;
+    $('pronto').querySelector('.pronto-sello').style.transform = `scale(${pp < 1 ? 0.6 + 0.4 * rebote(pp) : 1 + 0.025 * Math.sin(t * 7)})`;
+
+    // 8 · Cierre
+    $('esc-cierre').style.opacity = prog(t, ESC.cierre.a, ESC.cierre.a + 0.3);
+    const pz = prog(t, ESC.cierre.a + 0.1, ESC.cierre.a + 0.6);
+    $('cierre-logo').style.transform = `scale(${0.8 + 0.2 * rebote(pz)})`;
+    const pb = prog(t, ESC.cierre.a + 0.7, ESC.cierre.a + 1.1);
+    $('cierre-cta').style.opacity = pb;
+    $('cierre-cta').style.transform = `translateX(-50%) scale(${(0.7 + 0.3 * rebote(pb)) * (1 + 0.025 * Math.sin(t * 7))})`;
+    $('cierre-web').style.opacity = prog(t, ESC.cierre.a + 1.1, ESC.cierre.a + 1.4);
+  }
+  window.pintar = pintar;
+  window.DURACION = LINEA.total;
+  pintar(0);
+</script>
+</body>
+</html>
