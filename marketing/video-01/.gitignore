@@ -1,0 +1,6 @@
+# Lo pesado no va a git: se vuelve a generar con los pasos del LEEME.
+*.mp4
+*.jpg
+*.wav
+capturas/
+fotogramas/
