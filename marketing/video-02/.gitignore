@@ -1,0 +1,8 @@
+# Medios y audio generados: no van a git (se regeneran con los pasos del LEEME).
+*.mp4
+*.jpg
+*.wav
+*.mp3
+*.log
+fotogramas/
+efectos/

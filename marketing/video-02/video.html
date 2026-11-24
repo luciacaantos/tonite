@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#0A0F1F;font-family:Manrope,"Helvetica Neue",Arial,sans-serif;color:#E9EDEF}
+.escena{position:absolute;left:0;top:0;width:1080px;height:1920px}
+
+/* Chat de grupo */
+#chat{background:#0B141A}
+#cab{position:absolute;left:0;top:0;width:1080px;height:200px;background:#1F2C34;display:flex;align-items:center;gap:26px;padding:0 40px;z-index:5}
+#cab .av{width:100px;height:100px;border-radius:50%;background:#3A4A55;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:46px}
+#cab .nom{font-size:46px;font-weight:700}
+#cab .sub{font-size:30px;color:#8696A0;margin-top:6px}
+#lista{position:absolute;left:0;top:200px;width:1080px;height:1720px;padding:28px 40px 44px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+.msg{max-width:800px;background:#202C33;border-radius:0 30px 30px 30px;padding:18px 28px 18px;margin-top:22px;display:none}
+.msg .n{font-size:30px;font-weight:800;margin-bottom:6px}
+.msg .t{font-size:42px;line-height:1.3}
+.msg.tarjeta{width:800px;padding:0;overflow:hidden;background:#202C33}
+.msg.tarjeta img{width:800px;height:360px;object-fit:cover;object-position:center 35%;display:block}
+.msg.tarjeta .tx{padding:18px 26px 22px}
+.msg.tarjeta .tt{font-size:38px;font-weight:800}
+.msg.tarjeta .ds{font-size:29px;color:#8696A0;margin-top:6px;line-height:1.3}
+.msg.tarjeta .lk{font-size:26px;color:#53BDEB;margin-top:8px}
+
+/* Mapa de la app */
+#mapa{background:#0A0F1F;opacity:0}
+#mapa img{position:absolute;left:0;top:0;width:1080px;height:2337px}
+.pin{position:absolute;width:30px;height:30px;border-radius:50%;transform:translate(-50%,-50%) scale(0);box-shadow:0 0 0 5px rgba(10,15,31,.75),0 0 26px currentColor}
+#demo{position:absolute;right:40px;top:40px;background:rgba(10,15,31,.85);border:2px solid #E2B15B;color:#E2B15B;font-size:28px;font-weight:800;padding:12px 24px;border-radius:999px}
+#tags{position:absolute;left:60px;right:60px;bottom:200px}
+.tag{background:#121A31;border:4px solid;border-radius:30px;padding:26px 34px;font-size:46px;font-weight:800;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;opacity:0}
+
+/* Cierre */
+#final{background:#0A0F1F;opacity:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:50px}
+#final img{width:520px;height:520px;object-fit:contain}
+#final .frase{font-size:66px;font-weight:800;text-align:center;line-height:1.2}
+#final .arroba{font-size:42px;color:#FF2E9A;font-weight:800}
+</style>
+</head>
+<body>
+
+<div id="chat" class="escena">
+  <div id="cab">
+    <div class="av">P</div>
+    <div>
+      <div class="nom">Plan viernes</div>
+      <div class="sub">Ana, Marco, Lucía, Hugo</div>
+    </div>
+  </div>
+  <div id="lista"></div>
+</div>
+
+<div id="mapa" class="escena">
+  <img src="../video-01/capturas/mapa.png" alt="Mapa de Granada en la app con estrellas de colores según la gente que hay">
+  <div id="demo">DEMO · datos de ejemplo</div>
+  <div id="tags">
+    <div class="tag" style="border-color:#FF2E9A;color:#FF2E9A"><span>Chupitería 69</span><span>Lleno</span></div>
+    <div class="tag" style="border-color:#6FA8FF;color:#6FA8FF"><span>Ese otro</span><span>Vacío</span></div>
+  </div>
+</div>
+
+<div id="final" class="escena">
+  <img src="../perfil/tonite-perfil-logo.png" alt="Logo de tonite">
+  <p class="frase">Llega muy pronto<br>a Granada</p>
+  <p class="arroba">@tonite_granada</p>
+</div>
+
+<script src="../video-01/datos.js"></script>
+<script>
+  const DURACION = 35.0;
+  window.DURACION = DURACION;
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const fade = (t, a, b) => clamp((t - a) / (b - a));
+  const $ = (id) => document.getElementById(id);
+  const COLOR = { Ana: '#3DDC97', Marco: '#6FA8FF', 'Lucía': '#E2B15B', Hugo: '#FF2E9A' };
+
+  // Mensajes del chat (segundo en que aparecen)
+  const MSG = [
+    { t: 0.0,  who: 'Ana',   text: '¿Dónde vamos esta noche?' },
+    { t: 2.8,  who: 'Marco', text: 'El de siempre, Pedro Antonio. Seguro que hay sitio' },
+    { t: 5.6,  who: 'Lucía', text: 'La última vez llegamos y estaba vacío' },
+    { t: 8.4,  who: 'Hugo',  text: 'Esta vez miro antes. Hay una app' },
+    { t: 11.2, who: 'Hugo',  tarjeta: true },
+    { t: 13.6, who: 'Ana',   text: '¿Y eso qué es?' },
+    { t: 15.6, who: 'Hugo',  text: 'Te dice en directo si cada local está vacío, animado o lleno' },
+    { t: 22.5, who: 'Lucía', text: 'Chupitería 69 está lleno. Y ese otro, vacío' },
+    { t: 24.5, who: 'Hugo',  text: 'Pues vamos al animado' },
+    { t: 26.5, who: 'Ana',   text: 'Ya estoy en camino' },
+  ];
+  const lista = $('lista');
+  const elMsg = MSG.map((m) => {
+    const d = document.createElement('div');
+    if (m.tarjeta) {
+      d.className = 'msg tarjeta';
+      d.innerHTML = '<img src="../video-01/capturas/mapa.png" alt="Vista previa de TONITE: el mapa de Granada"><div class="tx"><div class="tt">TONITE · Granada de noche</div><div class="ds">Mapa en directo: cada local, vacío, animado o lleno</div><div class="lk">tonite-theta.vercel.app</div></div>';
+    } else {
+      d.className = 'msg';
+      d.innerHTML = '<div class="n" style="color:' + COLOR[m.who] + '">' + m.who + '</div><div class="t"></div>';
+      d.querySelector('.t').textContent = m.text;
+    }
+    lista.appendChild(d);
+    return d;
+  });
+
+  // Marcadores del mapa, sacados de la captura de la app (coordenadas de 390 px)
+  const ESC = 1080 / 390;
+  const pins = INFO.pins.map((p, i) => {
+    const d = document.createElement('div');
+    d.className = 'pin';
+    d.style.left = (p.x * ESC) + 'px';
+    d.style.top = (p.y * ESC) + 'px';
+    d.style.background = p.c;
+    d.style.color = p.c;
+    $('mapa').appendChild(d);
+    return { el: d, t: 18.3 + i * 0.1 };
+  });
+  const tags = [...document.querySelectorAll('.tag')];
+  const tagT = [21.0, 21.6];
+
+  function pintar(t) {
+    // Chat: aparece, se va al mapa y vuelve
+    let chat = 1;
+    if (t >= 18.0) chat = 0;
+    if (t >= 22.0) chat = fade(t, 22.0, 22.3);
+    if (t >= 31.5) chat = 1 - fade(t, 31.5, 31.9);
+    $('chat').style.opacity = chat;
+
+    // Mensajes
+    MSG.forEach((m, i) => {
+      const el = elMsg[i];
+      const p = fade(t, m.t, m.t + 0.35);
+      el.style.display = t >= m.t ? 'block' : 'none';
+      el.style.opacity = p;
+      el.style.transform = 'translateY(' + ((1 - p) * 30) + 'px)';
+    });
+
+    // Mapa
+    let mapa = 0;
+    if (t >= 18.0 && t < 22.0) mapa = Math.min(fade(t, 18.0, 18.3), 1 - fade(t, 21.7, 22.0));
+    $('mapa').style.opacity = mapa;
+    pins.forEach((p) => { p.el.style.transform = 'translate(-50%,-50%) scale(' + fade(t, p.t, p.t + 0.22) + ')'; });
+    tags.forEach((el, i) => { el.style.opacity = fade(t, tagT[i], tagT[i] + 0.35); });
+
+    // Cierre
+    $('final').style.opacity = fade(t, 31.8, 32.2);
+  }
+  window.pintar = pintar;
+  pintar(0);
+</script>
+</body>
+</html>
