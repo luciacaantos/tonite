@@ -92,7 +92,26 @@ def musica():
     return x * np.minimum(1, t / 0.15) * np.minimum(1, (dur - t) / 0.6)
 
 
+# Riff en bucle mientras están dentro de El Averno: fuerte al entrar, luego bajo para que se oigan las voces.
+def riff_largo(dur=12.85, fuerte=1.7, bajo=0.3):
+    t = tiempo(dur)
+    notas = [82.41, 98.0, 110.0, 82.41]
+    f = np.array([notas[min(3, int(np.mod(x, 1.0) / 0.25))] for x in t])
+    fase = 2 * np.pi * np.cumsum(f) / SR
+    x = np.sin(fase) + 0.5 * np.sin(2 * fase) + 0.33 * np.sin(3 * fase) + 0.7 * np.sin(1.5 * fase) + 0.35 * np.sin(3 * 1.5 * fase)
+    pm = 0.45 + 0.55 * np.exp(-9 * np.mod(t, 0.125))
+    guit = 0.32 * np.tanh(6 * x) * pm
+    m = np.mod(t, 0.25)
+    bombo = 0.6 * np.sin(2 * np.pi * (50 + 110 * np.exp(-30 * m)) * m) * np.exp(-9 * m)
+    m2 = np.mod(t - 0.125, 0.25)
+    caja = 0.25 * rng.standard_normal(len(t)) * np.exp(-22 * m2) * (t > 0.125)
+    nivel = np.where(t < fuerte, 1.0, np.maximum(bajo, 1.0 - (t - fuerte) / 0.25 * (1.0 - bajo)))
+    final = np.minimum(1, (dur - t) / 0.02)
+    return (guit + bombo + caja) * nivel * final
+
+
 guardar('riff.wav', riff())
+guardar('riff_largo.wav', riff_largo())
 guardar('rayado.wav', rayado())
 guardar('grillos.wav', grillos())
 guardar('vaso.wav', vaso())

@@ -2,13 +2,16 @@
 # Cada frase se iguala antes a -16 LUFS para que todas las voces suenen al mismo volumen.
 import re
 import subprocess
-TOTAL = 40.0
-VOCES = [0.8, 3.4, 9.6, 12.7, 16.6, 23.0, 25.6, 30.8, 34.4]
+TOTAL = 42.9
+# Frases: (archivo sin extensión, segundo en que empieza)
+VOCES = [('voz-01', 0.8), ('voz-02', 3.4), ('voz-03', 9.6), ('voz-04', 12.7), ('voz-05', 16.6),
+         ('voz-camarero', 22.35), ('voz-06', 25.9), ('voz-07', 28.5), ('voz-08', 33.7), ('voz-09', 37.3),
+         ('grito-1', 7.85), ('grito-2', 8.45)]
 OBJETIVO = -16.0
 
 
-def igualar(i):
-    origen, destino = f'efectos/voz-{i:02d}.mp3', f'efectos/voz-{i:02d}-n.wav'
+def igualar(nombre):
+    origen, destino = f'efectos/{nombre}.mp3', f'efectos/{nombre}-n.wav'
     salida = subprocess.run(['ffmpeg', '-hide_banner', '-i', origen, '-af', 'ebur128', '-f', 'null', '-'],
                             capture_output=True, text=True).stderr
     medido = float(re.findall(r'I:\s+(-?[\d.]+) LUFS', salida)[-1])
@@ -18,20 +21,20 @@ def igualar(i):
     return medido, ganancia
 
 
-for i in range(1, 10):
-    m, g = igualar(i)
-    print(f'voz-{i:02d}: {m:.1f} LUFS → ganancia {g:+.1f} dB')
+for nombre, _ in VOCES:
+    m, g = igualar(nombre)
+    print(f'{nombre}: {m:.1f} LUFS → ganancia {g:+.1f} dB')
 
 eventos = []  # (archivo, inicio, duración o None, volumen)
-for t in [7.6, 16.2, 23.0, 25.0, 29.8, 33.8]:
+for t in [7.6, 16.2, 25.9, 27.9, 32.7, 36.7]:
     eventos.append(('whoosh.wav', t, None, 0.7))
-eventos += [('riff.wav', 7.6, None, 0.9), ('rayado.wav', 8.55, None, 0.9),
-            ('murmullo.wav', 10.4, 5.6, 0.35), ('vaso.wav', 18.9, None, 0.7),
-            ('grillos.wav', 20.4, None, 0.9), ('ding.wav', 24.8, None, 0.9),
-            ('pop.wav', 26.6, None, 0.8), ('pop.wav', 27.4, None, 0.8), ('pop.wav', 27.9, None, 0.8),
-            ('musica.wav', 29.8, None, 0.4), ('murmullo.wav', 29.8, 4.0, 0.5)]
-for i, t in enumerate(VOCES, 1):
-    eventos.append((f'voz-{i:02d}-n.wav', t, None, 1.0))
+eventos += [('riff_largo.wav', 7.6, None, 0.9), ('rayado.wav', 20.42, None, 1.0),
+            ('vaso.wav', 18.2, None, 0.7), ('grillos.wav', 20.9, 1.35, 0.9), ('ding.wav', 27.7, None, 0.9),
+            ('pop.wav', 29.5, None, 0.8), ('pop.wav', 30.3, None, 0.8), ('pop.wav', 30.8, None, 0.8),
+            ('musica.wav', 32.7, None, 0.4), ('murmullo.wav', 32.7, 4.0, 0.5)]
+for nombre, t in VOCES:
+    vol = 0.6 if nombre.startswith('grito') else 1.0
+    eventos.append((f'{nombre}-n.wav', t, None, vol))
 entradas, filtros = [], []
 for i, (f, t, d, v) in enumerate(eventos):
     entradas += ['-i', f]
