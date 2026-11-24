@@ -346,17 +346,17 @@ const PINS = INFO.pins.map((p, i) => {
 // ================= Guion y tiempos =================
 const LINEAS = [
   { t: 0.8,  q: 'Borja', c: 'c1borja', txt: 'Bosco, tío, ¿dónde vamos? ¿Esto tiene reservado?', pausas: [[2.22, 9]] },
-  { t: 3.4,  q: 'Bosco', c: 'c1bosco', txt: 'Tranqui, Borja. Mi padre dice que aquí hay buen rollo.', pausas: [[1.056, 1.399], [3.469, 9]] },
+  { t: 3.4,  q: 'Bosco', c: 'c1bosco', txt: 'Tranqui, Borja. Mi padre dice que aquí hay buen rollo.', pausas: [[0.968, 1.555], [3.213, 9]] },
   { t: 9.6,  q: 'Borja', c: 'c2borja', txt: 'Bosco… aquí nadie lleva náuticos.', pausas: [[0.691, 1.412], [2.648, 9]] },
-  { t: 12.7, q: 'Bosco', c: 'c2bosco', txt: 'Ni chaleco. Ni polo. Nada, tío.', pausas: [[0.839, 1.185], [1.909, 2.154], [3.099, 9]] },
+  { t: 12.7, q: 'Bosco', c: 'c2bosco', txt: 'Ni chaleco. Ni polo. Nada, tío.', pausas: [[0.62, 0.87], [1.265, 1.43], [1.957, 9]] },
   { t: 16.6, q: 'Borja', c: 'c3borja', txt: '¿Me pones un gin-tonic con pepino? Con poco hielo, porfa.', pausas: [[1.623, 2.24], [2.828, 9]] },
-  { t: 23.0, q: 'Bosco', c: 'c4bosco', txt: 'Espera, que lo miro en Tonáit.', pausas: [[1.704, 9]] },
+  { t: 23.0, q: 'Bosco', c: 'c4bosco', txt: 'Espera, que lo miro en Tonáit.', pausas: [[1.2, 9]] },
   { t: 25.6, q: 'Narradora', c: null, txt: 'Ambiente, música y precio de cada local, antes de entrar.', pausas: [[3.374, 9]] },
   { t: 30.8, q: 'Borja', c: 'c6borja', txt: 'Esto ya es otra cosa, tío. ¡Qué fuerte!', pausas: [[1.943, 9]] },
   { t: 34.4, q: 'Narradora', c: null, txt: 'Tonáit. Cada uno, a su sitio. Llega muy pronto a Granada.', pausas: [[3.779, 9]] },
 ];
 const COLQ = { Borja: '#FF8FB1', Bosco: '#8EC3EE', Narradora: '#E2B15B' };
-const DUR = [2.69, 3.84, 2.95, 3.42, 3.79, 2.09, 3.71, 2.35, 4.13];
+const DUR = [2.69, 3.53, 2.95, 2.32, 3.79, 1.52, 3.71, 2.35, 4.13];
 window.DURACION = 40.0;
 
 // ================= Ayudas de animación =================
@@ -399,10 +399,10 @@ function pintar(t) {
   mover('c1borja', xBorja, 1860 - Math.abs(Math.sin(t * 8)) * 16 * andar);
   mover('c1bosco', xBosco, 1860 - Math.abs(Math.sin(t * 8 + 1)) * 16 * andar);
   brazo('c1borja', 'bI', Math.sin(t * 8) * 14 * andar); brazo('c1borja', 'bD', -Math.sin(t * 8) * 14 * andar);
-  const apunta = suave(fade(t, 4.6, 5.1)) * (1 - fade(t, 6.8, 7.2));
+  const apunta = suave(fade(t, 5.2, 5.7)) * (1 - fade(t, 6.8, 7.2));
   brazo('c1bosco', 'bI', -Math.sin(t * 8) * 14 * andar);
   brazo('c1bosco', 'bD', Math.sin(t * 8) * 14 * andar - apunta * 118);
-  mirar('c1borja', t > 3.4 ? 5 : 2, 0); mirar('c1bosco', t > 4.6 ? 6 : (t > 0.8 && t < 3.4 ? -5 : 0), t > 4.6 ? -3 : 0);
+  mirar('c1borja', t > 3.4 ? 5 : 2, 0); mirar('c1bosco', t > 5.2 ? 6 : (t > 0.8 && t < 3.4 ? -5 : 0), t > 5.2 ? -3 : 0);
   cabeza('c1bosco', apunta * 6); cabeza('c1borja', t > 3.4 ? 4 : 0);
   boca('c1borja', hablando(t, 'c1borja') ? 'mA' : (t > 3.4 ? 'mN' : 'mP'));
   boca('c1bosco', hablando(t, 'c1bosco') ? 'mA' : 'mG');
@@ -428,7 +428,7 @@ function pintar(t) {
     boca(c, habla ? 'mA' : (susto > 0 ? 'mO' : 'mG'));
     cejas(c, -8 * susto, -8 * susto);
     mirar(c, i === 0 ? 5 * susto : -5 * susto, -2 * susto);
-    const enc = fade(t, 14.85, 15.15) * (1 - fade(t, 15.9, 16.2));   // «Nada, tío»: se encogen de hombros
+    const enc = fade(t, 14.1, 14.4) * (1 - fade(t, 15.6, 16.0));   // «Nada, tío»: se encogen de hombros
     brazo(c, 'bI', 26 * enc); brazo(c, 'bD', -26 * enc);
   });
   // Círculos sobre la ropa: náuticos, chaleco, polo
@@ -438,12 +438,12 @@ function pintar(t) {
     const f = fade(t, 11.0, 11.25) * (1 - fade(t, 12.3, 12.55));
     hl.setAttribute('cx', 290); hl.setAttribute('cy', 1890 - 22 * kB); hl.setAttribute('rx', 135 * kB); hl.setAttribute('ry', 46 * kB); hl.setAttribute('opacity', f);
     hl2.setAttribute('cx', 760); hl2.setAttribute('cy', 1890 - 22 * kS); hl2.setAttribute('rx', 135 * kS); hl2.setAttribute('ry', 46 * kS); hl2.setAttribute('opacity', f);
-  } else if (t >= 12.7 && t < 13.75) {
-    const f = fade(t, 12.7, 12.95) * (1 - fade(t, 13.5, 13.75));
+  } else if (t >= 12.75 && t < 13.5) {
+    const f = fade(t, 12.75, 12.95) * (1 - fade(t, 13.3, 13.5));
     hl.setAttribute('cx', 760); hl.setAttribute('cy', 1890 - 512 * kS); hl.setAttribute('rx', 150 * kS); hl.setAttribute('ry', 140 * kS); hl.setAttribute('opacity', f);
     hl2.setAttribute('opacity', 0);
-  } else if (t >= 13.88 && t < 14.8) {
-    const f = fade(t, 13.88, 14.1) * (1 - fade(t, 14.55, 14.8));
+  } else if (t >= 13.57 && t < 14.1) {
+    const f = fade(t, 13.57, 13.75) * (1 - fade(t, 13.92, 14.1));
     hl.setAttribute('cx', 290); hl.setAttribute('cy', 1890 - 600 * kB); hl.setAttribute('rx', 110 * kB); hl.setAttribute('ry', 60 * kB); hl.setAttribute('opacity', f);
     hl2.setAttribute('opacity', 0);
   } else { hl.setAttribute('opacity', 0); hl2.setAttribute('opacity', 0); }
