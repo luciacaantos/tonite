@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#0A0F1F;font-family:Manrope,"Helvetica Neue",Arial,sans-serif;color:#F4E9DA}
+.esc{position:absolute;left:0;top:0;width:1080px;height:1920px;opacity:0;overflow:hidden}
+.abs{position:absolute}
+.per{position:absolute;width:110px;height:250px}
+.per .cab{position:absolute;left:25px;top:0;width:60px;height:60px;border-radius:50%}
+.per .cue{position:absolute;left:5px;top:70px;width:100px;height:180px;border-radius:50px 50px 18px 18px}
+.lampara{position:absolute;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(226,177,91,.9),rgba(226,177,91,0) 70%)}
+.txt{font-weight:800;text-align:center}
+#sub{position:absolute;left:70px;right:70px;top:1480px;text-align:center;font-size:56px;font-weight:800;line-height:1.25;color:#F4E9DA;text-shadow:0 4px 24px rgba(0,0,0,.85);opacity:0}
+#sub span{color:#FF2E9A}
+.etiq{position:absolute;background:#121A31;border:4px solid;border-radius:26px;padding:20px 28px;font-size:44px;font-weight:800;opacity:0;white-space:nowrap}
+.z{position:absolute;font-weight:800;color:#6FA8FF;font-size:60px;opacity:0}
+</style>
+</head>
+<body>
+
+<!-- 1. Calle: cuatro amigos sin plan -->
+<div id="e1" class="esc" style="background:linear-gradient(#0c1330,#05070F)"></div>
+
+<!-- 2. Mapa: vueltas en círculo -->
+<div id="e2" class="esc" style="background:#0B1020">
+  <svg width="1080" height="1920" viewBox="0 0 1080 1920" class="abs" style="left:0;top:0">
+    <g stroke="#1E2A4A" stroke-width="16" fill="none">
+      <line x1="0" y1="500" x2="1080" y2="500"/><line x1="0" y1="900" x2="1080" y2="900"/>
+      <line x1="0" y1="1300" x2="1080" y2="1300"/><line x1="200" y1="0" x2="200" y2="1920"/>
+      <line x1="540" y1="0" x2="540" y2="1920"/><line x1="880" y1="0" x2="880" y2="1920"/>
+    </g>
+    <rect id="ruta" x="200" y="500" width="680" height="800" rx="60" fill="none" stroke="#FF2E9A" stroke-width="22" stroke-linecap="round"/>
+    <circle id="punto" cx="200" cy="500" r="22" fill="#F4E9DA"/>
+  </svg>
+  <div id="vueltas" class="abs txt" style="left:0;right:0;top:260px;font-size:120px;color:#E2B15B">0 vueltas</div>
+</div>
+
+<!-- 3. Puerta de un local caro -->
+<div id="e3" class="esc" style="background:radial-gradient(circle at 50% 70%,#2a1838,#05070F 70%)">
+  <div class="abs" style="left:330px;top:700px;width:420px;height:560px;border:10px solid #E2B15B;border-radius:200px 200px 0 0;background:#0A0F1F;box-shadow:0 0 90px rgba(226,177,91,.35)"></div>
+  <div class="abs txt" style="left:0;right:0;top:420px;font-size:58px;color:#E2B15B;letter-spacing:6px">LOUNGE PRESTIGE</div>
+  <div class="lampara" style="left:420px;top:330px"></div>
+  <div class="abs" style="left:560px;top:1020px;font-size:70px;color:#6FA8FF" id="musica"></div>
+</div>
+
+<!-- 4. Copa de 14 euros -->
+<div id="e4" class="esc" style="background:linear-gradient(#070b1c,#0A0F1F)">
+  <div class="lampara" style="left:110px;top:120px"></div>
+  <div class="lampara" style="left:480px;top:90px"></div>
+  <div class="lampara" style="left:850px;top:120px"></div>
+  <svg width="260" height="380" viewBox="0 0 260 380" class="abs" style="left:410px;top:620px">
+    <polygon points="20,0 240,0 130,170" fill="#FF2E9A" fill-opacity=".85"/>
+    <rect x="124" y="170" width="12" height="150" fill="#F4E9DA"/>
+    <ellipse cx="130" cy="330" rx="90" ry="22" fill="#F4E9DA"/>
+  </svg>
+  <div id="precio" class="etiq" style="left:610px;top:640px;border-color:#E2B15B;color:#E2B15B">14 €</div>
+</div>
+
+<!-- 5. Pista vacía y DJ bostezando -->
+<div id="e5" class="esc" style="background:linear-gradient(#0a0f20,#05070F)">
+  <div id="bola" class="abs" style="left:440px;top:90px;width:200px;height:200px;border-radius:50%;background:repeating-conic-gradient(#8fa0c8 0 10deg,#2a3556 10deg 20deg)"></div>
+  <div class="abs" style="left:330px;top:620px;width:420px;height:200px;background:#1a2340;border-radius:20px"></div>
+  <div id="dj" class="abs" style="left:470px;top:520px;width:140px;height:140px;border-radius:50%;background:#2a3560"></div>
+  <div class="abs" style="left:0;top:1100px;width:1080px;height:560px;background-image:linear-gradient(#1E2A4A 3px,transparent 3px),linear-gradient(90deg,#1E2A4A 3px,transparent 3px);background-size:180px 180px;transform:perspective(600px) rotateX(55deg);transform-origin:50% 0;opacity:.8"></div>
+  <div class="z" id="z1" style="left:600px;top:420px">z</div>
+  <div class="z" id="z2" style="left:650px;top:360px;font-size:80px">z</div>
+  <div class="z" id="z3" style="left:705px;top:290px;font-size:100px">Z</div>
+</div>
+
+<!-- 6. Móvil: aparece TONITE -->
+<div id="e6" class="esc" style="background:#05070F">
+  <div class="abs" style="left:230px;top:330px;width:620px;height:1260px;border-radius:70px;background:#05070F;border:14px solid #1b2440"></div>
+  <img id="logo1" src="efectos/logo.png" class="abs" style="left:290px;top:720px;width:500px;height:auto;opacity:0" alt="Logo de tonite">
+</div>
+
+<!-- 7. Móvil con el mapa y ambiente + precio -->
+<div id="e7" class="esc" style="background:#05070F">
+  <div class="abs" style="left:230px;top:170px;width:620px;height:1260px;border-radius:70px;background:#05070F;border:14px solid #1b2440;overflow:hidden">
+    <img src="../video-01/capturas/mapa.png" class="abs" style="left:0;top:0;width:592px;height:1277px" alt="Mapa de la app con los locales de Granada">
+    <div id="pins7"></div>
+    <div class="etiq" id="t7a" style="left:40px;bottom:300px;border-color:#E2B15B;color:#E2B15B;font-size:38px">Animado · copa 6 €</div>
+    <div class="etiq" id="t7b" style="left:40px;bottom:180px;border-color:#6FA8FF;color:#6FA8FF;font-size:38px">Vacío · copa 14 €</div>
+  </div>
+  <div class="abs txt" style="left:0;right:0;top:100px;font-size:30px;color:#E2B15B">DEMO · datos de ejemplo</div>
+</div>
+
+<!-- 8. Local animado: entran los cuatro -->
+<div id="e8" class="esc" style="background:radial-gradient(circle at 50% 40%,#4a1140,#0A0F1F 75%)">
+  <div id="luces"></div>
+</div>
+
+<!-- 9. Cierre -->
+<div id="e9" class="esc" style="background:#0A0F1F">
+  <img id="logo9" src="efectos/logo.png" class="abs" style="left:220px;top:600px;width:640px;height:auto;opacity:0" alt="Logo de tonite: la palabra tonite con una estrella rosa y debajo Granada de noche">
+  <div id="arroba" class="abs txt" style="left:0;right:0;top:1200px;font-size:48px;color:#FF2E9A;opacity:0">@tonite_granada</div>
+</div>
+
+<div id="sub"></div>
+
+<script src="../video-01/datos.js"></script>
+<script src="datos-narracion.js"></script>
+<script>
+  window.DURACION = NARR.total;
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const fade = (t, a, b) => clamp((t - a) / (b - a));
+  const $ = (id) => document.getElementById(id);
+  const rnd = (i) => Math.sin(i * 91.7) * 0.5 + 0.5;
+
+  // Personas: cuerpo y cabeza de colores
+  function persona(color, pelo, escena) {
+    const d = document.createElement('div');
+    d.className = 'per';
+    d.innerHTML = '<div class="cab" style="background:' + pelo + '"></div><div class="cue" style="background:' + color + '"></div>';
+    $(escena).appendChild(d);
+    return d;
+  }
+  const COLORES = ['#FF2E9A', '#E2B15B', '#3DDC97', '#6FA8FF'];
+  const PELOS = ['#1b1b2e', '#3a2418', '#14142a', '#2a1a33'];
+
+  // Escena 1: caminan por la calle
+  const amigosCalle = COLORES.map((c, i) => persona(c, PELOS[i], 'e1'));
+  // Escena 3: entran en la puerta
+  const amigosPuerta = COLORES.map((c, i) => persona(c, PELOS[i], 'e3'));
+  // Escena 4: en fila, mirando al techo
+  const amigosFila = COLORES.map((c, i) => persona(c, PELOS[i], 'e4'));
+  // Escena 8: entran en el local animado
+  const amigosLocal = COLORES.map((c, i) => persona(c, PELOS[i], 'e8'));
+  // Público del local
+  const publico = [];
+  for (let i = 0; i < 16; i++) {
+    const p = persona(COLORES[i % 4], PELOS[(i + 1) % 4], 'e8');
+    p.style.transform = 'scale(.55)';
+    p.dataset.k = i;
+    publico.push(p);
+  }
+  // Marcadores del mapa del móvil
+  const pins7 = $('pins7');
+  const PINS = INFO.pins.map((p, i) => {
+    const d = document.createElement('div');
+    d.className = 'abs';
+    d.style.cssText = 'width:24px;height:24px;border-radius:50%;transform:translate(-50%,-50%) scale(0);box-shadow:0 0 0 4px rgba(10,15,31,.7);left:' + (p.x * 592 / 390) + 'px;top:' + (p.y * 592 / 390) + 'px;background:' + p.c;
+    pins7.appendChild(d);
+    return { el: d, t: 27.6 + i * 0.1 };
+  });
+
+  // Subtítulos: cada frase en su segundo
+  const subEl = $('sub');
+  function subtitulo(t) {
+    let idx = -1;
+    NARR.starts.forEach((s, i) => { if (t >= s - 0.05 && t < s + NARR.dur[i] + 0.1) idx = i; });
+    if (idx < 0) { subEl.style.opacity = 0; return; }
+    if (subEl.dataset.i !== String(idx)) { subEl.dataset.i = idx; subEl.textContent = NARR.textos[idx]; }
+    subEl.style.opacity = fade(t, NARR.starts[idx] - 0.05, NARR.starts[idx] + 0.25) * (1 - fade(t, NARR.starts[idx] + NARR.dur[idx] - 0.1, NARR.starts[idx] + NARR.dur[idx] + 0.2));
+  }
+
+  function escena(id, t, a, b) {
+    const f = Math.min(fade(t, a, a + 0.4), 1 - fade(t, b - 0.4, b));
+    $(id).style.opacity = f;
+  }
+
+  function pintar(t) {
+    // Escenas
+    escena('e1', t, 0, 5.0);
+    escena('e2', t, 5.0, 10.0);
+    escena('e3', t, 10.0, 15.0);
+    escena('e4', t, 15.0, 19.5);
+    escena('e5', t, 19.5, 24.5);
+    escena('e6', t, 24.5, 27.0);
+    escena('e7', t, 27.0, 31.2);
+    escena('e8', t, 31.2, 35.6);
+    escena('e9', t, 35.6, NARR.total + 1);
+
+    // 1. Amigos caminando por la calle
+    amigosCalle.forEach((p, i) => {
+      const x = -160 + (t - i * 0.25) * 230 - i * 90;
+      p.style.left = x + 'px';
+      p.style.top = (1080 + Math.sin(t * 9 + i) * 14) + 'px';
+      p.style.transform = 'scale(1.2)';
+    });
+    // 2. Ruta en círculo y contador de vueltas
+    const ruta = $('ruta');
+    const L = ruta.getTotalLength();
+    const p2 = fade(t, 5.4, 9.6);
+    ruta.style.strokeDasharray = (L * 0.18) + ' ' + L;
+    ruta.style.strokeDashoffset = (-L * p2 * 3).toString();
+    const vueltas = Math.min(3, Math.floor(p2 * 3 + 0.001));
+    $('vueltas').textContent = vueltas + (vueltas === 1 ? ' vuelta' : ' vueltas');
+    const pt = ruta.getPointAtLength((p2 * 3 % 1) * L);
+    $('punto').setAttribute('cx', pt.x);
+    $('punto').setAttribute('cy', pt.y);
+
+    // 3. Entran en la puerta
+    amigosPuerta.forEach((p, i) => {
+      const k = fade(t, 10.2 + i * 0.2, 12.4 + i * 0.2);
+      p.style.left = (-160 + k * (470 - (-160)) + i * 30) + 'px';
+      p.style.top = '1080px';
+      p.style.opacity = 1 - fade(t, 12.5 + i * 0.1, 12.8 + i * 0.1);
+      p.style.transform = 'scale(1.2)';
+    });
+    // Notas de música que suben desde dentro
+    $('musica').textContent = ['♪', '♫', '♪'][Math.floor(t * 2) % 3];
+    $('musica').style.opacity = fade(t, 11.0, 11.5) * (1 - fade(t, 13.8, 14.4));
+    $('musica').style.transform = 'translateY(' + (-fade(t, 11, 14) * 160) + 'px)';
+
+    // 4. Fila mirando al techo y precio
+    amigosFila.forEach((p, i) => {
+      p.style.left = (110 + i * 230) + 'px';
+      p.style.top = (1120 + Math.sin(t * 3 + i) * 6) + 'px';
+      p.style.transform = 'scale(1.2) rotate(' + (-fade(t, 15.2, 16.2) * 12) + 'deg)';
+      p.style.opacity = fade(t, 15.0 + i * 0.1, 15.4 + i * 0.1);
+    });
+    const pr = $('precio');
+    pr.style.opacity = fade(t, 15.7, 16.0);
+    pr.style.transform = 'scale(' + (0.8 + 0.2 * fade(t, 15.7, 16.2)) + ')';
+    $('e4').querySelectorAll('.lampara').forEach((l, i) => {
+      l.style.opacity = 0.6 + 0.4 * Math.sin(t * 2 + i);
+    });
+
+    // 5. Bola de discoteca, DJ bostezando, zzz
+    $('bola').style.transform = 'rotate(' + ((t - 19.5) * 40) + 'deg)';
+    const bostezo = fade(t, 21.0, 22.0) * (1 - fade(t, 23.4, 24.2));
+    $('dj').style.transform = 'translateY(' + (bostezo * 26) + 'px) scaleY(' + (1 + bostezo * 0.25) + ')';
+    ['z1', 'z2', 'z3'].forEach((id, i) => {
+      const a = 21.4 + i * 0.5;
+      const f = fade(t, a, a + 0.4) * (1 - fade(t, a + 1.6, a + 2.3));
+      $(id).style.opacity = f;
+      $(id).style.transform = 'translateY(' + (-fade(t, a, a + 2.3) * 120) + 'px)';
+    });
+
+    // 6. Móvil: aparece el logo
+    $('logo1').style.opacity = fade(t, 24.9, 25.4);
+    $('logo1').style.transform = 'scale(' + (0.9 + 0.1 * fade(t, 24.9, 25.5)) + ')';
+
+    // 7. Mapa con ambiente y precio
+    PINS.forEach((p) => { p.el.style.transform = 'translate(-50%,-50%) scale(' + fade(t, p.t, p.t + 0.22) + ')'; });
+    $('t7a').style.opacity = fade(t, 29.0, 29.5);
+    $('t7b').style.opacity = fade(t, 29.8, 30.3);
+
+    // 8. Local animado: entran y el público baila
+    amigosLocal.forEach((p, i) => {
+      const k = fade(t, 31.4 + i * 0.1, 33.4 + i * 0.1);
+      p.style.left = (-200 + k * 560 + i * 40) + 'px';
+      p.style.top = (880 + Math.sin(t * 8 + i) * 14) + 'px';
+      p.style.transform = 'scale(1.2)';
+      p.style.opacity = 1;
+    });
+    publico.forEach((p, i) => {
+      const fila = Math.floor(i / 8), col = i % 8;
+      p.style.left = (60 + col * 120) + 'px';
+      p.style.top = (1180 + fila * 110 + Math.sin(t * 7 + i * 1.3) * 12) + 'px';
+      p.style.opacity = fade(t, 31.4 + i * 0.05, 31.9 + i * 0.05);
+    });
+    $('luces').innerHTML = '';
+    const focos = [0, 1, 2];
+    focos.forEach((k) => {
+      const d = document.createElement('div');
+      d.className = 'abs';
+      d.style.cssText = 'left:' + (150 + k * 380) + 'px;top:200px;width:160px;height:900px;background:linear-gradient(rgba(255,46,154,.45),rgba(255,46,154,0));opacity:' + (0.4 + 0.6 * Math.abs(Math.sin(t * 5 + k))) + ';transform:rotate(' + (Math.sin(t * 2 + k) * 25) + 'deg);transform-origin:top center';
+      $('luces').appendChild(d);
+    });
+
+    // 9. Cierre
+    $('logo9').style.opacity = fade(t, 35.9, 36.5);
+    $('arroba').style.opacity = fade(t, 37.2, 37.8);
+
+    // Subtítulos
+    subtitulo(t);
+  }
+  window.pintar = pintar;
+  pintar(0);
+</script>
+</body>
+</html>
