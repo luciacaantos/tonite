@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#0A0F1F;font-family:Manrope,"Helvetica Neue",Arial,sans-serif;color:#F4E9DA}
+.esc{position:absolute;left:0;top:0;width:1080px;height:1920px;opacity:0;overflow:hidden}
+.esc>svg{position:absolute;left:0;top:0}
+#sub{position:absolute;left:60px;right:60px;top:110px;background:rgba(10,15,31,.78);border-radius:30px;padding:22px 32px 26px;opacity:0}
+#sub .q{font-size:30px;font-weight:800;letter-spacing:4px;text-transform:uppercase;margin-bottom:6px}
+#sub .t{font-size:48px;font-weight:800;line-height:1.22;color:#F4E9DA}
+.capa{position:absolute;opacity:0}
+.bocadillo{background:#fff;color:#111;border-radius:40px;padding:30px 40px;font-size:66px;font-weight:900;white-space:nowrap;box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.etiq{position:absolute;left:34px;right:34px;background:#121A31;border:4px solid;border-radius:26px;padding:18px 24px;font-size:34px;font-weight:800;opacity:0;white-space:nowrap}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs id="defs"></defs></svg>
+
+<div id="e1" class="esc"><svg id="s1" width="1080" height="1920" viewBox="0 0 1080 1920"></svg></div>
+<div id="e2" class="esc"><svg id="s2" width="1080" height="1920" viewBox="0 0 1080 1920"></svg></div>
+<div id="e3" class="esc"><svg id="s3" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
+  <div id="burbuja" class="capa bocadillo" style="left:330px;top:540px">¿Con… PEPINO?</div>
+  <div id="cri" class="capa" style="right:70px;top:1760px;font-size:46px;font-style:italic;color:#9AA3C4">cri, cri…</div>
+</div>
+<div id="e4" class="esc"><svg id="s4" width="1080" height="1920" viewBox="0 0 1080 1920"></svg></div>
+<div id="e5" class="esc" style="background:#05070F">
+  <div style="position:absolute;left:230px;top:430px;width:620px;height:1260px;border-radius:70px;background:#05070F;border:14px solid #1b2440;overflow:hidden">
+    <img src="../video-01/capturas/mapa.png" style="position:absolute;left:0;top:0;width:592px;height:1277px" alt="Mapa de la app con los locales de Granada">
+    <div id="pins5"></div>
+    <div class="etiq" id="t5a" style="bottom:330px;border-color:#FF4D4D;color:#FF4D4D">El Averno · Metal · copa 6 €</div>
+    <div class="etiq" id="t5b" style="bottom:200px;border-color:#E2B15B;color:#E2B15B">La Terraza · Pop · copa 9 €</div>
+    <div class="etiq" id="t5c" style="bottom:110px;left:auto;right:34px;padding:8px 18px;font-size:26px;background:#FF2E9A;border-color:#FF2E9A;color:#1B0B16">92 % para ti</div>
+  </div>
+  <div style="position:absolute;left:0;right:0;top:1730px;text-align:center;font-size:30px;font-weight:800;color:#E2B15B">DEMO · datos de ejemplo</div>
+</div>
+<div id="e6" class="esc"><svg id="s6" width="1080" height="1920" viewBox="0 0 1080 1920"></svg></div>
+<div id="e7" class="esc" style="background:radial-gradient(circle at 50% 35%,#1d1430,#0A0F1F 70%)">
+  <svg id="s7" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
+  <img id="logo" src="efectos/logo.png" style="position:absolute;left:200px;top:470px;width:680px;height:auto;opacity:0" alt="Logo de tonite: la palabra tonite con una estrella rosa y debajo Granada de noche">
+  <div id="etiqueta" class="capa" style="left:0;right:0;top:960px;text-align:center;font-size:80px;font-weight:900;color:#FF2E9A">Etiqueta a tu Bosco</div>
+  <svg id="flecha" class="capa" width="120" height="160" viewBox="0 0 120 160" style="left:480px;top:1080px"><path d="M60 10 L60 120 M20 85 L60 135 L100 85" stroke="#FF2E9A" stroke-width="16" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div id="arroba" class="capa" style="left:0;right:0;top:1270px;text-align:center;font-size:44px;font-weight:800;color:#F4E9DA">@tonite_granada</div>
+</div>
+
+<div id="sub"><div class="q"></div><div class="t"></div></div>
+
+<script src="../video-01/datos.js"></script>
+<script>
+// ================= Utilidades =================
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const fade = (t, a, b) => clamp((t - a) / (b - a));
+const suave = (x) => x * x * (3 - 2 * x);
+const $ = (id) => document.getElementById(id);
+const hx = (h) => [0, 2, 4].map((i) => parseInt(h.replace('#', '').substr(i, 2), 16));
+const hex = (r) => '#' + r.map((v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0')).join('');
+const osc = (h, f) => hex(hx(h).map((v) => v * f));
+const acl = (h, f) => hex(hx(h).map((v) => v + (255 - v) * f));
+const DEFS = [];
+function gl(id, c1, c2, vertical) {
+  DEFS.push('<linearGradient id="' + id + '" x1="0" y1="0" x2="' + (vertical ? 0 : 1) + '" y2="1"><stop offset="0" stop-color="' + c1 + '"/><stop offset="1" stop-color="' + c2 + '"/></linearGradient>');
+  return 'url(#' + id + ')';
+}
+function gr(id, c1, c2, cx = '40%', cy = '35%') {
+  DEFS.push('<radialGradient id="' + id + '" cx="' + cx + '" cy="' + cy + '" r="75%"><stop offset="0" stop-color="' + c1 + '"/><stop offset="1" stop-color="' + c2 + '"/></radialGradient>');
+  return 'url(#' + id + ')';
+}
+DEFS.push('<filter id="blur8" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="8"/></filter>');
+DEFS.push('<filter id="blur30" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="30"/></filter>');
+DEFS.push('<filter id="neon" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>');
+const mirror = (s) => '<g transform="scale(-1,1)">' + s + '</g>';
+
+// ================= Personajes =================
+// Origen en los pies (0,0); mide unos 800 px de alto a escala 1.
+function personaje(id, o) {
+  const P = (n) => id + '-' + n;
+  const piel = o.piel, pielS = osc(piel, 0.85);
+  const fPiel = gr(P('gp'), acl(piel, 0.12), osc(piel, 0.9));
+  const fPelo = gl(P('gh'), acl(o.pelo, 0.18), osc(o.pelo, 0.75), true);
+  const fPan = gl(P('gpan'), acl(o.pantalon, 0.08), osc(o.pantalon, 0.72));
+  const camisa = o.cuero ? '#2a2a2a' : o.camisa;
+  const fCam = gl(P('gc'), acl(camisa, 0.12), osc(camisa, 0.78));
+  let s = '';
+  // Sombra en el suelo
+  s += '<ellipse cx="0" cy="0" rx="150" ry="22" fill="#000" opacity=".45" filter="url(#blur8)"/>';
+  // Piernas
+  s += '<path d="M-74,-400 L-6,-400 L-12,-36 L-68,-36 Z" fill="' + fPan + '"/>';
+  s += '<path d="M6,-400 L74,-400 L68,-36 L12,-36 Z" fill="' + fPan + '"/>';
+  s += '<path d="M-40,-380 L-40,-50 M40,-380 L40,-50" stroke="' + osc(o.pantalon, 0.65) + '" stroke-width="3" opacity=".55"/>';
+  if (o.cuero) s += '<path d="M-64,-220 l44,4 l-8,14 l-34,-3 z M18,-170 l40,2 l-4,12 l-34,-2z" fill="#6b6b6b" opacity=".7"/>';
+  // Zapatos
+  if (o.zapato === 'bota') {
+    const b = '<path d="M-88,0 Q-94,-34 -74,-70 L-12,-70 L-8,0 Z" fill="#161616"/><rect x="-92" y="-10" width="86" height="10" rx="4" fill="#0b0b0b"/><path d="M-60,-62 l20,0 M-62,-50 l22,0 M-64,-38 l24,0" stroke="#3a3a3a" stroke-width="3"/>';
+    s += b + mirror(b);
+  } else {
+    DEFS.push('<linearGradient id="' + P('gz') + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a6538"/><stop offset="1" stop-color="#5c3517"/></linearGradient>');
+    const z = '<path d="M-92,-6 Q-96,-40 -62,-44 L-10,-44 Q-2,-24 -6,-6 Z" fill="url(#' + P('gz') + ')"/><rect x="-96" y="-12" width="92" height="10" rx="5" fill="#efe4d0"/><path d="M-66,-40 q16,-8 34,0 M-62,-30 q14,-6 28,0" stroke="#e9d3a8" stroke-width="3" fill="none"/><circle cx="-24" cy="-34" r="3" fill="#e9d3a8"/>';
+    s += z + mirror(z);
+  }
+  // Cinturón
+  if (!o.cuero) s += '<rect x="-78" y="-414" width="156" height="20" rx="4" fill="#5a3a22"/><rect x="-14" y="-417" width="28" height="26" rx="4" fill="none" stroke="#d9c17a" stroke-width="4"/>';
+  // Cuello
+  s += '<path d="M-26,-668 L26,-668 L28,-626 Q0,-612 -28,-626 Z" fill="' + pielS + '"/>';
+  // Torso (camisa)
+  s += '<path d="M-114,-604 Q-126,-566 -106,-522 L-86,-398 L86,-398 L106,-522 Q126,-566 114,-604 Q62,-638 0,-640 Q-62,-638 -114,-604 Z" fill="' + fCam + '"/>';
+  if (o.camiseta) {
+    s += '<path d="M-34,-636 Q0,-610 34,-636" stroke="' + osc(camisa, 0.6) + '" stroke-width="6" fill="none"/>';
+    s += '<path d="M-14,-560 l26,-38 l-8,30 l20,0 l-28,44 l8,-36 z" fill="#c62828"/>';
+  }
+  // Brazos (giran en el hombro)
+  const manga = o.cuero ? '#1c1c1c' : camisa;
+  const fManga = gl(P('gm'), acl(manga, 0.1), osc(manga, 0.75));
+  function brazo(lado) {
+    let b = '';
+    if (o.cuero) {
+      b += '<path d="M-118,-604 Q-146,-566 -142,-500 L-134,-404 L-100,-402 L-100,-500 L-96,-584 Z" fill="' + fManga + '"/>';
+      b += '<rect x="-130" y="-412" width="30" height="12" rx="4" fill="#0e0e0e"/>';
+    } else {
+      b += '<path d="M-136,-512 L-102,-508 L-104,-404 L-132,-406 Z" fill="' + pielS + '"/>';
+      if (o.tatuajes) b += '<path d="M-128,-496 q10,8 20,0 q-10,14 -20,8 M-126,-470 q14,10 22,-2 M-124,-440 q8,6 16,0" stroke="#24406b" stroke-width="4" fill="none" opacity=".85"/>';
+      b += '<path d="M-118,-604 Q-144,-566 -140,-508 L-98,-502 L-96,-584 Z" fill="' + fManga + '"/>';
+    }
+    b += '<ellipse cx="-118" cy="-388" rx="20" ry="24" fill="' + piel + '"/>';
+    return '<g id="' + P(lado) + '">' + (lado === 'bD' ? mirror(b) : b) + '</g>';
+  }
+  s += brazo('bI') + brazo('bD');
+  // Polo: cuello y tapeta
+  if (o.polo && !o.cuero) {
+    s += '<rect x="-8" y="-612" width="16" height="74" rx="3" fill="' + osc(camisa, 0.9) + '"/><circle cx="0" cy="-594" r="4" fill="#f5f5f5"/><circle cx="0" cy="-568" r="4" fill="#f5f5f5"/>';
+  }
+  // Chaleco acolchado
+  if (o.chaleco) {
+    const ch = o.chaleco;
+    const fCh = gl(P('gch'), acl(ch, 0.14), osc(ch, 0.7));
+    DEFS.push('<clipPath id="' + P('cch') + '"><path d="M-108,-600 Q-116,-566 -98,-522 L-82,-398 L-4,-398 L-4,-630 Q-56,-626 -108,-600 Z"/><path d="M108,-600 Q116,-566 98,-522 L82,-398 L4,-398 L4,-630 Q56,-626 108,-600 Z"/></clipPath>');
+    s += '<g clip-path="url(#' + P('cch') + ')"><rect x="-130" y="-640" width="260" height="250" fill="' + fCh + '"/>';
+    for (let y = -600; y < -400; y += 30) s += '<path d="M-120,' + y + ' Q-60,' + (y + 8) + ' 0,' + y + ' Q60,' + (y + 8) + ' 120,' + y + '" stroke="' + osc(ch, 0.55) + '" stroke-width="3" fill="none"/>';
+    s += '</g><line x1="0" y1="-630" x2="0" y2="-400" stroke="#c9ced8" stroke-width="4"/>';
+    s += '<path d="M-48,-650 Q0,-660 48,-650 L44,-624 Q0,-634 -44,-624 Z" fill="' + osc(ch, 0.85) + '"/>';
+  }
+  // Chupa de cuero
+  if (o.cuero) {
+    const fCu = gl(P('gcu'), '#3a3a3a', '#0c0c0c');
+    const panel = '<path d="M-114,-604 Q-126,-566 -106,-522 L-86,-398 L-30,-398 L-36,-610 Q-72,-628 -114,-604 Z" fill="' + fCu + '"/><path d="M-36,-610 L-64,-560 L-40,-516 Z" fill="#2f2f2f"/><circle cx="-90" cy="-590" r="5" fill="#cfcfcf"/><circle cx="-74" cy="-598" r="5" fill="#cfcfcf"/><circle cx="-58" cy="-604" r="5" fill="#cfcfcf"/>';
+    s += panel + mirror(panel);
+    s += '<path d="M-20,-640 Q0,-600 20,-640" stroke="#b8b8b8" stroke-width="4" fill="none"/>';
+    s += '<path d="M-14,-560 l26,-38 l-8,30 l20,0 l-28,44 l8,-36 z" fill="#c62828"/>';
+  }
+  // Cuello del polo (encima del chaleco)
+  if (o.polo && !o.cuero) {
+    const c = '<path d="M-44,-636 L-6,-604 L-30,-578 L-56,-622 Z" fill="' + acl(camisa, 0.15) + '" stroke="' + osc(camisa, 0.72) + '" stroke-width="2"/>';
+    s += c + mirror(c);
+  }
+  // Jersey anudado a los hombros
+  if (o.jersey) {
+    const j = o.jersey, fJ = gl(P('gj'), acl(j, 0.18), osc(j, 0.72));
+    s += '<path d="M-126,-606 Q0,-672 126,-606 Q122,-580 106,-574 Q0,-632 -106,-574 Q-122,-580 -126,-606 Z" fill="' + fJ + '"/>';
+    const m = '<path d="M-66,-596 Q-24,-566 -10,-546 Q-6,-522 -16,-470 L-34,-472 Q-26,-520 -32,-540 Q-50,-562 -82,-588 Z" fill="' + fJ + '"/><path d="M-34,-480 L-16,-478" stroke="' + osc(j, 0.6) + '" stroke-width="5"/>';
+    s += m + mirror(m) + '<ellipse cx="0" cy="-552" rx="26" ry="18" fill="' + osc(j, 0.9) + '"/>';
+  }
+  // Collar plateado de los heavies
+  if (o.cuero && o.cadena) s += '<path d="M-30,-632 Q0,-596 30,-632" stroke="#d8d8d8" stroke-width="5" fill="none" stroke-dasharray="6 5"/>';
+
+  // Cabeza (gira en el cuello)
+  let c = '';
+  if (o.peinado === 'melena') c += '<path d="M-74,-30 Q-96,90 -84,170 L84,170 Q96,90 74,-30 Q0,-120 -74,-30 Z" fill="' + fPelo + '"/>';
+  c += '<ellipse cx="-63" cy="4" rx="13" ry="19" fill="' + pielS + '"/><ellipse cx="63" cy="4" rx="13" ry="19" fill="' + pielS + '"/>';
+  c += '<ellipse cx="0" cy="0" rx="63" ry="80" fill="' + fPiel + '"/>';
+  c += '<path d="M-54,30 Q0,98 54,30 Q0,84 -54,30 Z" fill="' + osc(piel, 0.86) + '" opacity=".45"/>';
+  c += '<ellipse cx="-34" cy="30" rx="13" ry="8" fill="#e8707a" opacity=".22"/><ellipse cx="34" cy="30" rx="13" ry="8" fill="#e8707a" opacity=".22"/>';
+  if (o.barba) c += '<path d="M-62,4 Q-64,76 0,94 Q64,76 62,4 Q50,46 26,48 Q0,36 -26,48 Q-50,46 -62,4 Z" fill="' + fPelo + '"/>';
+  // Ojos
+  c += '<ellipse cx="-23" cy="-6" rx="13" ry="10" fill="#fff"/><ellipse cx="23" cy="-6" rx="13" ry="10" fill="#fff"/>';
+  c += '<g id="' + P('pup') + '"><circle cx="-23" cy="-5" r="7" fill="' + (o.ojos || '#4b3621') + '"/><circle cx="23" cy="-5" r="7" fill="' + (o.ojos || '#4b3621') + '"/><circle cx="-23" cy="-5" r="3.4" fill="#111"/><circle cx="23" cy="-5" r="3.4" fill="#111"/><circle cx="-20.5" cy="-7.5" r="1.8" fill="#fff"/><circle cx="25.5" cy="-7.5" r="1.8" fill="#fff"/></g>';
+  c += '<path d="M-37,-12 Q-23,-20 -9,-12 M9,-12 Q23,-20 37,-12" stroke="' + osc(piel, 0.55) + '" stroke-width="3" fill="none"/>';
+  const ceja = osc(o.pelo, 0.8);
+  c += '<g id="' + P('cejI') + '"><path d="M-40,-30 Q-24,-40 -8,-31" stroke="' + ceja + '" stroke-width="7" fill="none" stroke-linecap="round"/></g>';
+  c += '<g id="' + P('cejD') + '"><path d="M8,-31 Q24,-40 40,-30" stroke="' + ceja + '" stroke-width="7" fill="none" stroke-linecap="round"/></g>';
+  c += '<path d="M-2,-2 Q-9,22 -3,28 Q4,32 10,27" stroke="' + osc(piel, 0.66) + '" stroke-width="3.5" fill="none" stroke-linecap="round"/>';
+  // Bocas
+  const dientes = '<path d="M-13,46 Q0,45 13,46 L12,51 Q0,50 -12,51 Z" fill="#fff"/>';
+  c += '<g id="' + P('mN') + '"><path d="M-18,50 Q0,58 18,50" stroke="#7a2e2e" stroke-width="5" fill="none" stroke-linecap="round"/></g>';
+  c += '<g id="' + P('mA') + '" opacity="0"><path d="M-17,45 Q0,43 17,45 Q13,68 0,70 Q-13,68 -17,45 Z" fill="#5a1e1e"/>' + dientes + '</g>';
+  c += '<g id="' + P('mO') + '" opacity="0"><ellipse cx="0" cy="56" rx="11" ry="15" fill="#5a1e1e"/></g>';
+  c += '<g id="' + P('mG') + '" opacity="0"><path d="M-28,42 Q0,48 28,42 Q22,76 0,78 Q-22,76 -28,42 Z" fill="#5a1e1e"/><path d="M-24,43 Q0,48 24,43 L22,51 Q0,55 -22,51 Z" fill="#fff"/></g>';
+  c += '<g id="' + P('mP') + '" opacity="0"><path d="M-18,58 Q0,46 18,58" stroke="#7a2e2e" stroke-width="5" fill="none" stroke-linecap="round"/></g>';
+  // Pelo (delante)
+  if (o.peinado === 'tupe') {
+    c += '<path d="M-68,-6 Q-78,-74 -42,-102 Q2,-140 54,-114 Q86,-94 70,-16 Q64,-58 34,-68 Q-4,-82 -38,-62 Q-60,-46 -68,-6 Z" fill="' + fPelo + '"/>';
+    c += '<path d="M-34,-96 Q8,-120 50,-100 M-44,-78 Q0,-102 56,-84 M-20,-112 Q20,-128 52,-110" stroke="' + acl(o.pelo, 0.45) + '" stroke-width="4" fill="none" opacity=".7"/>';
+  } else if (o.peinado === 'raya') {
+    c += '<path d="M-68,-2 Q-74,-84 -10,-96 Q62,-104 72,-28 L68,-2 Q60,-56 22,-66 L-18,-68 Q-54,-62 -68,-2 Z" fill="' + fPelo + '"/>';
+    c += '<path d="M-22,-92 L-26,-66" stroke="' + acl(o.pelo, 0.4) + '" stroke-width="4"/><path d="M0,-90 Q36,-90 56,-60 M6,-80 Q34,-80 50,-56" stroke="' + acl(o.pelo, 0.35) + '" stroke-width="3" fill="none" opacity=".7"/>';
+  } else if (o.peinado === 'cresta') {
+    c += '<path d="M-64,-10 Q-66,-70 0,-82 Q66,-70 64,-10 Q58,-54 0,-62 Q-58,-54 -64,-10 Z" fill="' + osc(piel, 0.6) + '" opacity=".35"/>';
+    c += '<path d="M-18,-72 L-26,-126 L-10,-104 L-12,-168 L2,-120 L8,-184 L14,-116 L26,-156 L20,-76 Z" fill="' + o.pelo + '"/>';
+  } else if (o.peinado === 'melena') {
+    c += '<path d="M-68,6 Q-72,-84 0,-94 Q72,-84 68,6 Q58,-52 8,-66 L0,-44 L-8,-66 Q-58,-52 -68,6 Z" fill="' + fPelo + '"/>';
+    if (o.diadema) c += '<path d="M-62,-48 Q0,-96 62,-48" stroke="' + o.diadema + '" stroke-width="10" fill="none"/>';
+  } else if (o.peinado === 'rapado') {
+    c += '<path d="M-64,-14 Q-66,-78 0,-86 Q66,-78 64,-14 Q58,-58 0,-66 Q-58,-58 -64,-14 Z" fill="' + o.pelo + '" opacity=".85"/>';
+  }
+  if (o.gafas) c += '<g transform="translate(0,-92)"><ellipse cx="-26" cy="0" rx="22" ry="13" fill="#141414"/><ellipse cx="26" cy="0" rx="22" ry="13" fill="#141414"/><path d="M-6,-2 L6,-2" stroke="#141414" stroke-width="5"/><ellipse cx="-32" cy="-4" rx="7" ry="3" fill="#fff" opacity=".35"/></g>';
+  s += '<g id="' + P('cab') + '"><g transform="translate(0,-738)">' + c + '</g></g>';
+  return s;
+}
+
+// Personajes base
+const BOSCO = { piel: '#E8B08A', pelo: '#D9B160', peinado: 'tupe', camisa: '#8EC3EE', polo: true, chaleco: '#1F2D4D', pantalon: '#D6C29A', gafas: true, ojos: '#3d6fa8' };
+const BORJA = { piel: '#F1C6A4', pelo: '#5B3A22', peinado: 'raya', camisa: '#F6B8C0', polo: true, jersey: '#23335E', pantalon: '#A3302F', ojos: '#5a3d22' };
+const HEAVY1 = { piel: '#E2A882', pelo: '#D62828', peinado: 'cresta', cuero: true, pantalon: '#1d1d1d', zapato: 'bota', cadena: true, ojos: '#2f4f2f' };
+const HEAVY2 = { piel: '#D79C74', pelo: '#1a1412', peinado: 'melena', cuero: true, barba: true, pantalon: '#232323', zapato: 'bota' };
+const HEAVY3 = { piel: '#B98262', pelo: '#2a2a2a', peinado: 'rapado', cuero: true, barba: true, pantalon: '#1f1f1f', zapato: 'bota', cadena: true };
+const CAMARERO = { piel: '#E0A47E', pelo: '#141010', peinado: 'melena', camisa: '#1b1b1b', camiseta: true, tatuajes: true, barba: true, pantalon: '#1e1e1e', zapato: 'bota' };
+const PIJOS = [
+  { piel: '#EDBE9A', pelo: '#E6C47A', peinado: 'melena', diadema: '#1F2D4D', camisa: '#FFFFFF', polo: true, jersey: '#9FD8B5', pantalon: '#1F2D4D' },
+  { piel: '#E0A982', pelo: '#3d2a1a', peinado: 'raya', camisa: '#F7D774', polo: true, chaleco: '#2f4a3a', pantalon: '#D6C29A' },
+  { piel: '#F3CBAE', pelo: '#C99A52', peinado: 'tupe', camisa: '#B9C7F5', polo: true, jersey: '#F3A6A6', pantalon: '#E9E2D0' },
+  { piel: '#E6B590', pelo: '#2b1d12', peinado: 'melena', diadema: '#C0392B', camisa: '#F9C89B', polo: true, pantalon: '#24345c' },
+  { piel: '#D9A27C', pelo: '#6b4a2a', peinado: 'raya', camisa: '#9FD8B5', polo: true, jersey: '#F7D774', pantalon: '#A3302F' },
+  { piel: '#EFC1A0', pelo: '#E2BC6E', peinado: 'tupe', camisa: '#FFFFFF', polo: true, chaleco: '#7a1f2b', pantalon: '#D6C29A' },
+];
+
+// ================= Fondos =================
+function ventanas(x0, y0, cols, filas, w, h, gx, gy, semilla) {
+  let s = '';
+  for (let f = 0; f < filas; f++) for (let k = 0; k < cols; k++) {
+    const r = Math.abs(Math.sin((f * 7 + k * 13 + semilla) * 12.9898)) % 1;
+    const luz = r > 0.45;
+    s += '<rect x="' + (x0 + k * gx) + '" y="' + (y0 + f * gy) + '" width="' + w + '" height="' + h + '" rx="3" fill="' + (luz ? '#f3d58a' : '#1a2140') + '" opacity="' + (luz ? 0.9 : 1) + '"/>';
+    if (luz) s += '<rect x="' + (x0 + k * gx) + '" y="' + (y0 + f * gy) + '" width="' + w + '" height="' + h + '" rx="3" fill="#ffe7a8" opacity=".4" filter="url(#blur8)"/>';
+    s += '<path d="M' + (x0 + k * gx - 6) + ',' + (y0 + f * gy + h + 6) + ' h' + (w + 12) + '" stroke="#0c1124" stroke-width="5"/>';
+  }
+  return s;
+}
+function fondoCalle() {
+  let s = '<rect width="1080" height="1920" fill="' + gl('cielo', '#0a0f2c', '#3a1a4a', true) + '"/>';
+  s += '<circle cx="860" cy="250" r="64" fill="#f4e9da" opacity=".9"/><circle cx="860" cy="250" r="120" fill="#f4e9da" opacity=".12" filter="url(#blur30)"/>';
+  s += '<rect x="400" y="620" width="300" height="900" fill="#141a36"/>' + ventanas(430, 660, 4, 9, 44, 60, 68, 92, 3);
+  s += '<rect x="0" y="380" width="420" height="1140" fill="' + gl('edI', '#1b2346', '#10152c', true) + '"/>' + ventanas(30, 430, 5, 11, 50, 66, 78, 96, 1);
+  s += '<rect x="690" y="460" width="390" height="1060" fill="' + gl('edD', '#1d2449', '#0f142a', true) + '"/>' + ventanas(720, 510, 4, 7, 52, 68, 86, 98, 7);
+  // Puerta del bar heavy y su neón
+  s += '<rect x="810" y="1180" width="200" height="340" rx="6" fill="#090909" stroke="#3a0d0d" stroke-width="8"/>';
+  s += '<text x="905" y="1150" text-anchor="middle" font-size="46" font-weight="900" fill="#ff3b3b" filter="url(#neon)" font-family="Arial Black,Arial">EL AVERNO</text>';
+  s += '<text x="150" y="1080" text-anchor="middle" font-size="70" font-weight="900" fill="#ff5ab4" filter="url(#neon)" font-family="Arial Black,Arial">BAR</text>';
+  // Farola
+  s += '<rect x="610" y="880" width="14" height="680" fill="#2b3150"/><path d="M590,880 h54 l-10,-30 h-34 z" fill="#3a4166"/>';
+  s += '<circle cx="617" cy="900" r="150" fill="#ffd27a" opacity=".22" filter="url(#blur30)"/>';
+  // Acera y calzada mojada
+  s += '<rect x="0" y="1520" width="1080" height="70" fill="#2a2f48"/><rect x="0" y="1590" width="1080" height="330" fill="' + gl('calz', '#171b31', '#0a0d1c', true) + '"/>';
+  s += '<rect x="600" y="1600" width="34" height="300" fill="#ffd27a" opacity=".18" filter="url(#blur8)"/><rect x="900" y="1600" width="40" height="300" fill="#ff3b3b" opacity=".16" filter="url(#blur8)"/><rect x="130" y="1600" width="40" height="280" fill="#ff5ab4" opacity=".16" filter="url(#blur8)"/>';
+  return s;
+}
+function fondoHeavy() {
+  let s = '<rect width="1080" height="1920" fill="' + gl('parH', '#3a0d10', '#0c0304', true) + '"/>';
+  for (let f = 0; f < 34; f++) for (let k = 0; k < 9; k++) {
+    const x = k * 130 - (f % 2) * 65, y = f * 44;
+    s += '<rect x="' + x + '" y="' + y + '" width="124" height="38" rx="3" fill="#4a1416" opacity="' + (0.25 + 0.25 * Math.abs(Math.sin(f * 3.1 + k))) + '"/>';
+  }
+  s += '<text x="540" y="430" text-anchor="middle" font-size="110" font-weight="900" fill="#ff2d2d" filter="url(#neon)" font-family="Arial Black,Arial">EL AVERNO</text>';
+  // Amplificadores
+  for (const x of [790, 920]) for (const y of [900, 1080]) {
+    s += '<rect x="' + x + '" y="' + y + '" width="130" height="170" rx="8" fill="#141414" stroke="#2c2c2c" stroke-width="6"/><circle cx="' + (x + 65) + '" cy="' + (y + 90) + '" r="44" fill="#0a0a0a" stroke="#333" stroke-width="5"/>';
+  }
+  // Focos rojos
+  s += '<path d="M180,0 L60,1500 L360,1500 Z" fill="#ff2d2d" opacity=".12"/><path d="M900,0 L720,1500 L1060,1500 Z" fill="#ff2d2d" opacity=".10"/>';
+  s += '<rect x="0" y="1480" width="1080" height="440" fill="' + gl('sueH', '#1a0708', '#070202', true) + '"/>';
+  return s;
+}
+function fondoBarra() {
+  let s = '<rect width="1080" height="1920" fill="' + gl('parB', '#2a0c0e', '#0d0405', true) + '"/>';
+  // Estanterías con botellas
+  for (const y of [520, 820]) {
+    s += '<rect x="40" y="' + y + '" width="1000" height="16" fill="#5a3a22"/>';
+    for (let k = 0; k < 13; k++) {
+      const x = 70 + k * 74, col = ['#2e7d32', '#8d6e63', '#c62828', '#f9a825', '#1565c0', '#6d4c41'][k % 6], h = 150 + (k % 3) * 24;
+      s += '<rect x="' + x + '" y="' + (y - h) + '" width="44" height="' + (h - 40) + '" rx="10" fill="' + col + '" opacity=".85"/><rect x="' + (x + 14) + '" y="' + (y - h - 34) + '" width="16" height="44" rx="4" fill="' + col + '" opacity=".85"/><rect x="' + (x + 6) + '" y="' + (y - h + 30) + '" width="8" height="' + (h - 90) + '" fill="#fff" opacity=".25"/>';
+    }
+  }
+  s += '<circle cx="540" cy="300" r="320" fill="#ff4b2b" opacity=".08" filter="url(#blur30)"/>';
+  return s;
+}
+function barraDelante() {
+  return '<rect x="0" y="1290" width="1080" height="630" fill="' + gl('mad', '#5b3420', '#2b170c', true) + '"/><rect x="0" y="1270" width="1080" height="40" fill="#7a4a2c"/><rect x="0" y="1270" width="1080" height="6" fill="#a8744a"/>';
+}
+function vasoGin() {
+  return '<g id="vaso" opacity="0"><path d="M-70,-200 Q-80,-60 0,-40 Q80,-60 70,-200 Z" fill="#cfe9f5" opacity=".55" stroke="#e8f6fb" stroke-width="4"/><path d="M-62,-150 Q-66,-70 0,-56 Q66,-70 62,-150 Z" fill="#e9f6d8" opacity=".6"/><rect x="-6" y="-40" width="12" height="90" fill="#e8f6fb" opacity=".8"/><ellipse cx="0" cy="52" rx="56" ry="12" fill="#e8f6fb" opacity=".8"/><circle cx="30" cy="-150" r="26" fill="#7cb342" stroke="#33691e" stroke-width="5"/><circle cx="30" cy="-150" r="14" fill="#c5e1a5"/></g>';
+}
+function fondoBokeh() {
+  let s = '<rect width="1080" height="1920" fill="' + gl('bok', '#2a0b10', '#08030a', true) + '"/>';
+  for (let i = 0; i < 18; i++) {
+    const x = (i * 197) % 1080, y = (i * 331) % 1920, r = 40 + (i % 5) * 18;
+    s += '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + ['#ff3b3b', '#ff9a3c', '#ff5ab4'][i % 3] + '" opacity=".18" filter="url(#blur30)"/>';
+  }
+  return s;
+}
+function fondoTerraza() {
+  let s = '<rect width="1080" height="1920" fill="' + gl('ter', '#3b2a1a', '#120c08', true) + '"/>';
+  s += '<text x="540" y="420" text-anchor="middle" font-size="96" font-weight="900" fill="#ffd27a" filter="url(#neon)" font-family="Georgia,serif" font-style="italic">La Terraza</text>';
+  for (let k = 0; k < 3; k++) {
+    const y0 = 520 + k * 120;
+    s += '<path d="M0,' + y0 + ' Q540,' + (y0 + 120) + ' 1080,' + y0 + '" stroke="#5a4a30" stroke-width="3" fill="none"/>';
+    for (let i = 0; i <= 12; i++) {
+      const x = i * 90, tt = x / 1080, y = (1 - tt) * (1 - tt) * y0 + 2 * (1 - tt) * tt * (y0 + 120) + tt * tt * y0;
+      s += '<circle cx="' + x + '" cy="' + y + '" r="9" fill="#ffe3a0"/><circle cx="' + x + '" cy="' + y + '" r="26" fill="#ffd27a" opacity=".35" filter="url(#blur8)"/>';
+    }
+  }
+  // Plantas y sofás blancos
+  for (const x of [60, 1000]) s += '<rect x="' + (x - 40) + '" y="1300" width="80" height="120" rx="10" fill="#c9a77a"/><ellipse cx="' + x + '" cy="1200" rx="110" ry="150" fill="#2f5d3a"/><ellipse cx="' + (x + 30) + '" cy="1150" rx="70" ry="100" fill="#3f7a4b"/>';
+  s += '<rect x="0" y="1480" width="1080" height="440" fill="' + gl('sueT', '#5a4430', '#21170e', true) + '"/>';
+  return s;
+}
+
+// ================= Montaje de escenas =================
+const C = {};   // posiciones de cada personaje
+function poner(svgId, id, o, x, y, k) {
+  C[id] = { x, y, k };
+  return '<g id="' + id + '" transform="translate(' + x + ',' + y + ') scale(' + k + ')">' + personaje(id, o) + '</g>';
+}
+let s1 = fondoCalle() + poner('s1', 'c1borja', BORJA, 250, 1860, 1.02) + poner('s1', 'c1bosco', BOSCO, 590, 1860, 1.02);
+let s2 = fondoHeavy() + poner('s2', 'h1', HEAVY1, 300, 1500, 0.8) + poner('s2', 'h2', HEAVY2, 560, 1490, 0.84) + poner('s2', 'h3', HEAVY3, 820, 1500, 0.8)
+  + poner('s2', 'c2borja', BORJA, 290, 1890, 1.1) + poner('s2', 'c2bosco', BOSCO, 760, 1890, 1.1)
+  + '<ellipse id="hl" cx="0" cy="0" rx="10" ry="10" fill="none" stroke="#FFD23F" stroke-width="10" stroke-dasharray="26 16" opacity="0"/>'
+  + '<ellipse id="hl2" cx="0" cy="0" rx="10" ry="10" fill="none" stroke="#FFD23F" stroke-width="10" stroke-dasharray="26 16" opacity="0"/>';
+let s3 = fondoBarra() + poner('s3', 'cam', CAMARERO, 700, 1640, 1.12) + barraDelante() + '<g transform="translate(470,1290)">' + vasoGin() + '</g>' + poner('s3', 'c3borja', BORJA, 230, 2120, 1.3);
+let s4 = fondoBokeh() + poner('s4', 'c4bosco', BOSCO, 540, 2280, 2.2)
+  + '<g id="movil" opacity="0"><rect x="640" y="1060" width="250" height="470" rx="36" fill="#0b0b12" stroke="#2b3350" stroke-width="8"/><rect id="pant" x="656" y="1080" width="218" height="430" rx="26" fill="#111628"/><ellipse cx="700" cy="1520" rx="70" ry="60" fill="' + BOSCO.piel + '"/></g>'
+  + '<circle id="brillo" cx="560" cy="900" r="420" fill="#ff5ab4" opacity="0" filter="url(#blur30)"/>';
+let s6 = fondoTerraza();
+PIJOS.forEach((o, i) => { s6 += poner('s6', 'p' + i, o, [110, 290, 470, 650, 830, 990][i], 1500, 0.72); });
+s6 += poner('s6', 'c6borja', BORJA, 330, 1890, 1.08) + poner('s6', 'c6bosco', BOSCO, 720, 1890, 1.08);
+let s7 = poner('s7', 'c7borja', BORJA, 380, 1880, 0.55) + poner('s7', 'c7bosco', BOSCO, 700, 1880, 0.55);
+
+$('s1').innerHTML = s1; $('s2').innerHTML = s2; $('s3').innerHTML = s3; $('s4').innerHTML = s4; $('s6').innerHTML = s6; $('s7').innerHTML = s7;
+$('defs').innerHTML = DEFS.join('');
+
+// Marcadores del mapa del móvil
+const PINS = INFO.pins.map((p, i) => {
+  const d = document.createElement('div');
+  d.style.cssText = 'position:absolute;width:24px;height:24px;border-radius:50%;transform:translate(-50%,-50%) scale(0);box-shadow:0 0 0 4px rgba(10,15,31,.7);left:' + (p.x * 592 / 390) + 'px;top:' + (p.y * 592 / 390) + 'px;background:' + p.c;
+  $('pins5').appendChild(d);
+  return { el: d, t: 25.2 + i * 0.06 };
+});
+
+// ================= Guion y tiempos =================
+const LINEAS = [
+  { t: 0.8,  q: 'Borja', c: 'c1borja', txt: 'Bosco, tío, ¿dónde vamos? ¿Esto tiene reservado?', pausas: [[2.22, 9]] },
+  { t: 3.4,  q: 'Bosco', c: 'c1bosco', txt: 'Tranqui, Borja. Mi padre dice que aquí hay buen rollo.', pausas: [[1.056, 1.399], [3.469, 9]] },
+  { t: 9.6,  q: 'Borja', c: 'c2borja', txt: 'Bosco… aquí nadie lleva náuticos.', pausas: [[0.691, 1.412], [2.648, 9]] },
+  { t: 12.7, q: 'Bosco', c: 'c2bosco', txt: 'Ni chaleco. Ni polo. Nada, tío.', pausas: [[0.839, 1.185], [1.909, 2.154], [3.099, 9]] },
+  { t: 16.6, q: 'Borja', c: 'c3borja', txt: '¿Me pones un gin-tonic con pepino? Con poco hielo, porfa.', pausas: [[1.623, 2.24], [2.828, 9]] },
+  { t: 23.0, q: 'Bosco', c: 'c4bosco', txt: 'Espera, que lo miro en Tonáit.', pausas: [[1.704, 9]] },
+  { t: 25.6, q: 'Narradora', c: null, txt: 'Ambiente, música y precio de cada local, antes de entrar.', pausas: [[3.374, 9]] },
+  { t: 30.8, q: 'Borja', c: 'c6borja', txt: 'Esto ya es otra cosa, tío. ¡Qué fuerte!', pausas: [[1.943, 9]] },
+  { t: 34.4, q: 'Narradora', c: null, txt: 'Tonáit. Cada uno, a su sitio. Llega muy pronto a Granada.', pausas: [[3.779, 9]] },
+];
+const COLQ = { Borja: '#FF8FB1', Bosco: '#8EC3EE', Narradora: '#E2B15B' };
+const DUR = [2.69, 3.84, 2.95, 3.42, 3.79, 2.09, 3.71, 2.35, 4.13];
+window.DURACION = 40.0;
+
+// ================= Ayudas de animación =================
+function boca(id, cual) { ['mN', 'mA', 'mO', 'mG', 'mP'].forEach((m) => { const e = $(id + '-' + m); if (e) e.setAttribute('opacity', m === cual ? 1 : 0); }); }
+function mirar(id, dx, dy) { $(id + '-pup').setAttribute('transform', 'translate(' + dx + ',' + dy + ')'); }
+function brazo(id, lado, ang) {
+  const px = lado === 'bI' ? -108 : 108;
+  $(id + '-' + lado).setAttribute('transform', 'rotate(' + ang + ',' + px + ',-590)');
+}
+function cabeza(id, ang, dy = 0) { $(id + '-cab').setAttribute('transform', 'translate(0,' + dy + ') rotate(' + ang + ',0,-650)'); }
+function cejas(id, dI, dD) {
+  $(id + '-cejI').setAttribute('transform', 'translate(0,' + dI + ')');
+  $(id + '-cejD').setAttribute('transform', 'translate(0,' + dD + ')');
+}
+function mover(id, x, y, k, flip) {
+  const c = C[id];
+  $(id).setAttribute('transform', 'translate(' + (x ?? c.x) + ',' + (y ?? c.y) + ') scale(' + (flip ? -1 : 1) * (k ?? c.k) + ',' + (k ?? c.k) + ')');
+}
+// ¿Está hablando ahora? Devuelve true si la boca debe ir abierta en este fotograma.
+function hablando(t, id) {
+  for (const l of LINEAS) {
+    if (l.c !== id) continue;
+    const r = t - l.t;
+    if (r < 0 || r > 6) continue;
+    if (l.pausas.some(([a, b]) => r >= a && r < b)) return false;
+    return Math.floor(r * 9) % 2 === 0;
+  }
+  return false;
+}
+function escena(id, t, a, b) { $(id).style.opacity = Math.min(fade(t, a, a + 0.35), 1 - fade(t, b - 0.35, b)); }
+
+// ================= Fotograma =================
+function pintar(t) {
+  escena('e1', t, 0, 7.6); escena('e2', t, 7.6, 16.2); escena('e3', t, 16.2, 23.0);
+  escena('e4', t, 23.0, 25.1); escena('e5', t, 25.0, 29.9); escena('e6', t, 29.8, 33.9); escena('e7', t, 33.8, 41);
+
+  // ---- 1. Calle ----
+  const andar = 1 - fade(t, 1.6, 2.2);
+  const xBorja = -240 + suave(fade(t, 0, 2.0)) * 490, xBosco = -60 + suave(fade(t, 0.1, 2.1)) * 650;
+  mover('c1borja', xBorja, 1860 - Math.abs(Math.sin(t * 8)) * 16 * andar);
+  mover('c1bosco', xBosco, 1860 - Math.abs(Math.sin(t * 8 + 1)) * 16 * andar);
+  brazo('c1borja', 'bI', Math.sin(t * 8) * 14 * andar); brazo('c1borja', 'bD', -Math.sin(t * 8) * 14 * andar);
+  const apunta = suave(fade(t, 4.6, 5.1)) * (1 - fade(t, 6.8, 7.2));
+  brazo('c1bosco', 'bI', -Math.sin(t * 8) * 14 * andar);
+  brazo('c1bosco', 'bD', Math.sin(t * 8) * 14 * andar - apunta * 118);
+  mirar('c1borja', t > 3.4 ? 5 : 2, 0); mirar('c1bosco', t > 4.6 ? 6 : (t > 0.8 && t < 3.4 ? -5 : 0), t > 4.6 ? -3 : 0);
+  cabeza('c1bosco', apunta * 6); cabeza('c1borja', t > 3.4 ? 4 : 0);
+  boca('c1borja', hablando(t, 'c1borja') ? 'mA' : (t > 3.4 ? 'mN' : 'mP'));
+  boca('c1bosco', hablando(t, 'c1bosco') ? 'mA' : 'mG');
+  cejas('c1borja', t > 0.8 && t < 3.4 ? -6 : 0, t > 0.8 && t < 3.4 ? -6 : 0); cejas('c1bosco', 0, 0);
+
+  // ---- 2. Bar heavy ----
+  const corte = 8.6;              // el disco se raya
+  const headbang = t < corte ? Math.sin(t * 13) * 14 : 0;
+  ['h1', 'h2', 'h3'].forEach((h, i) => {
+    cabeza(h, t < corte ? headbang * (i % 2 ? -1 : 1) : 0, t < corte ? Math.abs(Math.sin(t * 13)) * 10 : 0);
+    const giro = fade(t, corte + 0.1, corte + 0.4);
+    mirar(h, -7 * giro, 2 * giro);
+    cejas(h, 7 * giro, 7 * giro);
+    boca(h, t < corte ? (Math.sin(t * 13 + i) > 0 ? 'mA' : 'mO') : 'mN');
+    brazo(h, 'bI', t < corte ? 150 + Math.sin(t * 13) * 10 : 0);
+    brazo(h, 'bD', t < corte && i === 1 ? -150 - Math.sin(t * 13) * 10 : 0);
+  });
+  const entra = suave(fade(t, 7.7, 8.6));
+  mover('c2borja', -150 + entra * 440); mover('c2bosco', 300 + entra * 460);
+  const susto = fade(t, corte, corte + 0.2);
+  ['c2borja', 'c2bosco'].forEach((c, i) => {
+    const habla = hablando(t, c);
+    boca(c, habla ? 'mA' : (susto > 0 ? 'mO' : 'mG'));
+    cejas(c, -8 * susto, -8 * susto);
+    mirar(c, i === 0 ? 5 * susto : -5 * susto, -2 * susto);
+    const enc = fade(t, 14.85, 15.15) * (1 - fade(t, 15.9, 16.2));   // «Nada, tío»: se encogen de hombros
+    brazo(c, 'bI', 26 * enc); brazo(c, 'bD', -26 * enc);
+  });
+  // Círculos sobre la ropa: náuticos, chaleco, polo
+  const hl = $('hl'), hl2 = $('hl2');
+  const kB = C.c2borja.k, kS = C.c2bosco.k;
+  if (t >= 11.0 && t < 12.55) {
+    const f = fade(t, 11.0, 11.25) * (1 - fade(t, 12.3, 12.55));
+    hl.setAttribute('cx', 290); hl.setAttribute('cy', 1890 - 22 * kB); hl.setAttribute('rx', 135 * kB); hl.setAttribute('ry', 46 * kB); hl.setAttribute('opacity', f);
+    hl2.setAttribute('cx', 760); hl2.setAttribute('cy', 1890 - 22 * kS); hl2.setAttribute('rx', 135 * kS); hl2.setAttribute('ry', 46 * kS); hl2.setAttribute('opacity', f);
+  } else if (t >= 12.7 && t < 13.75) {
+    const f = fade(t, 12.7, 12.95) * (1 - fade(t, 13.5, 13.75));
+    hl.setAttribute('cx', 760); hl.setAttribute('cy', 1890 - 512 * kS); hl.setAttribute('rx', 150 * kS); hl.setAttribute('ry', 140 * kS); hl.setAttribute('opacity', f);
+    hl2.setAttribute('opacity', 0);
+  } else if (t >= 13.88 && t < 14.8) {
+    const f = fade(t, 13.88, 14.1) * (1 - fade(t, 14.55, 14.8));
+    hl.setAttribute('cx', 290); hl.setAttribute('cy', 1890 - 600 * kB); hl.setAttribute('rx', 110 * kB); hl.setAttribute('ry', 60 * kB); hl.setAttribute('opacity', f);
+    hl2.setAttribute('opacity', 0);
+  } else { hl.setAttribute('opacity', 0); hl2.setAttribute('opacity', 0); }
+
+  // ---- 3. Barra ----
+  boca('c3borja', hablando(t, 'c3borja') ? 'mA' : (t > 19.8 ? 'mP' : 'mG'));
+  mirar('c3borja', 6, -2); cejas('c3borja', t > 19.8 ? -6 : 0, t > 19.8 ? -6 : 0);
+  brazo('c3borja', 'bD', -40 * fade(t, 16.6, 17.0) * (1 - fade(t, 19.4, 19.8)));
+  const ceja = suave(fade(t, 19.8, 20.1));
+  cejas('cam', 0, -16 * ceja); mirar('cam', -6, 0); boca('cam', 'mN');
+  cabeza('cam', -4 * ceja);
+  brazo('cam', 'bI', 0); brazo('cam', 'bD', 0);
+  $('vaso').setAttribute('opacity', fade(t, 18.9, 19.2));
+  $('burbuja').style.opacity = fade(t, 20.0, 20.2) * (1 - fade(t, 22.5, 22.8));
+  $('burbuja').style.transform = 'scale(' + (0.85 + 0.15 * suave(fade(t, 20.0, 20.3))) + ')';
+  $('cri').style.opacity = fade(t, 20.6, 20.9) * (1 - fade(t, 22.3, 22.6));
+
+  // ---- 4. Bosco saca el móvil ----
+  boca('c4bosco', hablando(t, 'c4bosco') ? 'mA' : 'mN');
+  mirar('c4bosco', fade(t, 23.4, 23.8) * 6, fade(t, 23.4, 23.8) * 5);
+  $('movil').setAttribute('opacity', fade(t, 23.2, 23.5));
+  $('movil').setAttribute('transform', 'translate(0,' + (1 - suave(fade(t, 23.2, 23.7))) * 260 + ')');
+  const luz = fade(t, 24.8, 25.0);
+  $('pant').setAttribute('fill', luz > 0 ? '#ff5ab4' : '#111628');
+  $('brillo').setAttribute('opacity', 0.35 * luz);
+  brazo('c4bosco', 'bD', 0); brazo('c4bosco', 'bI', 0);
+
+  // ---- 5. Mapa del móvil ----
+  PINS.forEach((p) => { p.el.style.transform = 'translate(-50%,-50%) scale(' + fade(t, p.t, p.t + 0.2) + ')'; });
+  $('t5a').style.opacity = fade(t, 26.6, 26.9);
+  $('t5b').style.opacity = fade(t, 27.4, 27.7);
+  $('t5c').style.opacity = fade(t, 27.9, 28.2);
+
+  // ---- 6. La Terraza ----
+  PIJOS.forEach((o, i) => {
+    const id = 'p' + i;
+    mover(id, null, 1500 - Math.abs(Math.sin(t * 7.8 + i)) * 18);
+    brazo(id, 'bI', 120 + Math.sin(t * 7.8 + i) * 25); brazo(id, 'bD', -120 - Math.sin(t * 7.8 + i * 2) * 25);
+    boca(id, 'mG'); mirar(id, 0, -2);
+  });
+  const fiesta = suave(fade(t, 30.4, 30.9));
+  ['c6borja', 'c6bosco'].forEach((c, i) => {
+    mover(c, null, 1890 - Math.abs(Math.sin(t * 7.8 + i)) * 22 * fiesta);
+    brazo(c, 'bI', 150 * fiesta + Math.sin(t * 7.8) * 12 * fiesta); brazo(c, 'bD', -150 * fiesta - Math.sin(t * 7.8) * 12 * fiesta);
+    boca(c, hablando(t, c) ? 'mA' : 'mG');
+    cejas(c, -6 * fiesta, -6 * fiesta);
+  });
+
+  // ---- 7. Cierre ----
+  $('logo').style.opacity = fade(t, 34.0, 34.6);
+  $('etiqueta').style.opacity = fade(t, 36.6, 37.0);
+  $('etiqueta').style.transform = 'scale(' + (0.9 + 0.1 * suave(fade(t, 36.6, 37.0))) + ')';
+  $('flecha').style.opacity = fade(t, 37.0, 37.3);
+  $('flecha').style.transform = 'translateY(' + (Math.sin(t * 6) * 14) + 'px)';
+  $('arroba').style.opacity = fade(t, 37.6, 38.0);
+  ['c7borja', 'c7bosco'].forEach((c, i) => {
+    brazo(c, i ? 'bD' : 'bI', (i ? -1 : 1) * (130 + Math.sin(t * 9) * 25));
+    boca(c, 'mG');
+  });
+
+  // ---- Subtítulos ----
+  let li = -1;
+  LINEAS.forEach((l, i) => { if (t >= l.t - 0.05 && t < l.t + DUR[i] + 0.1) li = i; });
+  const sub = $('sub');
+  if (li < 0) { sub.style.opacity = 0; }
+  else {
+    const l = LINEAS[li];
+    if (sub.dataset.i !== String(li)) {
+      sub.dataset.i = li;
+      sub.querySelector('.q').textContent = l.q;
+      sub.querySelector('.q').style.color = COLQ[l.q];
+      sub.querySelector('.t').textContent = l.txt;
+    }
+    sub.style.opacity = fade(t, l.t - 0.05, l.t + 0.2) * (1 - fade(t, l.t + DUR[li] - 0.1, l.t + DUR[li] + 0.1));
+  }
+}
+window.pintar = pintar;
+pintar(0);
+</script>
+</body>
+</html>
