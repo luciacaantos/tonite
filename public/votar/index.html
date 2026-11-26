@@ -90,6 +90,8 @@
     @keyframes latido { 50% { opacity: .35; } }
     h1 { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: clamp(38px, 10.5vw, 54px); line-height: 1.05; margin-top: 14px; }
     .sub { color: var(--suave); font-size: 17px; margin: 12px auto 0; max-width: 400px; }
+    .contador { display: inline-block; margin-top: 14px; padding: 6px 14px; border-radius: 999px; background: rgba(226, 177, 91, .12); color: var(--oro); font-size: 14px; font-weight: 700; }
+    .contador strong { color: var(--crema); }
     .sub strong { color: var(--crema); }
 
     /* Tarjeta del voto */
@@ -254,6 +256,7 @@
       <div class="solo-voto"><span class="aviso" id="aviso">Ranking de esta noche a las 22:00</span></div>
       <h1 id="titulo" data-t="titulo">¿Dónde vas esta noche?</h1>
       <p class="sub" id="sub" data-t-html="sub">Vota en 20 segundos, <strong>desbloquea el ranking en directo</strong> y a las 22:00 te mandamos el definitivo.</p>
+      <p class="contador" id="contador" hidden></p>
     </header>
 
     <div class="tarjeta-voto" id="votar">
@@ -454,6 +457,7 @@
         titulo: '¿Dónde vas esta noche?',
         sub: 'Vota en 20 segundos, <strong>desbloquea el ranking en directo</strong> y a las 22:00 te mandamos el definitivo.',
         avisoFalta: 'Ranking definitivo a las 22:00 · faltan {t}',
+        contador: '🔥 Ya han votado {n} personas',
         avisoSalido: 'El ranking de esta noche ya ha salido · vota para el próximo',
         q1: '¿Dónde vas esta noche?', q1hint: 'Puedes elegir hasta 2 sitios',
         q1ph: 'Elige un sitio…', q1ph2: 'Segundo sitio (opcional)', aunNo: 'Aún no lo sé', otro: 'Otro sitio',
@@ -516,6 +520,7 @@
         q3: 'How old are you?', edad27: '27 or older',
         q4: 'Are you an Erasmus student?', q4b: 'Is this your first year in Granada?', si: 'Yes', no: 'No', puede: 'Maybe',
         q5: 'Want to be one of the first to try TONITE?', opcional: '(optional)',
+        contador: '🔥 {n} people have already voted',
         q5ph: '+49 151 0000000 or you@email.com',
         q5ayuda: 'Leave your WhatsApp or email to get early access and a free drink (alcoholic or not) when the app launches (18+ only). Tonight we’ll also send you the ranking at 10 pm.',
         votar: 'Vote', enviando: 'Sending…', pronto: 'Voting opens very soon',
@@ -642,6 +647,7 @@
         if (select.selectedIndex < 0) select.selectedIndex = 0;
       });
       actualizarSitios();
+      pintarContador();
     }
 
     function actualizarSitios() {
@@ -731,6 +737,7 @@
         .then(function () {
           enviando = false;
           guardar('tonite-voto', { noche: noche(), id: datos.id, contacto: !!datos.contacto, plan: null });
+          if (totalVotos) { totalVotos += 1; pintarContador(); }
           mostrarHecho(false);
           $('#votar').scrollIntoView({ block: 'start' });
         })
@@ -779,6 +786,26 @@
       cargarRanking();
     }
 
+    // Contador de votos: solo se enseña cuando el total del experimento pasa de 15.
+    var UMBRAL_CONTADOR = 15;
+    var totalVotos = 0;
+    function pintarContador() {
+      var el = $('#contador');
+      if (!el) return;
+      el.hidden = !(totalVotos > UMBRAL_CONTADOR);
+      if (!el.hidden) el.innerHTML = t('contador').replace('{n}', '<strong>' + totalVotos + '</strong>');
+    }
+    function apuntarTotal(datos) {
+      if (datos && typeof datos.total === 'number') { totalVotos = datos.total; pintarContador(); }
+    }
+    function cargarContador() {
+      if (!API) return;
+      fetch(API + (API.indexOf('?') === -1 ? '?' : '&') + 't=' + Date.now())
+        .then(function (r) { return r.json(); })
+        .then(apuntarTotal)
+        .catch(function () {});
+    }
+
     function cargarRanking() {
       if (!API) return;
       $('[data-error="ranking"]').removeAttribute('data-clave');
@@ -788,6 +815,7 @@
         .then(function (datos) {
           ranking = datos;
           ranking.cargado = new Date();
+          apuntarTotal(datos);
           pintarRanking();
         })
         .catch(function () { ponerError('ranking', 'eRanking'); });
@@ -883,6 +911,7 @@
       var voto = leer('tonite-voto');
       if (voto && voto.noche === noche()) mostrarHecho(true);
     }
+    cargarContador();
     setInterval(actualizarAviso, 30000);
   </script>
 </body>

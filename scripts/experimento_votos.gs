@@ -79,16 +79,18 @@ function doPost(e) {
 }
 
 // El ranking en directo: solo los sitios, la edad y si es Erasmus de cada voto de esta noche.
-// Nunca devuelve contactos ni horas.
+// Nunca devuelve contactos ni horas; además da el total de votos del experimento.
 function doGet() {
   var esta = noche(new Date());
   var cache = CacheService.getScriptCache();
   var guardado = cache.get('ranking-' + esta);
   if (guardado) return ContentService.createTextOutput(guardado).setMimeType(ContentService.MimeType.JSON);
-  var votos = leer('Votos', COLUMNAS_VOTOS).filter(function (v) { return v.noche === esta; }).map(function (v) {
+  var todos = leer('Votos', COLUMNAS_VOTOS);
+  var votos = todos.filter(function (v) { return v.noche === esta; }).map(function (v) {
     return { s: sitiosContados(v), e: v.edad, x: v.erasmus === 'Sí' };
   });
-  var texto = JSON.stringify({ noche: esta, actualizado: new Date().toISOString(), votos: votos });
+  // total: votos de todo el experimento, para el contador de la landing (solo el número, sin datos de nadie)
+  var texto = JSON.stringify({ noche: esta, actualizado: new Date().toISOString(), total: todos.length, votos: votos });
   cache.put('ranking-' + esta, texto, 60);
   return ContentService.createTextOutput(texto).setMimeType(ContentService.MimeType.JSON);
 }
